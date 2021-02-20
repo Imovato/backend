@@ -1,5 +1,8 @@
 package com.unipampa.crud.model;
 
-public class Ground {
+import javax.persistence.Entity;
 
+@Entity
+public class Ground extends Property {
+	
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.unipampa.crud.dto.PropertyDTO;
 import com.unipampa.crud.interfaces.service.IPropertyService;
 import com.unipampa.crud.model.Apartment;
+import com.unipampa.crud.model.Ground;
 import com.unipampa.crud.model.House;
 
 @RestController
@@ -50,5 +51,20 @@ public class PropertyController {
 		apartment.setNumber(apartmentDto.getNumber());
 		apartment.setBlock(apartmentDto.getBlock());
 		propertyService.saveProperty(apartment);
+	}
+	
+	@PostMapping("/ground")
+	public void saveGround(@RequestBody PropertyDTO groundDto) {
+		Ground ground = new Ground();
+		ground.setArea(groundDto.getArea());
+		ground.setNeighborhood(groundDto.getNeighborhood());
+		ground.setCodAddress(groundDto.getCodAddress());
+		ground.setCity(groundDto.getCity());
+		ground.setDescription(groundDto.getDescription());
+		ground.setAdress(groundDto.getAdress());
+		ground.setState(groundDto.getState());
+		ground.setPrice(groundDto.getPrice());
+		ground.setNumber(groundDto.getNumber());
+		propertyService.saveProperty(ground);
 	}
 }
