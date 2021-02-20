@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tbl_property_registration")
-public class Property {
+public abstract class Property {
 
 	@Id
 	@Column(name = "id_property")
@@ -43,12 +43,15 @@ public class Property {
 	@Column(name = "price")
 	private double price;
 
+	@Column(name = "number")
+	private Long number;
+
 	public Property() {
 
 	}
 
-	public Property(Long idProperty, float area, String neighborhood, String codAddress, String city, String description,
-			String adress, String state, double price) {
+	public Property(Long idProperty, float area, String neighborhood, String codAddress, String city,
+			String description, String adress, String state, double price) {
 		this.idProperty = idProperty;
 		this.area = area;
 		this.neighborhood = neighborhood;
@@ -130,6 +133,14 @@ public class Property {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+	public Long getNumber() {
+		return number;
+	}
+
+	public void setNumber(Long number) {
+		this.number = number;
 	}
 
 }

@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.unipampa.crud.dto.PropertyDTO;
 import com.unipampa.crud.interfaces.service.IPropertyService;
-import com.unipampa.crud.model.Property;
+import com.unipampa.crud.model.Apartment;
+import com.unipampa.crud.model.House;
 
 @RestController
 @RequestMapping("/api/property")
@@ -19,18 +20,35 @@ public class PropertyController {
 		this.propertyService = service;
 	}
 
-	@PostMapping
-	public void saveProperty(@RequestBody PropertyDTO propertyDto) {
-		Property property = new Property();
-		property.setArea(propertyDto.getArea());
-		property.setNeighborhood(propertyDto.getNeighborhood());
-		property.setCodAddress(propertyDto.getCodAddress());
-		property.setCity(propertyDto.getCity());
-		property.setDescription(propertyDto.getDescription());
-		property.setAdress(propertyDto.getAdress());
-		property.setState(propertyDto.getState());
-		property.setPrice(propertyDto.getPrice());
-		propertyService.saveProperty(property);
+	@PostMapping("/house")
+	public void saveHouse(@RequestBody PropertyDTO houseDto) {
+		House house = new House();
+		house.setArea(houseDto.getArea());
+		house.setNeighborhood(houseDto.getNeighborhood());
+		house.setCodAddress(houseDto.getCodAddress());
+		house.setCity(houseDto.getCity());
+		house.setDescription(houseDto.getDescription());
+		house.setAdress(houseDto.getAdress());
+		house.setState(houseDto.getState());
+		house.setPrice(houseDto.getPrice());
+		house.setNumber(houseDto.getNumber());
+		propertyService.saveProperty(house);
 
+	}
+	
+	@PostMapping("/apartment")
+	public void saveApartment(@RequestBody PropertyDTO apartmentDto) {
+		Apartment apartment = new Apartment();
+		apartment.setArea(apartmentDto.getArea());
+		apartment.setNeighborhood(apartmentDto.getNeighborhood());
+		apartment.setCodAddress(apartmentDto.getCodAddress());
+		apartment.setCity(apartmentDto.getCity());
+		apartment.setDescription(apartmentDto.getDescription());
+		apartment.setAdress(apartmentDto.getAdress());
+		apartment.setState(apartmentDto.getState());
+		apartment.setPrice(apartmentDto.getPrice());
+		apartment.setNumber(apartmentDto.getNumber());
+		apartment.setBlock(apartmentDto.getBlock());
+		propertyService.saveProperty(apartment);
 	}
 }

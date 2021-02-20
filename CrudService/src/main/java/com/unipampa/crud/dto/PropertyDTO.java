@@ -11,13 +11,15 @@ public class PropertyDTO {
 	private String adress;
 	private String state;
 	private double price;
+	private Long number;
+	private String block;
 
 	public PropertyDTO() {
 
 	}
 
 	public PropertyDTO(Long idProperty, float area, String neighborhood, String codAddress, String city,
-			String description, String adress, String state, double price) {
+			String description, String adress, String state, double price, Long number, String block) {
 		this.idProperty = idProperty;
 		this.area = area;
 		this.neighborhood = neighborhood;
@@ -27,6 +29,8 @@ public class PropertyDTO {
 		this.description = description;
 		this.state = state;
 		this.price = price;
+		this.number = number;
+		this.block = block;
 	}
 
 	public Long getIdProperty() {
@@ -99,6 +103,22 @@ public class PropertyDTO {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+	public Long getNumber() {
+		return number;
+	}
+
+	public void setNumber(Long numberHouse) {
+		this.number = numberHouse;
+	}
+
+	public String getBlock() {
+		return block;
+	}
+
+	public void setBlock(String block) {
+		this.block = block;
 	}
 
 }
