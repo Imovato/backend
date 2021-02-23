@@ -2,7 +2,7 @@ package com.unipampa.crud.dto;
 
 public class UserDTO {
 
-	private Long idUser;
+	private Long id;
 	private String email;
 	private String name;
 	private String cpf;
@@ -15,7 +15,7 @@ public class UserDTO {
 
 	public UserDTO(Long idUser, String email, String name, String cpf, String phone, String address) {
 		super();
-		this.idUser = idUser;
+		this.id = id;
 		this.email = email;
 		this.name = name;
 		this.cpf = cpf;
@@ -23,12 +23,12 @@ public class UserDTO {
 		this.address = address;
 	}
 
-	public Long getIdUser() {
-		return idUser;
+	public Long getId() {
+		return id;
 	}
 
-	public void setIdUser(Long idUser) {
-		this.idUser = idUser;
+	public void setId(Long idUser) {
+		this.id = id;
 	}
 
 	public String getEmail() {
