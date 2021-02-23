@@ -13,7 +13,7 @@ public class UserDTO {
 		
 	}
 
-	public UserDTO(Long idUser, String email, String name, String cpf, String phone, String address) {
+	public UserDTO(Long id, String email, String name, String cpf, String phone, String address) {
 		super();
 		this.id = id;
 		this.email = email;
@@ -27,7 +27,7 @@ public class UserDTO {
 		return id;
 	}
 
-	public void setId(Long idUser) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
