@@ -60,4 +60,19 @@ public class UserServiceImp implements IUserService {
 		userRepository.deleteById(id);
 	}
 
+	@Override
+	public Employee updateEmployee(Employee employee) {
+		return userRepository.save(employee);
+	}
+
+	@Override
+	public Customer updateCustomer(Customer customer) {
+		return userRepository.save(customer);
+	}
+
+	@Override
+	public Owner updateOwner(Owner owner) {
+		return userRepository.save(owner);
+	}
+
 }

@@ -16,4 +16,7 @@ public interface IUserService {
 	User findUserById(Long id);
 	List<User> findAllUsers();
 	void deleteUser(Long id);
+	Employee updateEmployee(Employee employee);
+	Customer updateCustomer(Customer customer);
+	Owner updateOwner(Owner owner);
 }

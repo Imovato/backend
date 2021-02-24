@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,6 +51,12 @@ public class UserController {
         Employee employee = userService.findEmployeeById(id);
         return employee;
     }
+	//Put employee
+    @PutMapping("/employee/update")
+    public Employee updateEmployee(@RequestBody Employee employee) {
+        Employee updateEmployee = userService.updateEmployee(employee);
+        return updateEmployee;
+    }
 	
 	//Add an customer user
 	@PostMapping("/customer/add")
@@ -69,6 +76,13 @@ public class UserController {
 	public Customer getCustomerById (@PathVariable("id") Long id) {
 		Customer customer = userService.findCustomerById(id);
         return customer;
+    }
+	
+	//Put customer
+    @PutMapping("/customer/update")
+    public Customer updateCustomer(@RequestBody Customer customer) {
+    	Customer updateCustomer = userService.updateCustomer(customer);
+        return updateCustomer;
     }
 	
 	//Add an owner user
@@ -91,9 +105,17 @@ public class UserController {
         return owner;
     }
 	
+	//Put owner
+    @PutMapping("/owner/update")
+    public Owner updateOwner(@RequestBody Owner owner) {
+    	Owner updateOwner = userService.updateOwner(owner);
+        return updateOwner;
+    }
+	
 	//Delete user
     @DeleteMapping("/delete/{id}")
     public void deleteUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);
     }
+
 }
