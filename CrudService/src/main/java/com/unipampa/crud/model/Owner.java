@@ -15,8 +15,8 @@ public class Owner extends User {
 	@Column(name = "address")
 	private String address;
 
-	public Owner(String email, String name, String cpf, String phone, String address) {
-		super(email, name);
+	public Owner(String email, String name, String password, String cpf, String phone, String address) {
+		super(email, name, password);
 		this.cpf = cpf;
 		this.phone = phone;
 		this.address = address;

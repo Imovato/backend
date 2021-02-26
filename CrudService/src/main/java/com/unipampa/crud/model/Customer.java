@@ -15,8 +15,8 @@ public class Customer extends User {
 	@Column(name = "address")
 	private String address;
 
-	public Customer(String email, String name, String cpf, String phone, String address) {
-		super(email, name);
+	public Customer(String email, String name, String password, String cpf, String phone, String address) {
+		super(email, name, password);
 		this.cpf = cpf;
 		this.phone = phone;
 		this.address = address;

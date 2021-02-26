@@ -42,6 +42,7 @@ public class UserController {
 		employee.setEmail(userDto.getEmail());
 		employee.setName(userDto.getName());
 		employee.setId(userDto.getId());
+		employee.setPassword(userDto.getPassword());
 		userService.saveUser(employee);
 	}
 	
@@ -64,6 +65,7 @@ public class UserController {
 		Customer customer = new Customer();
 		customer.setEmail(userDto.getEmail());
 		customer.setName(userDto.getName());
+		customer.setPassword(userDto.getPassword());
 		customer.setId(userDto.getId());
 		customer.setAddress(userDto.getAddress());
 		customer.setPhone(userDto.getPhone());
@@ -91,6 +93,7 @@ public class UserController {
 		Owner owner = new Owner();
 		owner.setEmail(userDto.getEmail());
 		owner.setName(userDto.getName());
+		owner.setPassword(userDto.getPassword());
 		owner.setId(userDto.getId());
 		owner.setAddress(userDto.getAddress());
 		owner.setPhone(userDto.getPhone());
