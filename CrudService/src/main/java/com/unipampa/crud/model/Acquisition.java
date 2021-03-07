@@ -34,7 +34,7 @@ public class Acquisition {
 	}
 	
 	public Acquisition(Property property) {
-		this.property_id = property.getIdProperty();
+		this.property_id = property.getId();
 	}
 
 	public double calculatePriceAfterTaxes() {
