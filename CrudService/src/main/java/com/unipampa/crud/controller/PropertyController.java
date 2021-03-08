@@ -1,6 +1,14 @@
 package com.unipampa.crud.controller;
 
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,6 +18,7 @@ import com.unipampa.crud.interfaces.service.IPropertyService;
 import com.unipampa.crud.model.Apartment;
 import com.unipampa.crud.model.Ground;
 import com.unipampa.crud.model.House;
+import com.unipampa.crud.model.Property;
 
 @RestController
 @RequestMapping("/api/property")
@@ -19,6 +28,12 @@ public class PropertyController {
 
 	public PropertyController(IPropertyService service) {
 		this.propertyService = service;
+	}
+
+	@GetMapping("property/all")
+	public ResponseEntity<?> getAllProperties() {
+		List<Property> properties = propertyService.findAllProperties();
+		return new ResponseEntity<>(properties, HttpStatus.OK);
 	}
 
 	@PostMapping("/house")
@@ -34,9 +49,20 @@ public class PropertyController {
 		house.setPrice(houseDto.getPrice());
 		house.setNumber(houseDto.getNumber());
 		propertyService.saveProperty(house);
-
 	}
-	
+
+	@GetMapping("house/find/{id}")
+	public ResponseEntity<?> getHouseById(@PathVariable("id") Long id) {
+		House house = propertyService.getHouseById(id);
+		return new ResponseEntity<>(house, HttpStatus.OK);
+	}
+
+	@PutMapping("/update/house")
+	public ResponseEntity<?> updateHouse(@RequestBody House house) {
+		House updatedHouse = propertyService.updateHouse(house);
+		return new ResponseEntity<>(updatedHouse, HttpStatus.OK);
+	}
+
 	@PostMapping("/apartment")
 	public void saveApartment(@RequestBody PropertyDTO apartmentDto) {
 		Apartment apartment = new Apartment();
@@ -52,7 +78,19 @@ public class PropertyController {
 		apartment.setBlock(apartmentDto.getBlock());
 		propertyService.saveProperty(apartment);
 	}
-	
+
+	@GetMapping("apartment/find/{id}")
+	public ResponseEntity<?> getApartmentById(@PathVariable("id") Long id) {
+		Apartment apartment = propertyService.getApartmentById(id);
+		return new ResponseEntity<>(apartment, HttpStatus.OK);
+	}
+
+	@PutMapping("/update/apartment")
+	public ResponseEntity<?> updateApartment(@RequestBody Apartment apartment) {
+		Apartment updatedApartment = propertyService.updateApartment(apartment);
+		return new ResponseEntity<>(updatedApartment, HttpStatus.OK);
+	}
+
 	@PostMapping("/ground")
 	public void saveGround(@RequestBody PropertyDTO groundDto) {
 		Ground ground = new Ground();
@@ -66,5 +104,22 @@ public class PropertyController {
 		ground.setPrice(groundDto.getPrice());
 		ground.setNumber(groundDto.getNumber());
 		propertyService.saveProperty(ground);
+	}
+
+	@GetMapping("ground/find/{id}")
+	public ResponseEntity<?> getGroundById(@PathVariable("id") Long id) {
+		Ground ground = propertyService.getGroundById(id);
+		return new ResponseEntity<>(ground, HttpStatus.OK);
+	}
+
+	@PutMapping("/update/ground")
+	public ResponseEntity<?> updateApartment(@RequestBody Ground ground) {
+		Ground updatedGround = propertyService.updateGround(ground);
+		return new ResponseEntity<>(updatedGround, HttpStatus.OK);
+	}
+
+	@DeleteMapping("/delete/{id}")
+	public void deleteProperty(@PathVariable("id") Long id) {
+		propertyService.deleteProperty(id);
 	}
 }

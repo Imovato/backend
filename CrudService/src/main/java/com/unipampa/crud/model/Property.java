@@ -9,12 +9,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tbl_property_registration")
-public abstract class Property {
+public class Property {
 
 	@Id
-	@Column(name = "id_property")
+	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idProperty;
+	private Long id;
 
 	@Column(name = "area_property")
 	private float area;
@@ -52,7 +52,7 @@ public abstract class Property {
 
 	public Property(Long idProperty, float area, String neighborhood, String codAddress, String city,
 			String description, String adress, String state, double price) {
-		this.idProperty = idProperty;
+		this.id = idProperty;
 		this.area = area;
 		this.neighborhood = neighborhood;
 		this.codAddress = codAddress;
@@ -63,8 +63,8 @@ public abstract class Property {
 		this.price = price;
 	}
 
-	public Long getIdProperty() {
-		return idProperty;
+	public Long getId() {
+		return id;
 	}
 
 	public float getArea() {
@@ -99,8 +99,8 @@ public abstract class Property {
 		return price;
 	}
 
-	public void setIdProperty(Long idProperty) {
-		this.idProperty = idProperty;
+	public void setId(Long idProperty) {
+		this.id = idProperty;
 	}
 
 	public void setArea(float area) {
