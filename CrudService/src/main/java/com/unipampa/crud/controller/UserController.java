@@ -18,6 +18,8 @@ import com.unipampa.crud.model.Employee;
 import com.unipampa.crud.model.Owner;
 import com.unipampa.crud.model.User;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
