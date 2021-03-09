@@ -32,9 +32,9 @@ public class UserController {
 
 	//Find all users
 	@GetMapping("/all")
-	public ResponseEntity<?> getAllUsers () {
+	public List<User> getAllUsers () {
         List<User> users = userService.findAllUsers();
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        return users;
     }
 	
 	//Add an employee user
@@ -50,15 +50,15 @@ public class UserController {
 	
 	//Get an employee user
 	@GetMapping("/employee/find/{id}")
-	public ResponseEntity<?> getEmployeeById (@PathVariable("id") Long id) {
+	public Employee getEmployeeById (@PathVariable("id") Long id) {
         Employee employee = userService.findEmployeeById(id);
-        return new ResponseEntity<>(employee, HttpStatus.OK);
+        return employee;
     }
 	//Put employee
     @PutMapping("/employee/update")
-    public ResponseEntity<?> updateEmployee(@RequestBody Employee employee) {
+    public Employee updateEmployee(@RequestBody Employee employee) {
         Employee updateEmployee = userService.updateEmployee(employee);
-        return new ResponseEntity<>(updateEmployee, HttpStatus.OK);
+        return updateEmployee;
     }
 	
 	//Add an customer user
@@ -77,16 +77,16 @@ public class UserController {
 	
 	//Get an customer user
 	@GetMapping("/customer/find/{id}")
-	public ResponseEntity<?> getCustomerById (@PathVariable("id") Long id) {
+	public Customer getCustomerById (@PathVariable("id") Long id) {
 		Customer customer = userService.findCustomerById(id);
-        return new ResponseEntity<>(customer, HttpStatus.OK);
+        return customer;
     }
 	
 	//Put customer
     @PutMapping("/customer/update")
-    public ResponseEntity<?> updateCustomer(@RequestBody Customer customer) {
+    public Customer updateCustomer(@RequestBody Customer customer) {
     	Customer updateCustomer = userService.updateCustomer(customer);
-        return new ResponseEntity<>(updateCustomer, HttpStatus.OK);
+        return updateCustomer;
     }
 	
 	//Add an owner user
@@ -105,16 +105,16 @@ public class UserController {
 	
 	//Get an owner user
 	@GetMapping("/owner/find/{id}")
-	public ResponseEntity<?> getOwnerById (@PathVariable("id") Long id) {
+	public Owner getOwnerById (@PathVariable("id") Long id) {
 		Owner owner = userService.findOwnerById(id);
-        return new ResponseEntity<>(owner, HttpStatus.OK);
+        return owner;
     }
 	
 	//Put owner
     @PutMapping("/owner/update")
-    public ResponseEntity<?> updateOwner(@RequestBody Owner owner) {
+    public Owner updateOwner(@RequestBody Owner owner) {
     	Owner updateOwner = userService.updateOwner(owner);
-        return new ResponseEntity<>(updateOwner, HttpStatus.OK);
+        return updateOwner;
     }
 	
 	//Delete user
