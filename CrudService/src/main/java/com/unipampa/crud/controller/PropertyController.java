@@ -20,8 +20,12 @@ import com.unipampa.crud.model.Ground;
 import com.unipampa.crud.model.House;
 import com.unipampa.crud.model.Property;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/api/property")
+@Api(value = "API Crud Property")
 public class PropertyController {
 
 	private IPropertyService propertyService;
@@ -30,13 +34,15 @@ public class PropertyController {
 		this.propertyService = service;
 	}
 
-	@GetMapping("property/all")
+	@GetMapping("/all")
+	@ApiOperation(value = "Retorna uma lista de propriedades")
 	public ResponseEntity<?> getAllProperties() {
 		List<Property> properties = propertyService.findAllProperties();
 		return new ResponseEntity<>(properties, HttpStatus.OK);
 	}
 
 	@PostMapping("/house")
+	@ApiOperation(value = "Salva uma casa ")
 	public void saveHouse(@RequestBody PropertyDTO houseDto) {
 		House house = new House();
 		house.setArea(houseDto.getArea());
@@ -52,18 +58,21 @@ public class PropertyController {
 	}
 
 	@GetMapping("house/find/{id}")
+	@ApiOperation(value = "Encontra uma casa através do ID")
 	public ResponseEntity<?> getHouseById(@PathVariable("id") Long id) {
 		House house = propertyService.getHouseById(id);
 		return new ResponseEntity<>(house, HttpStatus.OK);
 	}
 
 	@PutMapping("/update/house")
+	@ApiOperation(value = "Atualiza as informações de uma casa")
 	public ResponseEntity<?> updateHouse(@RequestBody House house) {
 		House updatedHouse = propertyService.updateHouse(house);
 		return new ResponseEntity<>(updatedHouse, HttpStatus.OK);
 	}
 
 	@PostMapping("/apartment")
+	@ApiOperation(value = "Salva um apartamento")
 	public void saveApartment(@RequestBody PropertyDTO apartmentDto) {
 		Apartment apartment = new Apartment();
 		apartment.setArea(apartmentDto.getArea());
@@ -80,18 +89,21 @@ public class PropertyController {
 	}
 
 	@GetMapping("apartment/find/{id}")
+	@ApiOperation(value = "Encontra um apartamento através do id")
 	public ResponseEntity<?> getApartmentById(@PathVariable("id") Long id) {
 		Apartment apartment = propertyService.getApartmentById(id);
 		return new ResponseEntity<>(apartment, HttpStatus.OK);
 	}
 
 	@PutMapping("/update/apartment")
+	@ApiOperation(value = "Atualiza as informações de um apartamento")
 	public ResponseEntity<?> updateApartment(@RequestBody Apartment apartment) {
 		Apartment updatedApartment = propertyService.updateApartment(apartment);
 		return new ResponseEntity<>(updatedApartment, HttpStatus.OK);
 	}
 
 	@PostMapping("/ground")
+	@ApiOperation(value = "Salva um terreno")
 	public void saveGround(@RequestBody PropertyDTO groundDto) {
 		Ground ground = new Ground();
 		ground.setArea(groundDto.getArea());
@@ -107,18 +119,21 @@ public class PropertyController {
 	}
 
 	@GetMapping("ground/find/{id}")
+	@ApiOperation(value = "Encontra um terreno através do id")
 	public ResponseEntity<?> getGroundById(@PathVariable("id") Long id) {
 		Ground ground = propertyService.getGroundById(id);
 		return new ResponseEntity<>(ground, HttpStatus.OK);
 	}
 
 	@PutMapping("/update/ground")
+	@ApiOperation(value = "Atualiza as informações de um terreno")
 	public ResponseEntity<?> updateApartment(@RequestBody Ground ground) {
 		Ground updatedGround = propertyService.updateGround(ground);
 		return new ResponseEntity<>(updatedGround, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/delete/{id}")
+	@ApiOperation(value = "Deleta uma propriedade através do id")
 	public void deleteProperty(@PathVariable("id") Long id) {
 		propertyService.deleteProperty(id);
 	}
