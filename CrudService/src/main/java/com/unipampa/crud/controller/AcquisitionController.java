@@ -2,6 +2,8 @@ package com.unipampa.crud.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,15 +39,16 @@ public class AcquisitionController {
 	
 	//get acquisition by id
 	@GetMapping("/find/{id}")
-	public Acquisition getAcquisitionById(@PathVariable("id") Long id) {
-		return acquisitionService.findAcquisitionById(id);
+	public ResponseEntity<?> getAcquisitionById(@PathVariable("id") Long id) {
+		Acquisition acquisition = acquisitionService.findAcquisitionById(id);
+		return new ResponseEntity<>(acquisition, HttpStatus.OK);
 	}
 	
 	//get all acquisitions
 	@GetMapping("/all")
-	public List<Acquisition> getAllAcquisitions () {
+	public ResponseEntity<?> getAllAcquisitions () {
         List<Acquisition> acquisitions = acquisitionService.findAllAcquisitions();
-        return acquisitions;
+        return new ResponseEntity<>(acquisitions, HttpStatus.OK);
     }
 	
 	//delete acquisition by id
@@ -56,7 +59,8 @@ public class AcquisitionController {
 	
 	//update acquisition
 	@PutMapping
-	public Acquisition updateAcquisition(@RequestBody Acquisition acquisition) {
-		return acquisitionService.updateAcquisition(acquisition);
+	public ResponseEntity<?> updateAcquisition(@RequestBody Acquisition acquisition) {
+		Acquisition updateAcquisition = acquisitionService.updateAcquisition(acquisition);
+		return new ResponseEntity<>(acquisition, HttpStatus.OK);
 	}
 }
