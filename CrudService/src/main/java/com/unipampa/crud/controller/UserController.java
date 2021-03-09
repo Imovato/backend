@@ -2,6 +2,8 @@ package com.unipampa.crud.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,9 +32,9 @@ public class UserController {
 
 	//Find all users
 	@GetMapping("/all")
-	public List<User> getAllUsers () {
+	public ResponseEntity<?> getAllUsers () {
         List<User> users = userService.findAllUsers();
-        return users;
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 	
 	//Add an employee user
@@ -48,15 +50,15 @@ public class UserController {
 	
 	//Get an employee user
 	@GetMapping("/employee/find/{id}")
-	public Employee getEmployeeById (@PathVariable("id") Long id) {
+	public ResponseEntity<?> getEmployeeById (@PathVariable("id") Long id) {
         Employee employee = userService.findEmployeeById(id);
-        return employee;
+        return new ResponseEntity<>(employee, HttpStatus.OK);
     }
 	//Put employee
     @PutMapping("/employee/update")
-    public Employee updateEmployee(@RequestBody Employee employee) {
+    public ResponseEntity<?> updateEmployee(@RequestBody Employee employee) {
         Employee updateEmployee = userService.updateEmployee(employee);
-        return updateEmployee;
+        return new ResponseEntity<>(updateEmployee, HttpStatus.OK);
     }
 	
 	//Add an customer user
@@ -75,16 +77,16 @@ public class UserController {
 	
 	//Get an customer user
 	@GetMapping("/customer/find/{id}")
-	public Customer getCustomerById (@PathVariable("id") Long id) {
+	public ResponseEntity<?> getCustomerById (@PathVariable("id") Long id) {
 		Customer customer = userService.findCustomerById(id);
-        return customer;
+        return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 	
 	//Put customer
     @PutMapping("/customer/update")
-    public Customer updateCustomer(@RequestBody Customer customer) {
+    public ResponseEntity<?> updateCustomer(@RequestBody Customer customer) {
     	Customer updateCustomer = userService.updateCustomer(customer);
-        return updateCustomer;
+        return new ResponseEntity<>(updateCustomer, HttpStatus.OK);
     }
 	
 	//Add an owner user
@@ -103,16 +105,16 @@ public class UserController {
 	
 	//Get an owner user
 	@GetMapping("/owner/find/{id}")
-	public Owner getOwnerById (@PathVariable("id") Long id) {
+	public ResponseEntity<?> getOwnerById (@PathVariable("id") Long id) {
 		Owner owner = userService.findOwnerById(id);
-        return owner;
+        return new ResponseEntity<>(owner, HttpStatus.OK);
     }
 	
 	//Put owner
     @PutMapping("/owner/update")
-    public Owner updateOwner(@RequestBody Owner owner) {
+    public ResponseEntity<?> updateOwner(@RequestBody Owner owner) {
     	Owner updateOwner = userService.updateOwner(owner);
-        return updateOwner;
+        return new ResponseEntity<>(updateOwner, HttpStatus.OK);
     }
 	
 	//Delete user
