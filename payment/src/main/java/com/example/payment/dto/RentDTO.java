@@ -7,7 +7,7 @@ import com.example.payment.model.Property;
 import com.example.payment.model.PropertyRent;
 
 public class RentDTO {
-
+	
 	private Long id;
 	private Date data;
 	private Property propertie;
@@ -17,7 +17,6 @@ public class RentDTO {
 	}
 
 	public RentDTO(Long id, Date data, Property propertie, Double amountValue) {
-		super();
 		this.id = id;
 		this.data = data;
 		this.propertie = propertie;
