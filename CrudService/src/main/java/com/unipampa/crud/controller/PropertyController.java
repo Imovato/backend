@@ -34,7 +34,7 @@ public class PropertyController {
 		this.propertyService = service;
 	}
 
-	@GetMapping("/all")
+	@GetMapping("property/all")
 	@ApiOperation(value = "Retorna uma lista de propriedades")
 	public ResponseEntity<?> getAllProperties() {
 		List<Property> properties = propertyService.findAllProperties();
