@@ -75,4 +75,9 @@ public class UserServiceImp implements IUserService {
 		return userRepository.save(owner);
 	}
 
+	@Override
+	public Boolean existsByEmail(String email) {
+		return userRepository.existsByEmail(email);
+	}
+
 }

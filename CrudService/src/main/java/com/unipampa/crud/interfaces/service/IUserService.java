@@ -19,4 +19,6 @@ public interface IUserService {
 	Employee updateEmployee(Employee employee);
 	Customer updateCustomer(Customer customer);
 	Owner updateOwner(Owner owner);
+
+	Boolean existsByEmail(String email);
 }

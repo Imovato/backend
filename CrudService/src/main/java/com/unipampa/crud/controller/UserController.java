@@ -91,6 +91,14 @@ public class UserController {
 		Customer customer = userService.findCustomerById(id);
 		return new ResponseEntity<>(customer, HttpStatus.OK);
     }
+
+	//Check customer email (to check if it already exists before creating a new user)
+	@PostMapping("/customer/checkEmail")
+	@ApiOperation(value = "Retorna true se o email existe no banco de dados")
+	public ResponseEntity<?> getCustomerEmail (@RequestBody UserDTO userDTO) {
+		Boolean result = userService.existsByEmail(userDTO.getEmail());
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
 	
 	//Put customer
     @PutMapping("/customer/update")
