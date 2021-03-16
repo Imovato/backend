@@ -46,6 +46,7 @@ public class PropertyController {
 	public void saveHouse(@RequestBody PropertyDTO houseDto) {
 		House house = new House();
 		house.setArea(houseDto.getArea());
+		house.setName(houseDto.getName());
 		house.setNeighborhood(houseDto.getNeighborhood());
 		house.setCodAddress(houseDto.getCodAddress());
 		house.setCity(houseDto.getCity());
@@ -54,6 +55,7 @@ public class PropertyController {
 		house.setState(houseDto.getState());
 		house.setPrice(houseDto.getPrice());
 		house.setNumber(houseDto.getNumber());
+		house.setRooms(houseDto.getRooms());
 		propertyService.saveProperty(house);
 	}
 
@@ -76,6 +78,7 @@ public class PropertyController {
 	public void saveApartment(@RequestBody PropertyDTO apartmentDto) {
 		Apartment apartment = new Apartment();
 		apartment.setArea(apartmentDto.getArea());
+		apartment.setName(apartmentDto.getName());
 		apartment.setNeighborhood(apartmentDto.getNeighborhood());
 		apartment.setCodAddress(apartmentDto.getCodAddress());
 		apartment.setCity(apartmentDto.getCity());
@@ -85,6 +88,7 @@ public class PropertyController {
 		apartment.setPrice(apartmentDto.getPrice());
 		apartment.setNumber(apartmentDto.getNumber());
 		apartment.setBlock(apartmentDto.getBlock());
+		apartment.setRooms(apartmentDto.getRooms());
 		propertyService.saveProperty(apartment);
 	}
 
@@ -107,6 +111,7 @@ public class PropertyController {
 	public void saveGround(@RequestBody PropertyDTO groundDto) {
 		Ground ground = new Ground();
 		ground.setArea(groundDto.getArea());
+		ground.setName(groundDto.getName());
 		ground.setNeighborhood(groundDto.getNeighborhood());
 		ground.setCodAddress(groundDto.getCodAddress());
 		ground.setCity(groundDto.getCity());

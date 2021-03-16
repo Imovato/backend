@@ -3,6 +3,7 @@ package com.unipampa.crud.dto;
 public class PropertyDTO {
 
 	private Long idProperty;
+	private String name;
 	private float area;
 	private String neighborhood;
 	private String codAddress;
@@ -12,15 +13,17 @@ public class PropertyDTO {
 	private String state;
 	private double price;
 	private Long number;
+	private Long rooms;
 	private String block;
 
 	public PropertyDTO() {
 
 	}
 
-	public PropertyDTO(Long idProperty, float area, String neighborhood, String codAddress, String city,
-			String description, String adress, String state, double price, Long number, String block) {
+	public PropertyDTO(Long idProperty, String name, float area, String neighborhood, String codAddress, String city,
+			String description, String adress, String state, double price, Long number, Long rooms, String block) {
 		this.idProperty = idProperty;
+		this.name = name;
 		this.area = area;
 		this.neighborhood = neighborhood;
 		this.adress = adress;
@@ -30,6 +33,7 @@ public class PropertyDTO {
 		this.state = state;
 		this.price = price;
 		this.number = number;
+		this.rooms = rooms;
 		this.block = block;
 	}
 
@@ -39,6 +43,14 @@ public class PropertyDTO {
 
 	public void setIdProperty(Long idProperty) {
 		this.idProperty = idProperty;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public float getArea() {
@@ -111,6 +123,14 @@ public class PropertyDTO {
 
 	public void setNumber(Long numberHouse) {
 		this.number = numberHouse;
+	}
+
+	public Long getRooms() {
+		return rooms;
+	}
+
+	public void setRooms(Long rooms) {
+		this.rooms = rooms;
 	}
 
 	public String getBlock() {
