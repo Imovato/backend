@@ -19,6 +19,9 @@ public class Property {
 	@Column(name = "area_property")
 	private float area;
 
+	@Column(name = "name")
+	private String name;
+
 	@Column(name = "neighborhood")
 	private String neighborhood;
 
@@ -46,13 +49,17 @@ public class Property {
 	@Column(name = "number")
 	private Long number;
 
+	@Column(name = "rooms")
+	private Long rooms;
+
 	public Property() {
 
 	}
 
-	public Property(Long idProperty, float area, String neighborhood, String codAddress, String city,
-			String description, String adress, String state, double price) {
+	public Property(Long idProperty, String name, float area, String neighborhood, String codAddress, String city,
+			String description, String adress, String state, double price, Long rooms ) {
 		this.id = idProperty;
+		this.name = name;
 		this.area = area;
 		this.neighborhood = neighborhood;
 		this.codAddress = codAddress;
@@ -61,6 +68,7 @@ public class Property {
 		this.adress = adress;
 		this.state = state;
 		this.price = price;
+		this.rooms = rooms;
 	}
 
 	public Long getId() {
@@ -69,6 +77,10 @@ public class Property {
 
 	public float getArea() {
 		return area;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public String getNeighborhood() {
@@ -99,8 +111,16 @@ public class Property {
 		return price;
 	}
 
+	public Long getRooms() {
+		return rooms;
+	}
+
 	public void setId(Long idProperty) {
 		this.id = idProperty;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public void setArea(float area) {
@@ -133,6 +153,10 @@ public class Property {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+	public void setRooms(Long rooms) {
+		this.rooms = rooms;
 	}
 
 	public Long getNumber() {
