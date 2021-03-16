@@ -97,7 +97,7 @@ public class UserController {
 	@ApiOperation(value = "Retorna true se o email existe no banco de dados")
 	public ResponseEntity<?> getCustomerEmail (@RequestBody UserDTO userDTO) {
 		Boolean result = userService.existsByEmail(userDTO.getEmail());
-		return new ResponseEntity<>(!result, HttpStatus.OK); // encontrou = false, pode cadastrar = true
+		return new ResponseEntity<>(result, HttpStatus.OK); 
 	}
 	
 	//Put customer
