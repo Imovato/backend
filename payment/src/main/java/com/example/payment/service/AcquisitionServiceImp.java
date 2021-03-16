@@ -3,12 +3,14 @@ package com.example.payment.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.payment.model.Acquisition;
 import com.example.payment.interfaces.service.IAcquisitionService;
 import com.example.payment.repository.AcquisitionRepository;
 
+@Service
 public class AcquisitionServiceImp implements IAcquisitionService {
 	
 	private AcquisitionRepository acquisitionRepository;

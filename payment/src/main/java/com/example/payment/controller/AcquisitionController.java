@@ -17,6 +17,8 @@ import com.example.payment.dto.AcquisitionDTO;
 import com.example.payment.interfaces.service.IAcquisitionService;
 import com.example.payment.model.Acquisition;
 
+import io.swagger.annotations.ApiOperation;
+
 
 @RestController
 @RequestMapping("/acquistion")
@@ -30,6 +32,7 @@ public class AcquisitionController {
 	}
 	
 	@PostMapping("/save")
+	@ApiOperation(value = "Adiciona uma acquisição")
 	public void saveAcquisition(@RequestBody AcquisitionDTO dto) {
 		Acquisition acquisition = new Acquisition();
 		acquisition.setDate(dto.getDate());
