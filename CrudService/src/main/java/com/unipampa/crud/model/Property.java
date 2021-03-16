@@ -11,6 +11,8 @@ import javax.persistence.Table;
 @Table(name = "tbl_property_registration")
 public class Property {
 
+	@Column(insertable = false, updatable = false) private String dtype;
+
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

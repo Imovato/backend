@@ -41,6 +41,27 @@ public class PropertyController {
 		return new ResponseEntity<>(properties, HttpStatus.OK);
 	}
 
+	@GetMapping("apartment/all")
+	@ApiOperation(value = "Retorna uma lista de apartamentos")
+	public ResponseEntity<?> getAllApartments() {
+		List<Property> properties = propertyService.findAllByDtype("Apartment");
+		return new ResponseEntity<>(properties, HttpStatus.OK);
+	}
+
+	@GetMapping("house/all")
+	@ApiOperation(value = "Retorna uma lista de casas")
+	public ResponseEntity<?> getAllHouses() {
+		List<Property> properties = propertyService.findAllByDtype("House");
+		return new ResponseEntity<>(properties, HttpStatus.OK);
+	}
+
+	@GetMapping("ground/all")
+	@ApiOperation(value = "Retorna uma lista de terrenos")
+	public ResponseEntity<?> getAllGrounds() {
+		List<Property> properties = propertyService.findAllByDtype("Ground");
+		return new ResponseEntity<>(properties, HttpStatus.OK);
+	}
+
 	@PostMapping("/house")
 	@ApiOperation(value = "Salva uma casa ")
 	public void saveHouse(@RequestBody PropertyDTO houseDto) {

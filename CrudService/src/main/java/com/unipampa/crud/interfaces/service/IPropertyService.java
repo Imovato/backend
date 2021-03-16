@@ -24,6 +24,8 @@ public interface IPropertyService {
 	public Ground getGroundById(Long id);
 	
 	public List<Property> findAllProperties();
+
+	public List<Property> findAllByDtype(String dtype);
 	
 	public void deleteProperty(Long id);
 }

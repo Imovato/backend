@@ -65,6 +65,11 @@ public class PropertyServiceImp implements IPropertyService {
 	}
 
 	@Override
+	public List<Property> findAllByDtype(String dtype) {
+		return propertyRepository.findAllByDtype(dtype);
+	}
+
+	@Override
 	public void deleteProperty(Long id) {
 		propertyRepository.deleteById(id);
 
