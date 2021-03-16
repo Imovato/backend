@@ -61,12 +61,5 @@ public class AcquisitionController {
     	Acquisition updateAcquisition = acquisitionService.updateAcquisition(acquisition);
 		return new ResponseEntity<>(updateAcquisition, HttpStatus.OK);
     }
-    
-	//Delete acquisition
-    @DeleteMapping("/delete/{id}")
-    public void deleteAcquisition(@PathVariable("id") Long id) {
-    	acquisitionService.deleteAcquisition(id);
-    }
-	
 
 }
