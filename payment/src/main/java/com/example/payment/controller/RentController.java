@@ -1,12 +1,19 @@
 package com.example.payment.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.payment.dto.RentDTO;
 import com.example.payment.interfaces.service.IRentService;
+import com.example.payment.model.Acquisition;
 import com.example.payment.model.Rent;
 
 @RestController
@@ -29,6 +36,16 @@ public class RentController {
 		rentService.saveRent(rent);
 	}
 	
-	
+    @PutMapping("/update")
+    public ResponseEntity<?> updateRent(@RequestBody Rent rent) {
+    	Rent updateRent = rentService.updateRent(rent);
+		return new ResponseEntity<>(updateRent, HttpStatus.OK);
+    }
+
+	@GetMapping("/find/{id}")
+	public ResponseEntity<?> getRentById (@PathVariable("id") Long id) {
+		Rent rentFinded = rentService.findRentById(id);
+		return new ResponseEntity<>(rentFinded, HttpStatus.OK);
+    }
 
 }
