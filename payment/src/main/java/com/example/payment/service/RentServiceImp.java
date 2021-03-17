@@ -21,6 +21,16 @@ public class RentServiceImp implements IRentService{
 	public void saveRent(Rent rent) {
 		rentRepository.save(rent);
 	}
+
+	@Override
+	public Rent updateRent(Rent rent) {
+		return rentRepository.save(rent);
+	}
+
+	@Override
+	public Rent findRentById(Long id) {
+		return rentRepository.findRentById(id);
+	}
 		
 	
 }
