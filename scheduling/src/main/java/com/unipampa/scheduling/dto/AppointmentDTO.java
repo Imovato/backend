@@ -2,12 +2,15 @@ package com.unipampa.scheduling.dto;
 
 import java.util.Date;
 
+import com.unipampa.scheduling.model.Customer;
+import com.unipampa.scheduling.model.Property;
+
 public class AppointmentDTO {
 	
 	private Long id;
 	private Date date;
-	private PropertyDTO property;
-	private CustomerDTO customer;
+	private Property property;
+	private Customer customer;
 
 	public Long getId() {
 		return id;
@@ -25,19 +28,19 @@ public class AppointmentDTO {
 		this.date = date;
 	}
 
-	public PropertyDTO getProperty() {
+	public Property getProperty() {
 		return property;
 	}
 
-	public void setProperty(PropertyDTO property) {
+	public void setProperty(Property property) {
 		this.property = property;
 	}
 
-	public CustomerDTO getCustomer() {
+	public Customer getCustomer() {
 		return customer;
 	}
 
-	public void setCustomer(CustomerDTO customer) {
+	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
 	
