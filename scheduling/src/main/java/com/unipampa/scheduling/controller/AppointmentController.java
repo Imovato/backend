@@ -1,4 +1,4 @@
-package com.unipampa.scheduling;
+package com.unipampa.scheduling.controller;
 
 import java.util.List;
 
