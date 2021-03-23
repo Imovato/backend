@@ -53,6 +53,8 @@ public class Property {
 
 	@Column(name = "rooms")
 	private Long rooms;
+	
+
 
 	public Property() {
 

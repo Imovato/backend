@@ -1,10 +1,13 @@
 package com.unipampa.crud.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -24,6 +27,9 @@ public class User {
 	
 	@Column(name = "password")
 	private String password;
+	
+	@OneToMany
+	private List<Document> documents;
 
 	public User(String email, String name, String password) {
 		this.email = email;
@@ -66,5 +72,14 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	public List<Document> getDocuments() {
+		return documents;
+	}
+
+	public void setDocuments(List<Document> documents) {
+		this.documents = documents;
+	}
+
 	
 }
