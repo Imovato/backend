@@ -1,0 +1,29 @@
+server:
+  port: 8083
+  servlet:
+    context-path: /schedulingService
+    
+spring:
+  application:
+    name: paymentService
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+      dialect: org.hibernate.dialect.MySQL8Dialect
+  jmx:
+    enabled: false
+  datasource:
+    url: jdbc:mysql://localhost:3306/scheduling?useTimezone=true&serverTimezone=UTC
+    username: root
+    password: admin
+
+eureka:
+  instance:
+    hostname: localhost
+  client: 
+    serviceUrl:
+      defaultZone: http://localhost:8761/discovery/eureka
+  
