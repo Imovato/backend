@@ -30,7 +30,7 @@ public class AppointmentController {
 		this.appointmentService = appointmentService;
 	}
 	
-	@PostMapping("/save")
+	@PostMapping("/add")
 	@ApiOperation(value = "add an appointment")
 	public void saveAppointment(@RequestBody AppointmentDTO dto) {
 		Appointment appointment = new Appointment();
@@ -52,6 +52,13 @@ public class AppointmentController {
 	public ResponseEntity<?> getAppointmentById (@PathVariable("id") Long id) {
 		Appointment appointment = appointmentService.findAppointmentById(id);
 		return new ResponseEntity<>(appointment, HttpStatus.OK);
+    }
+	
+	@GetMapping("/find/{id}/days")
+	@ApiOperation(value = "get days until appointment by id")
+	public ResponseEntity<?> getDaysUntilAppointment (@PathVariable("id") Long id) {
+		Appointment appointment = appointmentService.findAppointmentById(id);
+		return new ResponseEntity<>(appointment.daysUntilAppointment(), HttpStatus.OK);
     }
 
     @PutMapping("/update")

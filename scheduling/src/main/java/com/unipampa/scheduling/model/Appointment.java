@@ -64,5 +64,13 @@ public class Appointment {
 		this.customer = customer;
 	}
 	
+	public long daysUntilAppointment() {
+		Date currentDate = new Date();
+		long daysUntil = (date.getTime()-currentDate.getTime())/86400000;
+		return daysUntil;
+	}
 	
+	public boolean isAppointmentToday() {
+		return 0 == daysUntilAppointment();
+	}
 }
