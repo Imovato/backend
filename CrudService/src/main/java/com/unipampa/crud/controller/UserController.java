@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.unipampa.crud.dto.UserDTO;
+import com.unipampa.crud.interfaces.service.IPropertyService;
 import com.unipampa.crud.interfaces.service.IUserService;
 import com.unipampa.crud.model.Customer;
 import com.unipampa.crud.model.Employee;
 import com.unipampa.crud.model.Owner;
+import com.unipampa.crud.model.Property;
 import com.unipampa.crud.model.User;
 
 import io.swagger.annotations.Api;
@@ -29,7 +31,9 @@ import io.swagger.annotations.ApiOperation;
 public class UserController {
 
 	private IUserService userService;
-
+	
+	private IPropertyService propertyService;
+	
 	public UserController(IUserService userService) {
 		this.userService = userService;
 	}
@@ -145,5 +149,12 @@ public class UserController {
     public void deleteUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);
     }
-
+    
+	@PostMapping("/relation/{id}")
+	public void rentToUser(@PathVariable("id") Long id, Property property) {
+		User user = userService.findUserById(id);
+		property.setUser(user);
+		propertyService.saveProperty(property);
+	}
+    
 }
