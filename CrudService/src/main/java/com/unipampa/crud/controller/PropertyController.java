@@ -163,4 +163,7 @@ public class PropertyController {
 	public void deleteProperty(@PathVariable("id") Long id) {
 		propertyService.deleteProperty(id);
 	}
+	
+
+	
 }
