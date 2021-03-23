@@ -13,23 +13,23 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "tbl_user_registration")
 public class User {
-	
+
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(name = "email")
 	private String email;
-	
+
 	@Column(name = "name")
 	private String name;
-	
+
 	@Column(name = "password")
 	private String password;
-	
+
 	@OneToMany
-	private List<Document> documents;
+	private List<Property> properties;
 
 	public User(String email, String name, String password) {
 		this.email = email;
@@ -38,9 +38,9 @@ public class User {
 	}
 
 	public User() {
-		
+
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -64,7 +64,7 @@ public class User {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public String getPassword() {
 		return password;
 	}
@@ -73,13 +73,12 @@ public class User {
 		this.password = password;
 	}
 
-	public List<Document> getDocuments() {
-		return documents;
+	public List<Property> getProperties() {
+		return properties;
 	}
 
-	public void setDocuments(List<Document> documents) {
-		this.documents = documents;
+	public void setProperties(List<Property> properties) {
+		this.properties = properties;
 	}
 
-	
 }

@@ -1,7 +1,6 @@
 package com.unipampa.crud.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.unipampa.crud.dto.PropertyDTO;
 import com.unipampa.crud.interfaces.service.IPropertyService;
-import com.unipampa.crud.interfaces.service.IUserService;
 import com.unipampa.crud.model.Apartment;
-import com.unipampa.crud.model.Document;
 import com.unipampa.crud.model.Ground;
 import com.unipampa.crud.model.House;
 import com.unipampa.crud.model.Property;
-import com.unipampa.crud.model.User;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,7 +29,6 @@ import io.swagger.annotations.ApiOperation;
 public class PropertyController {
 
 	private IPropertyService propertyService;
-	private IUserService userService;
 
 	public PropertyController(IPropertyService service) {
 		this.propertyService = service;

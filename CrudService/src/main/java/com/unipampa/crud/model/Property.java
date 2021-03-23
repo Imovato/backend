@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -54,8 +55,9 @@ public class Property {
 	@Column(name = "rooms")
 	private Long rooms;
 	
-
-
+	@ManyToOne
+	private User user;
+	
 	public Property() {
 
 	}
@@ -171,4 +173,12 @@ public class Property {
 		this.number = number;
 	}
 
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
 }
