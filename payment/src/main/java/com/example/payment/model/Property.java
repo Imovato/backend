@@ -13,7 +13,7 @@ public class Property {
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	private Long id;
 	
-	@Column(name = "amountValue", length = 10)
+	@Column(name = "amount", length = 10)
 	private Integer amount;
 
 	public Long getId() {
