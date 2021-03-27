@@ -10,7 +10,6 @@ import javax.persistence.Id;
 public class Property {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
 	private Long id;
 	
 	@Column(name = "amount", length = 10)

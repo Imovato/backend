@@ -29,8 +29,8 @@ public class PropertyServiceImp implements IPropertyService {
 	@Override
 	@Transactional
 	public void saveProperty(Property property) {
-		propertyRepository.save(property);
-		propertySendMessage.sendMessage(property);
+		Property propertySaved = propertyRepository.save(property);
+		propertySendMessage.sendMessage(propertySaved);
 	}
 
 	@Override
