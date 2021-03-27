@@ -77,6 +77,7 @@ public class PropertyController {
 		house.setPrice(houseDto.getPrice());
 		house.setNumber(houseDto.getNumber());
 		house.setRooms(houseDto.getRooms());
+		house.setAmount(houseDto.getAmount());
 		propertyService.saveProperty(house);
 	}
 
@@ -110,6 +111,7 @@ public class PropertyController {
 		apartment.setNumber(apartmentDto.getNumber());
 		apartment.setBlock(apartmentDto.getBlock());
 		apartment.setRooms(apartmentDto.getRooms());
+		apartment.setAmount(apartmentDto.getAmount());
 		propertyService.saveProperty(apartment);
 	}
 
@@ -141,6 +143,7 @@ public class PropertyController {
 		ground.setState(groundDto.getState());
 		ground.setPrice(groundDto.getPrice());
 		ground.setNumber(groundDto.getNumber());
+		ground.setAmount(groundDto.getAmount());
 		propertyService.saveProperty(ground);
 	}
 

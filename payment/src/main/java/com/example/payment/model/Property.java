@@ -2,6 +2,8 @@ package com.example.payment.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
@@ -10,7 +12,7 @@ public class Property {
 	@Id
 	private Long id;
 	
-	@Column(name = "amountValue", nullable = false, length = 10)
+	@Column(name = "amount", length = 10)
 	private Integer amount;
 
 	public Long getId() {

@@ -55,6 +55,9 @@ public class Property {
 	@Column(name = "rooms")
 	private Long rooms;
 	
+	@Column(name = "amount")
+	private int amount;
+	
 	@ManyToOne
 	private User user;
 	
@@ -179,6 +182,14 @@ public class Property {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public int getAmount() {
+		return amount;
+	}
+
+	public void setAmount(int amount) {
+		this.amount = amount;
 	}
 	
 }

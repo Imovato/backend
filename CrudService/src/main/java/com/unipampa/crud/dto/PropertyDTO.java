@@ -15,6 +15,7 @@ public class PropertyDTO {
 	private Long number;
 	private Long rooms;
 	private String block;
+	private int amount;
 
 	public PropertyDTO() {
 
@@ -140,5 +141,15 @@ public class PropertyDTO {
 	public void setBlock(String block) {
 		this.block = block;
 	}
+
+	public int getAmount() {
+		return amount;
+	}
+
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
+	
+	
 
 }
