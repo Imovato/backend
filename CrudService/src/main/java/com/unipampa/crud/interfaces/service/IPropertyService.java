@@ -16,7 +16,9 @@ public interface IPropertyService {
 	public Apartment updateApartment(Apartment apartment);
 
 	public Ground updateGround(Ground ground);
-	
+
+	public Property updateProperty(Property property);
+
 	public House getHouseById(Long id);
 	
 	public Apartment getApartmentById(Long id);

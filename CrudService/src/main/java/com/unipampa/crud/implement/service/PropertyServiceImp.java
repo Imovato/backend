@@ -84,4 +84,9 @@ public class PropertyServiceImp implements IPropertyService {
 		return propertyRepository.findPropertyById(id);
 	}
 
+	@Override
+	public Property updateProperty(Property property) {
+		return propertyRepository.save(property);
+	}
+
 }

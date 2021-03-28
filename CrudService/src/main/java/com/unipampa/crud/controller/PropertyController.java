@@ -1,5 +1,11 @@
 package com.unipampa.crud.controller;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -11,7 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.unipampa.crud.dto.PropertyDTO;
 import com.unipampa.crud.interfaces.service.IPropertyService;
@@ -173,7 +181,29 @@ public class PropertyController {
 	public void deleteProperty(@PathVariable("id") Long id) {
 		propertyService.deleteProperty(id);
 	}
-	
 
-	
+	@PostMapping("property/upload/{id}")
+	@ApiOperation(value = "Sobe uma imagem para a propriedade")
+	public ResponseEntity<?> uploadImage(@PathVariable("id") Long id, @RequestParam("image") MultipartFile img)
+			throws IOException {
+		Property property = propertyService.getPropertyById(id);
+		Path uploadDir = Paths.get("CrudService/src/main/resources/static/images/property/" + id);
+		Files.createDirectories(uploadDir);
+		long count = Files.walk(uploadDir).count();
+
+		String fileName = count + ".jpg";
+		property.setImageQuantity(5);
+
+		try (InputStream inputStream = img.getInputStream()) {
+			Path filePath = uploadDir.resolve(fileName);
+			Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException ioe) {
+			throw new IOException("Could not save image file: " + fileName, ioe);
+		}
+
+		propertyService.updateProperty(property);
+
+		return new ResponseEntity<>(property, HttpStatus.OK);
+	}
+
 }

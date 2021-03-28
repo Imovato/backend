@@ -58,6 +58,9 @@ public class Property {
 	@Column(name = "amount")
 	private int amount;
 	
+	@Column(name = "imageQuantity")
+	private int imageQuantity;
+
 	@ManyToOne
 	private User user;
 	
@@ -78,6 +81,8 @@ public class Property {
 		this.state = state;
 		this.price = price;
 		this.rooms = rooms;
+		this.amount = 0;
+		this.imageQuantity = 0;
 	}
 
 	public Long getId() {
@@ -191,5 +196,13 @@ public class Property {
 	public void setAmount(int amount) {
 		this.amount = amount;
 	}
-	
+
+	public int getImageQuantity() {
+		return imageQuantity;
+	}
+
+	public void setImageQuantity(int imageQuantity) {
+		this.imageQuantity = imageQuantity;
+	}
+
 }
