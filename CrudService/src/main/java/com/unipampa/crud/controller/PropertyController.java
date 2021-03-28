@@ -41,6 +41,13 @@ public class PropertyController {
 		return new ResponseEntity<>(properties, HttpStatus.OK);
 	}
 
+	@GetMapping("property/find/{id}")
+	@ApiOperation(value = "Encontra uma propriedade através do id")
+	public ResponseEntity<?> getPropertyById(@PathVariable("id") Long id) {
+		Property property = propertyService.getPropertyById(id);
+		return new ResponseEntity<>(property, HttpStatus.OK);
+	}
+
 	@GetMapping("apartment/all")
 	@ApiOperation(value = "Retorna uma lista de apartamentos")
 	public ResponseEntity<?> getAllApartments() {

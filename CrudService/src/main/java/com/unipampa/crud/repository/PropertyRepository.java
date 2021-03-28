@@ -14,6 +14,8 @@ public interface PropertyRepository extends JpaRepository<Property, Long>{
 	House findHouseById(Long id);
 	Apartment findApartmentById(Long id);
 	Ground findGroundById(Long id);
+
+	Property findPropertyById(Long id);
 	public List<Property> findAllByDtype(String dtype);
 	
 }

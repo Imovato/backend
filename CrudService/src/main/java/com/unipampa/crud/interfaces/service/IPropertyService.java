@@ -23,6 +23,8 @@ public interface IPropertyService {
 	
 	public Ground getGroundById(Long id);
 	
+	public Property getPropertyById(Long id);
+
 	public List<Property> findAllProperties();
 
 	public List<Property> findAllByDtype(String dtype);

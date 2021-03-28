@@ -79,4 +79,9 @@ public class PropertyServiceImp implements IPropertyService {
 
 	}
 
+	@Override
+	public Property getPropertyById(Long id) {
+		return propertyRepository.findPropertyById(id);
+	}
+
 }
