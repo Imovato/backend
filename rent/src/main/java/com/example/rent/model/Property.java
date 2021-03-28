@@ -1,4 +1,5 @@
-package com.example.payment.model;
+package com.example.rent.model;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

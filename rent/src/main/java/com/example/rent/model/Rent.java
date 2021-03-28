@@ -1,4 +1,6 @@
-package com.example.payment.model;
+package com.example.rent.model;
+
+
 
 import java.util.Date;
 
