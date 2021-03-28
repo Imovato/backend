@@ -1,4 +1,4 @@
-package com.unipampa.crud.message;
+package com.unipampa.crud.sender;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import com.unipampa.crud.model.Property;
 
 @Component
-public class PropertySendMessage {
+public class PropertySender {
 	
 	@Value("${crud.rabbitmq.exchange}")
 	String exchange;
@@ -19,7 +19,7 @@ public class PropertySendMessage {
 	public RabbitTemplate rabbitTemplate;
 
 	@Autowired
-	public PropertySendMessage(RabbitTemplate rabbitTemplate) {
+	public PropertySender(RabbitTemplate rabbitTemplate) {
 		this.rabbitTemplate = rabbitTemplate;
 	}
 	

@@ -1,4 +1,4 @@
-package com.example.rent.message;
+package com.example.rent.receiver;
 
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
