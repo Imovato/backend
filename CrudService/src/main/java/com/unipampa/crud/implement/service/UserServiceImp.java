@@ -12,22 +12,26 @@ import com.unipampa.crud.model.Employee;
 import com.unipampa.crud.model.Owner;
 import com.unipampa.crud.model.User;
 import com.unipampa.crud.repository.UserRepository;
+import com.unipampa.crud.sender.UserSender;
 
 
 @Service
 public class UserServiceImp implements IUserService {
 	
 	private UserRepository userRepository;
+	private UserSender userSender;
 	
 	@Autowired
-	public UserServiceImp(UserRepository repository) {
+	public UserServiceImp(UserRepository repository, UserSender userSend) {
 		this.userRepository = repository;
+		this.userSender = userSend;
 	}
 
 	@Override
 	@Transactional
 	public void saveUser(User user) {
-		userRepository.save(user);
+		User userSaved = userRepository.save(user);
+		userSender.sendMessage(userSaved);
 	}
 
 	@Override

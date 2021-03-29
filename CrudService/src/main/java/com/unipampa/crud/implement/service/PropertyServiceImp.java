@@ -7,30 +7,30 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.unipampa.crud.interfaces.service.IPropertyService;
-import com.unipampa.crud.message.PropertySendMessage;
 import com.unipampa.crud.model.Apartment;
 import com.unipampa.crud.model.Ground;
 import com.unipampa.crud.model.House;
 import com.unipampa.crud.model.Property;
 import com.unipampa.crud.repository.PropertyRepository;
+import com.unipampa.crud.sender.PropertySender;
 
 @Service
 public class PropertyServiceImp implements IPropertyService {
 
 	private PropertyRepository propertyRepository;
-	private PropertySendMessage propertySendMessage;
+	private PropertySender propertySender;
 
 	@Autowired
-	public PropertyServiceImp(PropertyRepository repository, PropertySendMessage sendMessage) {
+	public PropertyServiceImp(PropertyRepository repository, PropertySender sendMessage) {
 		this.propertyRepository = repository;
-		this.propertySendMessage = sendMessage;
+		this.propertySender = sendMessage;
 	}
 
 	@Override
 	@Transactional
 	public void saveProperty(Property property) {
 		Property propertySaved = propertyRepository.save(property);
-		propertySendMessage.sendMessage(propertySaved);
+		propertySender.sendMessage(propertySaved);
 	}
 
 	@Override
