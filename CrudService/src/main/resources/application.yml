@@ -29,7 +29,8 @@ spring:
 crud:
   rabbitmq:
     exchange: crud.exchange
-    routingkey: crud.property.routingkey
+    routingkeyProperty: crud.property.routingkey
+    routingkeyUser: crud.user.routingkey
 
 eureka:
   instance:

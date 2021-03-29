@@ -18,7 +18,7 @@ public class UserReceiver {
 		this.userRepository = userRepository;
 	}
 	
-	@RabbitListener(queues = {"${crud.rabbitmq.queue}"})
+	@RabbitListener(queues = {"${crud.rabbitmq.queueUser}"})
 	public void receive(@Payload User user) {
 		userRepository.save(user);
 	}

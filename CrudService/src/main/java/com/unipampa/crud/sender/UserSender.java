@@ -13,7 +13,7 @@ public class UserSender {
 	@Value("${crud.rabbitmq.exchange}")
 	String exchange;
 
-	@Value("${crud.rabbitmq.routingkey}")
+	@Value("${crud.rabbitmq.routingkeyUser}")
 	String routingkey;
 
 	public RabbitTemplate rabbitTemplate;

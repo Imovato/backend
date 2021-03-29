@@ -22,8 +22,9 @@ public class UserServiceImp implements IUserService {
 	private UserSender userSender;
 	
 	@Autowired
-	public UserServiceImp(UserRepository repository) {
+	public UserServiceImp(UserRepository repository, UserSender userSend) {
 		this.userRepository = repository;
+		this.userSender = userSend;
 	}
 
 	@Override

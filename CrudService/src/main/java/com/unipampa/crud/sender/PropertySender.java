@@ -13,7 +13,7 @@ public class PropertySender {
 	@Value("${crud.rabbitmq.exchange}")
 	String exchange;
 	
-	@Value("${crud.rabbitmq.routingkey}")
+	@Value("${crud.rabbitmq.routingkeyProperty}")
 	String routingkey;
 	
 	public RabbitTemplate rabbitTemplate;
