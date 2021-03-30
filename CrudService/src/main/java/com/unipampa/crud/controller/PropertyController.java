@@ -1,5 +1,8 @@
 package com.unipampa.crud.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -11,7 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.unipampa.crud.dto.PropertyDTO;
 import com.unipampa.crud.interfaces.service.IPropertyService;
@@ -19,6 +24,7 @@ import com.unipampa.crud.model.Apartment;
 import com.unipampa.crud.model.Ground;
 import com.unipampa.crud.model.House;
 import com.unipampa.crud.model.Property;
+import com.unipampa.crud.utils.FileUploadUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -71,7 +77,7 @@ public class PropertyController {
 
 	@PostMapping("/house")
 	@ApiOperation(value = "Salva uma casa ")
-	public void saveHouse(@RequestBody PropertyDTO houseDto) {
+	public ResponseEntity<?> saveHouse(@RequestBody PropertyDTO houseDto) {
 		House house = new House();
 		house.setArea(houseDto.getArea());
 		house.setName(houseDto.getName());
@@ -86,6 +92,7 @@ public class PropertyController {
 		house.setRooms(houseDto.getRooms());
 		house.setAmount(houseDto.getAmount());
 		propertyService.saveProperty(house);
+		return new ResponseEntity<>(house, HttpStatus.OK);
 	}
 
 	@GetMapping("house/find/{id}")
@@ -104,7 +111,7 @@ public class PropertyController {
 
 	@PostMapping("/apartment")
 	@ApiOperation(value = "Salva um apartamento")
-	public void saveApartment(@RequestBody PropertyDTO apartmentDto) {
+	public ResponseEntity<?> saveApartment(@RequestBody PropertyDTO apartmentDto) {
 		Apartment apartment = new Apartment();
 		apartment.setArea(apartmentDto.getArea());
 		apartment.setName(apartmentDto.getName());
@@ -120,6 +127,7 @@ public class PropertyController {
 		apartment.setRooms(apartmentDto.getRooms());
 		apartment.setAmount(apartmentDto.getAmount());
 		propertyService.saveProperty(apartment);
+		return new ResponseEntity<>(apartment, HttpStatus.OK);
 	}
 
 	@GetMapping("apartment/find/{id}")
@@ -138,7 +146,7 @@ public class PropertyController {
 
 	@PostMapping("/ground")
 	@ApiOperation(value = "Salva um terreno")
-	public void saveGround(@RequestBody PropertyDTO groundDto) {
+	public ResponseEntity<?> saveGround(@RequestBody PropertyDTO groundDto) {
 		Ground ground = new Ground();
 		ground.setArea(groundDto.getArea());
 		ground.setName(groundDto.getName());
@@ -152,6 +160,7 @@ public class PropertyController {
 		ground.setNumber(groundDto.getNumber());
 		ground.setAmount(groundDto.getAmount());
 		propertyService.saveProperty(ground);
+		return new ResponseEntity<>(ground, HttpStatus.OK);
 	}
 
 	@GetMapping("ground/find/{id}")
@@ -173,7 +182,23 @@ public class PropertyController {
 	public void deleteProperty(@PathVariable("id") Long id) {
 		propertyService.deleteProperty(id);
 	}
-	
 
-	
+	@PostMapping("property/upload/{id}")
+	@ApiOperation(value = "Sobe três imagens para a propriedade")
+	public ResponseEntity<?> uploadImage(@PathVariable("id") Long id, @RequestParam("img1") MultipartFile img1,
+			@RequestParam("img2") MultipartFile img2, @RequestParam("img3") MultipartFile img3) throws IOException {
+		Property property = propertyService.getPropertyById(id);
+		String uploadDir = "src/main/resources/static/images/property/" + id;
+		Files.createDirectories(Paths.get(uploadDir));
+		
+		FileUploadUtil.saveFile(uploadDir, Files.walk(Paths.get(uploadDir)).count() + ".jpg", img1);
+		FileUploadUtil.saveFile(uploadDir, Files.walk(Paths.get(uploadDir)).count() + ".jpg", img2);
+		FileUploadUtil.saveFile(uploadDir, Files.walk(Paths.get(uploadDir)).count() + ".jpg", img3);
+
+		property.setImageQuantity((int) Files.walk(Paths.get(uploadDir)).count() - 1);
+		propertyService.updateProperty(property);
+
+		return new ResponseEntity<>(property, HttpStatus.OK);
+	}
+
 }

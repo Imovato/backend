@@ -16,6 +16,7 @@ public class PropertyDTO {
 	private Long rooms;
 	private String block;
 	private int amount;
+	private int imageQuantity;
 
 	public PropertyDTO() {
 
@@ -36,6 +37,7 @@ public class PropertyDTO {
 		this.number = number;
 		this.rooms = rooms;
 		this.block = block;
+		this.imageQuantity = 0;
 	}
 
 	public Long getIdProperty() {
@@ -149,7 +151,13 @@ public class PropertyDTO {
 	public void setAmount(int amount) {
 		this.amount = amount;
 	}
-	
-	
 
+	public int getImageQuantity() {
+		return imageQuantity;
+	}
+
+	public void setImageQuantity(int imageQuantity) {
+		this.imageQuantity = imageQuantity;
+	}
+	
 }
