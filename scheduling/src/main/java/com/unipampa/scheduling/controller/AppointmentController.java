@@ -17,11 +17,12 @@ import com.unipampa.scheduling.dto.AppointmentDTO;
 import com.unipampa.scheduling.interfaces.service.IAppointmentService;
 import com.unipampa.scheduling.model.Appointment;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/appointment")
-//@Api(value = "API Scheduling")
+@Api(value = "API Scheduling")
 public class AppointmentController {
 
 	private IAppointmentService appointmentService;
@@ -38,6 +39,7 @@ public class AppointmentController {
 		appointment.setDate(dto.getDate());
 		appointment.setId(dto.getId());
 		appointment.setProperty(dto.getProperty());
+		appointmentService.saveAppointment(appointment);
 	}
 	
 	@GetMapping("/all")
