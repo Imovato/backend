@@ -188,14 +188,14 @@ public class PropertyController {
 	public ResponseEntity<?> uploadImage(@PathVariable("id") Long id, @RequestParam("img1") MultipartFile img1,
 			@RequestParam("img2") MultipartFile img2, @RequestParam("img3") MultipartFile img3) throws IOException {
 		Property property = propertyService.getPropertyById(id);
-		String uploadDir = "CrudService/src/main/resources/static/images/property/" + id;
+		String uploadDir = "src/main/resources/static/images/property/" + id;
 		Files.createDirectories(Paths.get(uploadDir));
 		
 		FileUploadUtil.saveFile(uploadDir, Files.walk(Paths.get(uploadDir)).count() + ".jpg", img1);
 		FileUploadUtil.saveFile(uploadDir, Files.walk(Paths.get(uploadDir)).count() + ".jpg", img2);
 		FileUploadUtil.saveFile(uploadDir, Files.walk(Paths.get(uploadDir)).count() + ".jpg", img3);
 
-		property.setImageQuantity((int) Files.walk(Paths.get(uploadDir)).count());
+		property.setImageQuantity((int) Files.walk(Paths.get(uploadDir)).count() - 1);
 		propertyService.updateProperty(property);
 
 		return new ResponseEntity<>(property, HttpStatus.OK);
