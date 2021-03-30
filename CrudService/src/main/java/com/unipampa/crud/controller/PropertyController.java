@@ -1,11 +1,8 @@
 package com.unipampa.crud.controller;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -27,6 +24,7 @@ import com.unipampa.crud.model.Apartment;
 import com.unipampa.crud.model.Ground;
 import com.unipampa.crud.model.House;
 import com.unipampa.crud.model.Property;
+import com.unipampa.crud.utils.FileUploadUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -79,7 +77,7 @@ public class PropertyController {
 
 	@PostMapping("/house")
 	@ApiOperation(value = "Salva uma casa ")
-	public void saveHouse(@RequestBody PropertyDTO houseDto) {
+	public ResponseEntity<?> saveHouse(@RequestBody PropertyDTO houseDto) {
 		House house = new House();
 		house.setArea(houseDto.getArea());
 		house.setName(houseDto.getName());
@@ -94,6 +92,7 @@ public class PropertyController {
 		house.setRooms(houseDto.getRooms());
 		house.setAmount(houseDto.getAmount());
 		propertyService.saveProperty(house);
+		return new ResponseEntity<>(house, HttpStatus.OK);
 	}
 
 	@GetMapping("house/find/{id}")
@@ -112,7 +111,7 @@ public class PropertyController {
 
 	@PostMapping("/apartment")
 	@ApiOperation(value = "Salva um apartamento")
-	public void saveApartment(@RequestBody PropertyDTO apartmentDto) {
+	public ResponseEntity<?> saveApartment(@RequestBody PropertyDTO apartmentDto) {
 		Apartment apartment = new Apartment();
 		apartment.setArea(apartmentDto.getArea());
 		apartment.setName(apartmentDto.getName());
@@ -128,6 +127,7 @@ public class PropertyController {
 		apartment.setRooms(apartmentDto.getRooms());
 		apartment.setAmount(apartmentDto.getAmount());
 		propertyService.saveProperty(apartment);
+		return new ResponseEntity<>(apartment, HttpStatus.OK);
 	}
 
 	@GetMapping("apartment/find/{id}")
@@ -146,7 +146,7 @@ public class PropertyController {
 
 	@PostMapping("/ground")
 	@ApiOperation(value = "Salva um terreno")
-	public void saveGround(@RequestBody PropertyDTO groundDto) {
+	public ResponseEntity<?> saveGround(@RequestBody PropertyDTO groundDto) {
 		Ground ground = new Ground();
 		ground.setArea(groundDto.getArea());
 		ground.setName(groundDto.getName());
@@ -160,6 +160,7 @@ public class PropertyController {
 		ground.setNumber(groundDto.getNumber());
 		ground.setAmount(groundDto.getAmount());
 		propertyService.saveProperty(ground);
+		return new ResponseEntity<>(ground, HttpStatus.OK);
 	}
 
 	@GetMapping("ground/find/{id}")
@@ -183,24 +184,18 @@ public class PropertyController {
 	}
 
 	@PostMapping("property/upload/{id}")
-	@ApiOperation(value = "Sobe uma imagem para a propriedade")
-	public ResponseEntity<?> uploadImage(@PathVariable("id") Long id, @RequestParam("image") MultipartFile img)
-			throws IOException {
+	@ApiOperation(value = "Sobe três imagens para a propriedade")
+	public ResponseEntity<?> uploadImage(@PathVariable("id") Long id, @RequestParam("img1") MultipartFile img1,
+			@RequestParam("img2") MultipartFile img2, @RequestParam("img3") MultipartFile img3) throws IOException {
 		Property property = propertyService.getPropertyById(id);
-		Path uploadDir = Paths.get("CrudService/src/main/resources/static/images/property/" + id);
-		Files.createDirectories(uploadDir);
-		long count = Files.walk(uploadDir).count();
+		String uploadDir = "CrudService/src/main/resources/static/images/property/" + id;
+		Files.createDirectories(Paths.get(uploadDir));
+		
+		FileUploadUtil.saveFile(uploadDir, Files.walk(Paths.get(uploadDir)).count() + ".jpg", img1);
+		FileUploadUtil.saveFile(uploadDir, Files.walk(Paths.get(uploadDir)).count() + ".jpg", img2);
+		FileUploadUtil.saveFile(uploadDir, Files.walk(Paths.get(uploadDir)).count() + ".jpg", img3);
 
-		String fileName = count + ".jpg";
-		property.setImageQuantity(5);
-
-		try (InputStream inputStream = img.getInputStream()) {
-			Path filePath = uploadDir.resolve(fileName);
-			Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-		} catch (IOException ioe) {
-			throw new IOException("Could not save image file: " + fileName, ioe);
-		}
-
+		property.setImageQuantity((int) Files.walk(Paths.get(uploadDir)).count());
 		propertyService.updateProperty(property);
 
 		return new ResponseEntity<>(property, HttpStatus.OK);
