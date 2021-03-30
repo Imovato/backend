@@ -33,7 +33,7 @@ public class RentController {
 	public void saveRent(@RequestBody RentDTO dto) {
 		Rent rent = new Rent();
 		rent.setData(dto.getData());
-		rent.setPropertie(dto.getPropertie());
+		rent.setProperty(dto.getProperty());
 		rent.setValue(dto.getAmountValue());
 		rentService.saveRent(rent);
 	}

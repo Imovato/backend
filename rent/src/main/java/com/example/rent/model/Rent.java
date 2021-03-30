@@ -26,7 +26,7 @@ public class Rent {
 	private Date data;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	private Property propertie;
+	private Property property;
 
 	@Column(name = "value", nullable = false)
 	private Double value;
@@ -34,10 +34,10 @@ public class Rent {
 	public Rent() {
 	}
 
-	public Rent(Long id, Date data, Property propertie, Double value) {
+	public Rent(Long id, Date data, Property property, Double value) {
 		this.id = id;
 		this.data = data;
-		this.propertie = propertie;
+		this.property = property;
 		this.value = value;
 	}
 
@@ -53,12 +53,12 @@ public class Rent {
 		this.data = data;
 	}
 
-	public Property getPropertie() {
-		return propertie;
+	public Property getProperty() {
+		return property;
 	}
 
-	public void setPropertie(Property properties) {
-		this.propertie = properties;
+	public void setProperty(Property propertys) {
+		this.property = propertys;
 	}
 
 	public Double getValue() {

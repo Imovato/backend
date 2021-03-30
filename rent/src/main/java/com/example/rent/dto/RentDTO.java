@@ -9,16 +9,16 @@ public class RentDTO {
 	
 	private Long id;
 	private Date data;
-	private Property propertie;
+	private Property property;
 	private Double amountValue;
 
 	public RentDTO() {
 	}
 
-	public RentDTO(Long id, Date data, Property propertie, Double amountValue) {
+	public RentDTO(Long id, Date data, Property property, Double amountValue) {
 		this.id = id;
 		this.data = data;
-		this.propertie = propertie;
+		this.property = property;
 		this.amountValue = amountValue;
 	}
 
@@ -38,12 +38,12 @@ public class RentDTO {
 		this.data = data;
 	}
 
-	public Property getPropertie() {
-		return propertie;
+	public Property getProperty() {
+		return property;
 	}
 
-	public void setPropertie(Property propertie) {
-		this.propertie = propertie;
+	public void setProperty(Property property) {
+		this.property = property;
 	}
 
 	public Double getAmountValue() {
