@@ -36,4 +36,5 @@ eureka:
 crud:
   rabbitmq:
     exchange: crud.exchange
-    queue: crud.scheduling.property
+    queueProperty: crud.scheduling.property
+    queueUser: crud.scheduling.user

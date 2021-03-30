@@ -18,7 +18,7 @@ public class PropertyReceiveMessage {
 		this.propertyRepository = propertyRepository;
 	}
 	
-	@RabbitListener(queues = {"${crud.rabbitmq.queue}"})
+	@RabbitListener(queues = {"${crud.rabbitmq.queueProperty}"})
 	public void receive(@Payload Property property) {
 		propertyRepository.save(property);
 	}
