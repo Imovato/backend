@@ -5,7 +5,7 @@ server:
     
 spring:
   application:
-    name: paymentService
+    name: schedulingService
   jpa:
     show-sql: false
     hibernate:
@@ -36,4 +36,4 @@ eureka:
 crud:
   rabbitmq:
     exchange: crud.exchange
-    queue: crud.payment.property
+    queue: crud.scheduling.property
