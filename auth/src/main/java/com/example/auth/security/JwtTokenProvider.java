@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
+import com.example.auth.exception.CustomHttpException;
 import com.example.auth.model.Role;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -80,5 +82,14 @@ public class JwtTokenProvider {
       return bearerToken.substring(7);
     }
     return null;
+  }
+
+  public boolean validateToken(String token) {
+    try {
+      Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+      return true;
+    } catch (JwtException | IllegalArgumentException e) {
+      throw new CustomHttpException("Token JWT inválido ou expirado", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }
