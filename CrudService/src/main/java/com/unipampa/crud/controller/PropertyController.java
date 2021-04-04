@@ -2,8 +2,11 @@ package com.unipampa.crud.controller;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -185,15 +188,26 @@ public class PropertyController {
 
 	@PostMapping("property/upload/{id}")
 	@ApiOperation(value = "Sobe três imagens para a propriedade")
-	public ResponseEntity<?> uploadImage(@PathVariable("id") Long id, @RequestParam("img1") MultipartFile img1,
-			@RequestParam("img2") MultipartFile img2, @RequestParam("img3") MultipartFile img3) throws IOException {
+	public ResponseEntity<?> uploadImage(
+		@PathVariable("id") Long id, 
+		@RequestParam("img1") MultipartFile img1,
+		@RequestParam("img2") Optional<MultipartFile> img2, 
+		@RequestParam("img3") Optional<MultipartFile> img3) throws IOException {
 		Property property = propertyService.getPropertyById(id);
 		String uploadDir = "src/main/resources/static/images/property/" + id;
 		Files.createDirectories(Paths.get(uploadDir));
+
 		
-		FileUploadUtil.saveFile(uploadDir, Files.walk(Paths.get(uploadDir)).count() + ".jpg", img1);
-		FileUploadUtil.saveFile(uploadDir, Files.walk(Paths.get(uploadDir)).count() + ".jpg", img2);
-		FileUploadUtil.saveFile(uploadDir, Files.walk(Paths.get(uploadDir)).count() + ".jpg", img3);
+		Stream<Path> files1 = Files.walk(Paths.get(uploadDir));
+		FileUploadUtil.saveFile(uploadDir, files1.count() + ".jpg", img1);
+		Stream<Path> files2 = Files.walk(Paths.get(uploadDir));
+		img2.ifPresent(img -> FileUploadUtil.saveFile(uploadDir, files2.count() + ".jpg", img));
+		Stream<Path> files3 = Files.walk(Paths.get(uploadDir));
+		img3.ifPresent(img -> FileUploadUtil.saveFile(uploadDir, files3.count() + ".jpg", img));
+
+		files1.close();
+		files2.close();
+		files3.close();
 
 		property.setImageQuantity((int) Files.walk(Paths.get(uploadDir)).count() - 1);
 		propertyService.updateProperty(property);
