@@ -90,6 +90,7 @@ public class UserController {
   }
 
   @GetMapping(value = "/me")
+  @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
   @ApiOperation(value = "${UserController.me}", response = UserDTO.class, authorizations = {@Authorization(value = "apiKey")})
   @ApiResponses(value = {
     @ApiResponse(code = 400, message = "Algo deu errado"),
@@ -102,6 +103,11 @@ public class UserController {
 
   @GetMapping("/refresh")
   @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
+  @ApiOperation(value = "${UserController.refresh}", response = UserDTO.class, authorizations = {@Authorization(value = "apiKey")})
+  @ApiResponses(value = {
+    @ApiResponse(code = 400, message = "Algo deu errado"),
+    @ApiResponse(code = 403, message = "Acesso negado"),
+  })
   public String refresh(HttpServletRequest req) {
     return userService.refresh(req.getRemoteUser());
   }

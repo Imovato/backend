@@ -42,3 +42,4 @@ UserController:
   delete: Apaga usuário específico de acordo com ID
   search: Retorna usuário específico de acordo com ID
   me: Retorna dados do usuário atual
+  refresh: Reinicia o tempo do token JWT
