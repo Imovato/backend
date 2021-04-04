@@ -19,6 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
 @RestController
 @RequestMapping("/users")
@@ -32,29 +37,65 @@ public class UserController {
   private ModelMapper modelMapper;
 
   @PostMapping("/signin")
-  public String login(@RequestParam String username, @RequestParam String password) {
+  @ApiOperation(value = "${UserController.signin}")
+  @ApiResponses(value = {
+    @ApiResponse(code = 400, message = "Algo deu errado"),
+    @ApiResponse(code = 422, message = "Nome/senha inválidos")
+  })
+  public String login(
+      @ApiParam("Nome de usuário") @RequestParam String username,
+      @ApiParam("Senha") @RequestParam String password) {
     return userService.signin(username, password);
   }
 
   @PostMapping("/signup")
-  public String signup(@RequestBody UserDTO user) {
+  @ApiOperation(value = "${UserController.signup}")
+  @ApiResponses(value = {
+    @ApiResponse(code = 400, message = "Algo deu errado"),
+    @ApiResponse(code = 403, message = "Acesso negado"),
+    @ApiResponse(code = 422, message = "Nome de usuário em uso"),
+  })
+  public String signup(
+      @ApiParam("Usuário cadastrando") @RequestBody UserDTO user) {
     return userService.signup(modelMapper.map(user, User.class));
   }
 
   @DeleteMapping(value = "/{username}")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public String delete(@PathVariable String username) {
+  @ApiOperation(value = "${UserController.delete}", authorizations = {@Authorization(value = "apiKey")})
+  @ApiResponses(value = {
+    @ApiResponse(code = 400, message = "Algo deu errado"),
+    @ApiResponse(code = 403, message = "Acesso negado"),
+    @ApiResponse(code = 404, message = "O usuário não existe"),
+    @ApiResponse(code = 500, message = "Token JWT expirado ou inválido")
+  })
+  public String delete(
+      @ApiParam("Nome de usuário") @PathVariable String username) {
     userService.delete(username);
     return username;
   }
 
   @GetMapping(value = "/{username}")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public UserDTO search(@PathVariable String username) {
+  @ApiOperation(value = "${UserController.search}", response = UserDTO.class, authorizations = {@Authorization(value = "apiKey")})
+  @ApiResponses(value = {
+    @ApiResponse(code = 400, message = "Algo deu errado"),
+    @ApiResponse(code = 403, message = "Acesso negado"),
+    @ApiResponse(code = 404, message = "O usuário não existe"),
+    @ApiResponse(code = 500, message = "Token JWT expirado ou inválido")
+  })
+  public UserDTO search(
+      @ApiParam("Nome de usuário") @PathVariable String username) {
     return modelMapper.map(userService.search(username), UserDTO.class);
   }
 
   @GetMapping(value = "/me")
+  @ApiOperation(value = "${UserController.me}", response = UserDTO.class, authorizations = {@Authorization(value = "apiKey")})
+  @ApiResponses(value = {
+    @ApiResponse(code = 400, message = "Algo deu errado"),
+    @ApiResponse(code = 403, message = "Acesso negado"),
+    @ApiResponse(code = 500, message = "Token JWT expirado ou inválido")
+  })
   public UserDTO whoami(HttpServletRequest req) {
     return modelMapper.map(userService.whoami(req), UserDTO.class);
   }
