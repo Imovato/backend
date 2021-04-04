@@ -1,13 +1,17 @@
 package com.example.auth.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+
+import javax.transaction.Transactional;
 
 import com.example.auth.model.User;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Integer> {
 	
-	@Query("SELECT u FROM Permission u WHERE u.userName =: userName")
-	User findByUserName(@Param("userName") String userName);
+  boolean existsByUsername(String username);
+	
+	User findByUsername(String username);
+
+	@Transactional
+	void deleteByUsername(String username);
 }
