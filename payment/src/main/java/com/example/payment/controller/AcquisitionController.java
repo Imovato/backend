@@ -17,12 +17,13 @@ import com.example.payment.dto.AcquisitionDTO;
 import com.example.payment.interfaces.service.IAcquisitionService;
 import com.example.payment.model.Acquisition;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 
 @RestController
 @RequestMapping("/acquistion")
-//@Api(value = "MICROSERVICE Payment")
+@Api(value = "MICROSERVICE Payment")
 public class AcquisitionController {
 	
 	private IAcquisitionService acquisitionService;
@@ -32,7 +33,7 @@ public class AcquisitionController {
 	}
 	
 	@PostMapping("/save")
-	@ApiOperation(value = "Adiciona uma acquisição")
+	@ApiOperation(value = "Salva uma aquisição")
 	public void saveAcquisition(@RequestBody AcquisitionDTO dto) {
 		Acquisition acquisition = new Acquisition();
 		acquisition.setDate(dto.getDate());
@@ -44,19 +45,22 @@ public class AcquisitionController {
 	
 	//Find all acquisitions
 	@GetMapping("/all")
+	@ApiOperation(value = "Lista com todas as aquisições")
 	public ResponseEntity<?> getAllAcquisitions () {
         List<Acquisition> acquisitions = acquisitionService.findAllAcquisitions();
 		return new ResponseEntity<>(acquisitions, HttpStatus.OK);
     }
 	
 	//Get an acquisition
-	@GetMapping("/employee/find/{id}")
+	@GetMapping("/acquisition/find/{id}")
+	@ApiOperation(value = "Pega uma aquisição pelo seu id")
 	public ResponseEntity<?> getAcquisitionById (@PathVariable("id") Long id) {
 		Acquisition acquisition = acquisitionService.findAcquisitionById(id);
 		return new ResponseEntity<>(acquisition, HttpStatus.OK);
     }
 	//Put acquisition
-    @PutMapping("/employee/update")
+    @PutMapping("/acquisition/update")
+    @ApiOperation(value = "Atualiza uma aquisição")
     public ResponseEntity<?> updateAcquisition(@RequestBody Acquisition acquisition) {
     	Acquisition updateAcquisition = acquisitionService.updateAcquisition(acquisition);
 		return new ResponseEntity<>(updateAcquisition, HttpStatus.OK);
