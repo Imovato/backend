@@ -43,13 +43,6 @@ public class PropertyController {
 		this.propertyService = service;
 	}
 
-	@GetMapping("property/all")
-	@ApiOperation(value = "Retorna uma lista de propriedades")
-	public ResponseEntity<?> getAllProperties() {
-		List<Property> properties = propertyService.findAllProperties();
-		return new ResponseEntity<>(properties, HttpStatus.OK);
-	}
-
 	@GetMapping("property/find/{id}")
 	@ApiOperation(value = "Encontra uma propriedade através do id")
 	public ResponseEntity<?> getPropertyById(@PathVariable("id") Long id) {
@@ -184,6 +177,13 @@ public class PropertyController {
 	@ApiOperation(value = "Deleta uma propriedade através do id")
 	public void deleteProperty(@PathVariable("id") Long id) {
 		propertyService.deleteProperty(id);
+	}
+	
+	@GetMapping("/all")
+	@ApiOperation(value = "Retorna uma lista com todas as propriedades")
+	public ResponseEntity<?> getAllProperties() {
+		List<Property> properties = propertyService.findAllProperties();
+		return new ResponseEntity<>(properties, HttpStatus.OK);
 	}
 
 	@PostMapping("property/upload/{id}")
