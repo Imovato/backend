@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiOperation;
+
+import java.util.List;
+
 import com.example.acquisition.dto.AcquisitionDTO;
 import com.example.acquisition.interfaces.services.IAcquisitionService;
 import com.example.acquisition.interfaces.services.IPropertyService;
@@ -44,6 +48,22 @@ public class AcquisitionController {
 		acquisition.setValue(dto.getValue());
 		acquisition.setAmount(dto.getAmount());
 		acquisitionService.saveAcquisition(acquisition); 
+	}
+
+	@GetMapping("/user/find/{id}")
+	@ApiOperation(value = "Encontra acquisitions através do id de um usuário")
+	public ResponseEntity<?> getAcquisitionsByUserId(@PathVariable("id") Long id) {
+		User user = userService.findUserById(id);
+		List<Acquisition> acquisitions = acquisitionService.findAllAcquisitionsByUser(user);
+		return new ResponseEntity<>(acquisitions, HttpStatus.OK);
+	}
+
+	@GetMapping("/property/find/{id}")
+	@ApiOperation(value = "Encontra acquisitions através do id de um imóvel")
+	public ResponseEntity<?> getAcquisitionsByPropertyId(@PathVariable("id") Long id) {
+		Property property = propertyService.findPropertyById(id);
+		Acquisition acquisition = acquisitionService.findAcquisitionByProperty(property);
+		return new ResponseEntity<>(acquisition, HttpStatus.OK);
 	}
 
 }

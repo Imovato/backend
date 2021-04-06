@@ -1,4 +1,5 @@
 package com.example.acquisition.model;
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -13,7 +14,7 @@ import javax.persistence.FetchType;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-public class Acquisition {
+public class Acquisition implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,11 +30,11 @@ public class Acquisition {
 	@Column(name = "amount", length = 10)
 	private Integer amount;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_property")
 	private Property property;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_user")
 	private User user;
 	
