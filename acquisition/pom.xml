@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>rent</artifactId>
+	<artifactId>acquisition</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>rent</name>
+	<name>acquisition</name>
 	<description>Microserviço de Vendas</description>
 	<properties>
 		<java.version>1.8</java.version>
