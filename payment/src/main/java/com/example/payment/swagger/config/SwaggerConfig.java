@@ -31,7 +31,7 @@ public class SwaggerConfig {
     private ApiInfo metaInfo() {
 
         ApiInfo apiInfo = new ApiInfo(
-                "Crud API",
+                "Payment API",
                 "API de Pagamento de alugueis e aquisições.",
                 "1.0",
                 "Terms of Service",

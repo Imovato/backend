@@ -31,7 +31,7 @@ public class SwaggerConfig {
     private ApiInfo metaInfo() {
 
         ApiInfo apiInfo = new ApiInfo(
-                "Crud API",
+                "Scheduling API",
                 "API de agendamento.",
                 "1.0",
                 "Terms of Service",
