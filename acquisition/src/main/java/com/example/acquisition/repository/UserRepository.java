@@ -7,5 +7,5 @@ import com.example.acquisition.model.User;
 
 
 public interface UserRepository extends JpaRepository<User, Long> {
-
+    User findUserById(Long id);
 }

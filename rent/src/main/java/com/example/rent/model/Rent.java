@@ -18,7 +18,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Rent {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@DateTimeFormat(pattern = "MM/dd/yyy")

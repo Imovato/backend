@@ -3,8 +3,6 @@ package com.example.acquisition.dto;
 
 import java.util.Date;
 
-import com.example.acquisition.model.Property;
-
 public class AcquisitionDTO {
 	
 	private Long id;
@@ -66,11 +64,11 @@ public class AcquisitionDTO {
 		this.value = value;
 	}
 
-	public Double getAmount() {
+	public Integer getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Double amount) {
+	public void setAmount(Integer amount) {
 		this.amount = amount;
 	}
 }

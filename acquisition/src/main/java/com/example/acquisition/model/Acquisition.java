@@ -73,8 +73,16 @@ public class Acquisition {
 		return property;
 	}
 
-	public void setProperty(Property properties) {
-		this.property = properties;
+	public void setProperty(Property property) {
+		this.property = property;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public Double getValue() {
