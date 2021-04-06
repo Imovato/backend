@@ -16,11 +16,14 @@ import com.example.rent.dto.RentDTO;
 import com.example.rent.interfaces.services.IRentService;
 import com.example.rent.model.Rent;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 
 
 @RestController
 @RequestMapping("/rent")
-//@Api(value = "MICROSERVICE Payment")
+@Api(value = "MICROSERVICE Rent")
 public class RentController {
 	
 	private IRentService rentService;
@@ -30,6 +33,7 @@ public class RentController {
 	}
 	
 	@PostMapping("/save")
+	@ApiOperation(value = "Salva uma arrendamento/aluguel")
 	public void saveRent(@RequestBody RentDTO dto) {
 		Rent rent = new Rent();
 		rent.setData(dto.getData());
@@ -39,12 +43,14 @@ public class RentController {
 	}
 	
     @PutMapping("/update")
+    @ApiOperation(value = "atualiza um arrendamento/aluguel")
     public ResponseEntity<?> updateRent(@RequestBody Rent rent) {
     	Rent updateRent = rentService.updateRent(rent);
 		return new ResponseEntity<>(updateRent, HttpStatus.OK);
     }
 
 	@GetMapping("/find/{id}")
+	@ApiOperation(value = "pega um arrendamento/aluguel pelo id")
 	public ResponseEntity<?> getRentById (@PathVariable("id") Long id) {
 		Rent rentFinded = rentService.findRentById(id);
 		return new ResponseEntity<>(rentFinded, HttpStatus.OK);
