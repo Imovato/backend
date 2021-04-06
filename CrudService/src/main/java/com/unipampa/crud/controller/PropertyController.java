@@ -47,14 +47,73 @@ public class PropertyController {
 	// --- ALL PROPERTIES ENDPOINTS ---
 	// --------------------------------
 	
-	@GetMapping("/all")
+	@PostMapping("/add")
+	@ApiOperation(value = "Salva uma propriedade definindo o seu tipo com base nas suas propriedades (e. g. se não houverem quartos será salvo como terreno)")
+	public ResponseEntity<?> saveProperty(@RequestBody PropertyDTO propertyDTO) {
+		
+		if(propertyDTO.getRooms() == null) {
+			Ground ground = new Ground();
+			ground.setArea(propertyDTO.getArea());
+			ground.setName(propertyDTO.getName());
+			ground.setNeighborhood(propertyDTO.getNeighborhood());
+			ground.setCodAddress(propertyDTO.getCodAddress());
+			ground.setCity(propertyDTO.getCity());
+			ground.setDescription(propertyDTO.getDescription());
+			ground.setAdress(propertyDTO.getAdress());
+			ground.setState(propertyDTO.getState());
+			ground.setPrice(propertyDTO.getPrice());
+			ground.setNumber(propertyDTO.getNumber());
+			ground.setAmount(propertyDTO.getAmount());
+			propertyService.saveProperty(ground);
+			return new ResponseEntity<>(ground, HttpStatus.OK);
+			
+		} else if (propertyDTO.getBlock() == null) {
+			House house = new House();
+			house.setArea(propertyDTO.getArea());
+			house.setName(propertyDTO.getName());
+			house.setNeighborhood(propertyDTO.getNeighborhood());
+			house.setCodAddress(propertyDTO.getCodAddress());
+			house.setCity(propertyDTO.getCity());
+			house.setDescription(propertyDTO.getDescription());
+			house.setAdress(propertyDTO.getAdress());
+			house.setState(propertyDTO.getState());
+			house.setPrice(propertyDTO.getPrice());
+			house.setNumber(propertyDTO.getNumber());
+			house.setRooms(propertyDTO.getRooms());
+			house.setAmount(propertyDTO.getAmount());
+			propertyService.saveProperty(house);
+			return new ResponseEntity<>(house, HttpStatus.OK);
+			
+		} else {
+			Apartment apartment = new Apartment();
+			apartment.setArea(propertyDTO.getArea());
+			apartment.setName(propertyDTO.getName());
+			apartment.setNeighborhood(propertyDTO.getNeighborhood());
+			apartment.setCodAddress(propertyDTO.getCodAddress());
+			apartment.setCity(propertyDTO.getCity());
+			apartment.setDescription(propertyDTO.getDescription());
+			apartment.setAdress(propertyDTO.getAdress());
+			apartment.setState(propertyDTO.getState());
+			apartment.setPrice(propertyDTO.getPrice());
+			apartment.setNumber(propertyDTO.getNumber());
+			apartment.setBlock(propertyDTO.getBlock());
+			apartment.setRooms(propertyDTO.getRooms());
+			apartment.setAmount(propertyDTO.getAmount());
+			propertyService.saveProperty(apartment);
+			return new ResponseEntity<>(apartment, HttpStatus.OK);	
+			
+		}
+
+	}
+	
+	@GetMapping("property/all")
 	@ApiOperation(value = "Retorna uma lista com todas as propriedades")
 	public ResponseEntity<?> getAllProperties() {
 		List<Property> properties = propertyService.findAllProperties();
 		return new ResponseEntity<>(properties, HttpStatus.OK);
 	}
 	
-	@GetMapping("/find/{id}")
+	@GetMapping("property/find/{id}")
 	@ApiOperation(value = "Encontra uma propriedade através do id")
 	public ResponseEntity<?> getPropertyById(@PathVariable("id") Long id) {
 		Property property = propertyService.getPropertyById(id);
@@ -67,7 +126,7 @@ public class PropertyController {
 		propertyService.deleteProperty(id);
 	}
 	
-	@PostMapping("/upload/{id}")
+	@PostMapping("property/upload/{id}")
 	@ApiOperation(value = "Sobe três imagens para a propriedade")
 	public ResponseEntity<?> uploadImage(
 		@PathVariable("id") Long id, 
@@ -135,7 +194,7 @@ public class PropertyController {
 		return new ResponseEntity<>(apartment, HttpStatus.OK);
 	}
 	
-	@PutMapping("apartment/update")
+	@PutMapping("/update/apartment")
 	@ApiOperation(value = "Atualiza as informações de um apartamento")
 	public ResponseEntity<?> updateApartment(@RequestBody Apartment apartment) {
 		Apartment updatedApartment = propertyService.updateApartment(apartment);
@@ -180,7 +239,7 @@ public class PropertyController {
 		return new ResponseEntity<>(house, HttpStatus.OK);
 	}
 	
-	@PutMapping("house/update")
+	@PutMapping("/update/house")
 	@ApiOperation(value = "Atualiza as informações de uma casa")
 	public ResponseEntity<?> updateHouse(@RequestBody House house) {
 		House updatedHouse = propertyService.updateHouse(house);
@@ -224,7 +283,7 @@ public class PropertyController {
 		return new ResponseEntity<>(ground, HttpStatus.OK);
 	}
 
-	@PutMapping("ground/update")
+	@PutMapping("/update/ground")
 	@ApiOperation(value = "Atualiza as informações de um terreno")
 	public ResponseEntity<?> updateApartment(@RequestBody Ground ground) {
 		Ground updatedGround = propertyService.updateGround(ground);
