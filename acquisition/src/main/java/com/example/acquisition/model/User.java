@@ -17,8 +17,6 @@ public class User {
 	@Column(name = "name")
 	private String name;
 
-	@OneToMany
-	private List<Property> properties;
 
 	public User(String name) {
 		this.name = name;
@@ -44,12 +42,5 @@ public class User {
 		this.name = name;
 	}
 
-	public List<Property> getProperties() {
-		return properties;
-	}
-
-	public void setProperties(List<Property> properties) {
-		this.properties = properties;
-	}
 
 }
