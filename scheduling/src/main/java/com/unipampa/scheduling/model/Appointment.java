@@ -1,7 +1,7 @@
 package com.unipampa.scheduling.model;
 
-import java.util.Date;
-
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,13 +18,15 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Table(name = "tbl_appointments")
 public class Appointment {
 	
+	LocalDate dataLocal;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@DateTimeFormat(pattern = "MM/dd/yyy")
 	@Column(name = "date", nullable = false)
-	private Date date;
+	private LocalDateTime date;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	private Property property;
@@ -40,11 +42,11 @@ public class Appointment {
 		this.id = id;
 	}
 
-	public Date getDate() {
+	public LocalDateTime getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
 
@@ -64,13 +66,7 @@ public class Appointment {
 		this.customer = customer;
 	}
 	
-	public long daysUntilAppointment() {
-		Date currentDate = new Date();
-		long daysUntil = (date.getTime()-currentDate.getTime())/86400000;
-		return daysUntil;
-	}
-	
-	public boolean isAppointmentToday() {
-		return 0 == daysUntilAppointment();
+	public int daysUntilAppointment() {
+		return date.compareTo(LocalDateTime.now());
 	}
 }

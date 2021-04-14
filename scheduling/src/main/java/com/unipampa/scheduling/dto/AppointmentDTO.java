@@ -1,6 +1,6 @@
 package com.unipampa.scheduling.dto;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import com.unipampa.scheduling.model.Customer;
 import com.unipampa.scheduling.model.Property;
@@ -8,7 +8,7 @@ import com.unipampa.scheduling.model.Property;
 public class AppointmentDTO {
 	
 	private Long id;
-	private Date date;
+	private LocalDateTime date;
 	private Property property;
 	private Customer customer;
 
@@ -20,11 +20,11 @@ public class AppointmentDTO {
 		this.id = id;
 	}
 
-	public Date getDate() {
+	public LocalDateTime getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
 
