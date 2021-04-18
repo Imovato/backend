@@ -63,6 +63,9 @@ public class UserController {
     @ApiResponse(code = 422, message = "Nome de usuário em uso"),
   })
   public ResponseEntity<String> signup(@ApiParam("Usuário cadastrando") @RequestBody CompleteUserDTO user) {
+    // cria um usuario basico para salvar aqui no microsserviço de autenticação
+    // (usuario, email e senha)
+    // o usuario real vai para a fila do rabbit para ser consumido pelo CRUD
     User basicUser = new User();
     basicUser.setUsername(user.getUsername());
     basicUser.setEmail(user.getEmail());
