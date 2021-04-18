@@ -35,7 +35,7 @@ public class UserService {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
 			return jwtTokenProvider.createToken(email, userRepository.findByEmail(email).getRoles());
 		} catch(AuthenticationException e) {
-			throw new CustomHttpException("Combinação de usuário/senha inválida.", HttpStatus.UNPROCESSABLE_ENTITY);
+			throw new CustomHttpException("Combinação de email/senha inválida.", HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 	}
 
