@@ -20,7 +20,7 @@ public class User {
 	private Integer id;
 
 	@Size(min = 2, max = 255, message = "Tamanho mínimo do nome: 2 caracteres")
-	@Column(unique = true, nullable = false)
+	@Column(nullable = false)
 	private String username;
 	
 	@Column(unique = true, nullable = false)
