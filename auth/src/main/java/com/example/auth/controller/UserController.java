@@ -51,16 +51,16 @@ public class UserController {
     @ApiResponse(code = 422, message = "Nome/senha inválidos")
   })
   public String login(
-      @ApiParam("Nome de usuário") @RequestParam String username,
+      @ApiParam("Email") @RequestParam String email,
       @ApiParam("Senha") @RequestParam String password) {
-    return userService.signin(username, password);
+    return userService.signin(email, password);
   }
 
   @PostMapping("/signup")
   @ApiOperation(value = "${UserController.signup}")
   @ApiResponses(value = {
     @ApiResponse(code = 400, message = "Algo deu errado"),
-    @ApiResponse(code = 422, message = "Nome de usuário em uso"),
+    @ApiResponse(code = 422, message = "Email em uso"),
   })
   public ResponseEntity<String> signup(@ApiParam("Usuário cadastrando") @RequestBody CompleteUserDTO user) {
     // cria um usuario basico para salvar aqui no microsserviço de autenticação
@@ -80,7 +80,7 @@ public class UserController {
     }
   }
 
-  @DeleteMapping(value = "/{username}")
+  @DeleteMapping(value = "/{email}")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @ApiOperation(value = "${UserController.delete}", authorizations = {@Authorization(value = "apiKey")})
   @ApiResponses(value = {
@@ -90,12 +90,12 @@ public class UserController {
     @ApiResponse(code = 500, message = "Token JWT expirado ou inválido")
   })
   public String delete(
-      @ApiParam("Nome de usuário") @PathVariable String username) {
-    userService.delete(username);
-    return username;
+      @ApiParam("Email") @PathVariable String email) {
+    userService.delete(email);
+    return email;
   }
 
-  @GetMapping(value = "/{username}")
+  @GetMapping(value = "/{email}")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @ApiOperation(value = "${UserController.search}", response = UserDTO.class, authorizations = {@Authorization(value = "apiKey")})
   @ApiResponses(value = {
@@ -105,8 +105,8 @@ public class UserController {
     @ApiResponse(code = 500, message = "Token JWT expirado ou inválido")
   })
   public UserDTO search(
-      @ApiParam("Nome de usuário") @PathVariable String username) {
-    return modelMapper.map(userService.search(username), UserDTO.class);
+      @ApiParam("Email") @PathVariable String email) {
+    return modelMapper.map(userService.search(email), UserDTO.class);
   }
 
   @GetMapping(value = "/me")
