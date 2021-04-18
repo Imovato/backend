@@ -9,6 +9,8 @@ import com.example.auth.model.User;
 public interface UserRepository extends JpaRepository<User, Integer> {
 	
   boolean existsByUsername(String username);
+
+	boolean existsByEmail(String email);
 	
 	User findByUsername(String username);
 

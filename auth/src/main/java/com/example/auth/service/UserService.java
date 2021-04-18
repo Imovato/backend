@@ -40,12 +40,12 @@ public class UserService {
 	}
 
 	public String signup(User user) {
-		if (!userRepository.existsByUsername(user.getUsername())) {
+		if (!userRepository.existsByEmail(user.getEmail())) {
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
 			userRepository.save(user);
 			return jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
 		} else {
-			throw new CustomHttpException("Nome de usuário já existe", HttpStatus.UNPROCESSABLE_ENTITY);
+			throw new CustomHttpException("Email já cadastrado.", HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 	}
 
