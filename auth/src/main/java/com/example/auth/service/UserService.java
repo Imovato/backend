@@ -35,7 +35,7 @@ public class UserService {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
 			return jwtTokenProvider.createToken(email, userRepository.findByEmail(email).getRoles());
 		} catch(AuthenticationException e) {
-			throw new CustomHttpException("Combinação de usuário/senha inválida", HttpStatus.UNPROCESSABLE_ENTITY);
+			throw new CustomHttpException("Combinação de usuário/senha inválida.", HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 	}
 
@@ -56,7 +56,7 @@ public class UserService {
 	public User search(String username) {
 		User user = userRepository.findByEmail(username);
 		if(user == null) {
-			throw new CustomHttpException("O usuário não existe", HttpStatus.NOT_FOUND);
+			throw new CustomHttpException("O usuário não existe.", HttpStatus.NOT_FOUND);
 		}
 		return user;
 	}

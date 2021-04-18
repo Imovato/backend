@@ -50,10 +50,15 @@ public class UserController {
     @ApiResponse(code = 400, message = "Algo deu errado"),
     @ApiResponse(code = 422, message = "Nome/senha inválidos")
   })
-  public String login(
+  public ResponseEntity<String> login(
       @ApiParam("Email") @RequestParam String email,
       @ApiParam("Senha") @RequestParam String password) {
-    return userService.signin(email, password);
+    try {
+      String token = userService.signin(email, password);
+      return new ResponseEntity<>(token, HttpStatus.OK);
+    } catch (CustomHttpException e) {
+      return new ResponseEntity<>(e.getMessage(), e.getHttpStatus());
+    }
   }
 
   @PostMapping("/signup")
