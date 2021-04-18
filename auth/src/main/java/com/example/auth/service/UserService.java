@@ -30,10 +30,10 @@ public class UserService {
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
-	public String signin(String username, String password) {
+	public String signin(String email, String password) {
 		try {
-			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-			return jwtTokenProvider.createToken(username, userRepository.findByUsername(username).getRoles());
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+			return jwtTokenProvider.createToken(email, userRepository.findByEmail(email).getRoles());
 		} catch(AuthenticationException e) {
 			throw new CustomHttpException("Combinação de usuário/senha inválida", HttpStatus.UNPROCESSABLE_ENTITY);
 		}
@@ -43,18 +43,18 @@ public class UserService {
 		if (!userRepository.existsByEmail(user.getEmail())) {
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
 			userRepository.save(user);
-			return jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
+			return jwtTokenProvider.createToken(user.getEmail(), user.getRoles());
 		} else {
 			throw new CustomHttpException("Email já cadastrado.", HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 	}
 
 	public void delete(String username) {
-		userRepository.deleteByUsername(username);
+		userRepository.deleteByEmail(username);
 	}
 
 	public User search(String username) {
-		User user = userRepository.findByUsername(username);
+		User user = userRepository.findByEmail(username);
 		if(user == null) {
 			throw new CustomHttpException("O usuário não existe", HttpStatus.NOT_FOUND);
 		}
@@ -62,11 +62,11 @@ public class UserService {
 	}
 
 	public User whoami(HttpServletRequest req) {
-		return userRepository.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
+		return userRepository.findByEmail(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
 	}
 
 	public String refresh(String username) {
-		return jwtTokenProvider.createToken(username, userRepository.findByUsername(username).getRoles());
+		return jwtTokenProvider.createToken(username, userRepository.findByEmail(username).getRoles());
 	}
 
 }
