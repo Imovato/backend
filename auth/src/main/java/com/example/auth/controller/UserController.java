@@ -2,12 +2,17 @@ package com.example.auth.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.example.auth.dto.CompleteUserDTO;
 import com.example.auth.dto.UserDTO;
+import com.example.auth.exception.CustomHttpException;
 import com.example.auth.model.User;
+import com.example.auth.sender.SignupSender;
 import com.example.auth.service.UserService;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +39,9 @@ public class UserController {
   private UserService userService;
 
   @Autowired
+  private SignupSender signupSender;
+
+  @Autowired
   private ModelMapper modelMapper;
 
   @PostMapping("/signin")
@@ -52,12 +60,21 @@ public class UserController {
   @ApiOperation(value = "${UserController.signup}")
   @ApiResponses(value = {
     @ApiResponse(code = 400, message = "Algo deu errado"),
-    @ApiResponse(code = 403, message = "Acesso negado"),
     @ApiResponse(code = 422, message = "Nome de usuário em uso"),
   })
-  public String signup(
-      @ApiParam("Usuário cadastrando") @RequestBody UserDTO user) {
-    return userService.signup(modelMapper.map(user, User.class));
+  public ResponseEntity<String> signup(@ApiParam("Usuário cadastrando") @RequestBody CompleteUserDTO user) {
+    User basicUser = new User();
+    basicUser.setUsername(user.getUsername());
+    basicUser.setEmail(user.getEmail());
+    basicUser.setPassword(user.getPassword());
+    basicUser.setRoles(user.getRoles());
+    try {
+      String token = userService.signup(basicUser);
+      signupSender.sendMessage(user);
+      return new ResponseEntity<>(token, HttpStatus.OK);
+    } catch (CustomHttpException e) {
+      return new ResponseEntity<>(e.getMessage(), e.getHttpStatus());
+    }
   }
 
   @DeleteMapping(value = "/{username}")

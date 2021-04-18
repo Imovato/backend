@@ -15,7 +15,7 @@ spring:
     name: auth
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
       dialect: org.hibernate.dialect.MySQL8Dialect
@@ -38,7 +38,7 @@ eureka:
 auth:
   rabbitmq:
     exchange: auth.exchange
-    routingkeySignup: auth.signup.routingkey
+    routingKeySignup: auth.signup.routingKey
 
 security:
   jwt:
