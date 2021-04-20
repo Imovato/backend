@@ -1,0 +1,155 @@
+{
+  "rabbit_version": "3.8.3",
+  "rabbitmq_version": "3.8.3",
+  "users": [
+    {
+      "name": "admin",
+      "password_hash": "ixDLvGlM4yCHCPS50Xx9Ze3nmbBdCQaavHcS1t78XUJgRME2",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": "administrator"
+    }
+  ],
+  "vhosts": [
+    {
+      "name": "/"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "admin",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "topic_permissions": [],
+  "parameters": [],
+  "policies": [],
+  "queues": [
+    {
+      "name": "auth.signup",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "classic"
+      }
+    },
+    {
+      "name": "crud.acquisition.property",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+          "x-queue-type": "classic"
+      }
+  },
+  {
+      "name": "crud.scheduling.property",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+          "x-queue-type": "classic"
+      }
+  },
+  {
+      "name": "crud.rent.user",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+          "x-queue-type": "classic"
+      }
+  },
+  {
+      "name": "crud.rent.property",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+          "x-queue-type": "classic"
+      }
+  },
+  {
+      "name": "crud.acquisition.user",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+          "x-queue-type": "classic"
+      }
+  }
+  ],
+  "exchanges": [
+    {
+      "name": "auth.exchange",
+      "vhost": "/",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "crud.exchange",
+      "vhost": "/",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+  }
+  ],
+  "bindings": [
+    {
+      "source": "auth.exchange",
+      "vhost": "/",
+      "destination": "auth.signup",
+      "destination_type": "queue",
+      "routing_key": "auth.signup.routingKey",
+      "arguments": {}
+    },
+    {
+      "source": "crud.exchange",
+      "vhost": "/",
+      "destination": "crud.acquisition.property",
+      "destination_type": "queue",
+      "routing_key": "crud.property.routingkey",
+      "arguments": {}
+    },
+    {
+      "source": "crud.exchange",
+      "vhost": "/",
+      "destination": "crud.rent.property",
+      "destination_type": "queue",
+      "routing_key": "crud.property.routingkey",
+      "arguments": {}
+    },
+    {
+      "source": "crud.exchange",
+      "vhost": "/",
+      "destination": "crud.scheduling.property",
+      "destination_type": "queue",
+      "routing_key": "crud.property.routingkey\t",
+      "arguments": {}
+    },
+    {
+      "source": "crud.exchange",
+      "vhost": "/",
+      "destination": "crud.acquisition.user",
+      "destination_type": "queue",
+      "routing_key": "crud.user.routingkey",
+      "arguments": {}
+    },
+    {
+      "source": "crud.exchange",
+      "vhost": "/",
+      "destination": "crud.rent.user",
+      "destination_type": "queue",
+      "routing_key": "crud.user.routingkey",
+      "arguments": {}
+    }
+  ]
+}

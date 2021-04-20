@@ -15,8 +15,8 @@ services:
       - 5672:5672
       - 15672:15672
     volumes:
-      - ./scripts/rabbit_definitions.json:/etc/rabbitmq/rabbit_definitions.json
-      - ./scripts/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - ./rabbit_definitions.json:/etc/rabbitmq/rabbit_definitions.json
+      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
       - ./storage/rabbitmq1:/var/lib/rabbitmq
     working_dir: /var/lib/rabbitmq
     environment: 
