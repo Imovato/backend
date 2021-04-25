@@ -20,6 +20,10 @@ public class Property {
 	@Column(name = "price")
 	private double price;
 
+	//	@OneToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "id_rent")
+	private Rent rent;
+
 	public void setId(Long id) {
 		this.id = id;
 	}
