@@ -25,12 +25,15 @@ public class Rent {
 	@Column(name = "data", nullable = false)
 	private Date data;
 
+	@Column(name = "value", nullable = false)
+	private Double value;
+
 	@OneToOne(cascade = CascadeType.ALL)
 	private Property property;
 
-	@Column(name = "value", nullable = false)
-	private Double value;
-	
+	@OneToOne(cascade = CascadeType.ALL)
+	private  User user;
+
 	public Rent() {
 	}
 

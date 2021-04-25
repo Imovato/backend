@@ -13,16 +13,22 @@ public class Property {
 	@Column(name = "amount", length = 10)
 	private Integer amount;
 
-	public Long getId() {
-		return id;
-	}
-
 	@Column(name = "price")
 	private double price;
 
-	//	@OneToOne(fetch = FetchType.LAZY)
-//	@JoinColumn(name = "id_rent")
 	private Rent rent;
+
+	public Rent getRent() {
+		return rent;
+	}
+
+	public void setRent(Rent rent) {
+		this.rent = rent;
+	}
+
+	public Long getId() {
+		return id;
+	}
 
 	public void setId(Long id) {
 		this.id = id;
