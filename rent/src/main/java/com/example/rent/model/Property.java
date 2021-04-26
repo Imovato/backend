@@ -16,16 +16,6 @@ public class Property {
 	@Column(name = "price")
 	private double price;
 
-	private Rent rent;
-
-	public Rent getRent() {
-		return rent;
-	}
-
-	public void setRent(Rent rent) {
-		this.rent = rent;
-	}
-
 	public Long getId() {
 		return id;
 	}
