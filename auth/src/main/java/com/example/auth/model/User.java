@@ -19,8 +19,8 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Size(min = 4, max = 255, message = "Tamanho mínimo do nome: 4 caracteres")
-	@Column(unique = true, nullable = false)
+	@Size(min = 2, max = 255, message = "Tamanho mínimo do nome: 2 caracteres")
+	@Column(nullable = false)
 	private String username;
 	
 	@Column(unique = true, nullable = false)

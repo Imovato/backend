@@ -2,12 +2,17 @@ package com.example.auth.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.example.auth.dto.CompleteUserDTO;
 import com.example.auth.dto.UserDTO;
+import com.example.auth.exception.CustomHttpException;
 import com.example.auth.model.User;
+import com.example.auth.sender.SignupSender;
 import com.example.auth.service.UserService;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +39,9 @@ public class UserController {
   private UserService userService;
 
   @Autowired
+  private SignupSender signupSender;
+
+  @Autowired
   private ModelMapper modelMapper;
 
   @PostMapping("/signin")
@@ -42,25 +50,42 @@ public class UserController {
     @ApiResponse(code = 400, message = "Algo deu errado"),
     @ApiResponse(code = 422, message = "Nome/senha inválidos")
   })
-  public String login(
-      @ApiParam("Nome de usuário") @RequestParam String username,
+  public ResponseEntity<String> login(
+      @ApiParam("Email") @RequestParam String email,
       @ApiParam("Senha") @RequestParam String password) {
-    return userService.signin(username, password);
+    try {
+      String token = userService.signin(email, password);
+      return new ResponseEntity<>(token, HttpStatus.OK);
+    } catch (CustomHttpException e) {
+      return new ResponseEntity<>(e.getMessage(), e.getHttpStatus());
+    }
   }
 
   @PostMapping("/signup")
   @ApiOperation(value = "${UserController.signup}")
   @ApiResponses(value = {
     @ApiResponse(code = 400, message = "Algo deu errado"),
-    @ApiResponse(code = 403, message = "Acesso negado"),
-    @ApiResponse(code = 422, message = "Nome de usuário em uso"),
+    @ApiResponse(code = 422, message = "Email em uso"),
   })
-  public String signup(
-      @ApiParam("Usuário cadastrando") @RequestBody UserDTO user) {
-    return userService.signup(modelMapper.map(user, User.class));
+  public ResponseEntity<String> signup(@ApiParam("Usuário cadastrando") @RequestBody CompleteUserDTO user) {
+    // cria um usuario basico para salvar aqui no microsserviço de autenticação
+    // (usuario, email e senha)
+    // o usuario real vai para a fila do rabbit para ser consumido pelo CRUD
+    User basicUser = new User();
+    basicUser.setUsername(user.getUsername());
+    basicUser.setEmail(user.getEmail());
+    basicUser.setPassword(user.getPassword());
+    basicUser.setRoles(user.getRoles());
+    try {
+      String token = userService.signup(basicUser);
+      signupSender.sendMessage(user);
+      return new ResponseEntity<>(token, HttpStatus.OK);
+    } catch (CustomHttpException e) {
+      return new ResponseEntity<>(e.getMessage(), e.getHttpStatus());
+    }
   }
 
-  @DeleteMapping(value = "/{username}")
+  @DeleteMapping(value = "/{email}")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @ApiOperation(value = "${UserController.delete}", authorizations = {@Authorization(value = "apiKey")})
   @ApiResponses(value = {
@@ -70,12 +95,12 @@ public class UserController {
     @ApiResponse(code = 500, message = "Token JWT expirado ou inválido")
   })
   public String delete(
-      @ApiParam("Nome de usuário") @PathVariable String username) {
-    userService.delete(username);
-    return username;
+      @ApiParam("Email") @PathVariable String email) {
+    userService.delete(email);
+    return email;
   }
 
-  @GetMapping(value = "/{username}")
+  @GetMapping(value = "/{email}")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @ApiOperation(value = "${UserController.search}", response = UserDTO.class, authorizations = {@Authorization(value = "apiKey")})
   @ApiResponses(value = {
@@ -85,8 +110,8 @@ public class UserController {
     @ApiResponse(code = 500, message = "Token JWT expirado ou inválido")
   })
   public UserDTO search(
-      @ApiParam("Nome de usuário") @PathVariable String username) {
-    return modelMapper.map(userService.search(username), UserDTO.class);
+      @ApiParam("Email") @PathVariable String email) {
+    return modelMapper.map(userService.search(email), UserDTO.class);
   }
 
   @GetMapping(value = "/me")
