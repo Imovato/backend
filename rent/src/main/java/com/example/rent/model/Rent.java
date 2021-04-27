@@ -21,9 +21,9 @@ public class Rent {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@DateTimeFormat(pattern = "MM/dd/yyy")
-	@Column(name = "data", nullable = false)
-	private Date data;
+//	@DateTimeFormat(pattern = "MM/dd/yyy")
+//	@Column(name = "data", nullable = false)
+//	private Date data;
 
 	@Column(name = "value", nullable = false)
 	private Double value;
@@ -39,9 +39,9 @@ public class Rent {
 	public Rent() {
 	}
 
-	public Rent(Long id, Date data, Double value, Integer amount, Property property, User user) {
+	public Rent(Long id, Double value, Integer amount, Property property, User user) {
 		this.id = id;
-		this.data = data;
+//		this.data = data;
 		this.value = value;
 		this.amount = amount;
 		this.property = property;
@@ -56,13 +56,13 @@ public class Rent {
 		this.id = id;
 	}
 
-	public Date getData() {
-		return data;
-	}
+//	public Date getData() {
+//		return data;
+//	}
 
-	public void setData(Date data) {
-		this.data = data;
-	}
+//	public void setData(Date data) {
+//		this.data = data;
+//	}
 
 	public Double getValue() {
 		return value;

@@ -25,16 +25,20 @@ public class RentController {
     private IUserService userService;
 
 
-    public RentController(IRentServices service) {
-        this.rentService = service;
+    public RentController(IRentServices rentService, IPropertyService propertyService, IUserService userService ) {
+        this.rentService = rentService;
+        this.propertyService = propertyService;
+        this.userService = userService;
     }
 
     @PostMapping("/save")
     @ApiOperation(value = "Salva uma arrendamento/aluguel")
     public void saveRent(@RequestBody RentDto dto) {
         Property property = propertyService.findPropertyById(dto.getId());
-        User user = userService.finUserById(dto.getId());
+        User user = userService.finUserById(dto.getIdUser());
         Rent rent = new Rent();
+        rent.setAmount(property.getAmount());
+        rent.setValue(property.getPrice());
         rent.setProperty(property);
         rent.setUser(user);
         rent.setValue(property.getPrice());

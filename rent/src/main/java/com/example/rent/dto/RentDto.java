@@ -4,22 +4,23 @@ package com.example.rent.dto;
 import java.util.Date;
 
 import com.example.rent.model.Property;
+import com.example.rent.model.User;
 
 public class RentDto {
 	
 	private Long id;
-	private Date data;
-	private Property property;
-	private Double amountValue;
+//	private Date data;
+//	private Property property;
+//	private User user;
+////	private Long idProperty;
+	private Long idUser;
 
 	public RentDto() {
 	}
 
-	public RentDto(Long id, Date data, Property property, Double amountValue) {
+	public RentDto(Long id, Long idUser) {
 		this.id = id;
-		this.data = data;
-		this.property = property;
-		this.amountValue = amountValue;
+		this.idUser = idUser;
 	}
 
 	public Long getId() {
@@ -30,27 +31,11 @@ public class RentDto {
 		this.id = id;
 	}
 
-	public Date getData() {
-		return data;
+	public Long getIdUser() {
+		return idUser;
 	}
 
-	public void setData(Date data) {
-		this.data = data;
-	}
-
-	public Property getProperty() {
-		return property;
-	}
-
-	public void setProperty(Property property) {
-		this.property = property;
-	}
-
-	public Double getAmountValue() {
-		return amountValue;
-	}
-
-	public void setAmountValue(Double amountValue) {
-		this.amountValue = amountValue;
+	public void setIdUser(Long idUser) {
+		this.idUser = idUser;
 	}
 }
