@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Null;
 
 @Entity
 @Table(name = "tbl_property_contact")
@@ -29,7 +28,7 @@ public class Contact {
 	@Column(name = "number")
 	private String number;
 
-    public Contact() {
+	public Contact() {
 
 	}
 
@@ -40,35 +39,43 @@ public class Contact {
 		this.number = number;
 	}
 
-    public Long getId() {
+	public Long getId() {
 		return id;
 	}
-    public String getName() {
+
+	public String getName() {
 		return name;
 	}
-    public String getMessage() {
+
+	public String getMessage() {
 		return message;
 	}
-    public String getEmail() {
+
+	public String getEmail() {
 		return email;
 	}
-    public String getNumber() {
+
+	public String getNumber() {
 		return number;
 	}
-    public void setId(Long idProperty) {
+
+	public void setId(Long idProperty) {
 		this.id = idProperty;
 	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
-    public void setMessage(String message) {
+
+	public void setMessage(String message) {
 		this.message = message;
 	}
-    public void setEmail(String email) {
+
+	public void setEmail(String email) {
 		this.email = email;
 	}
-    public void setNumber(String number) {
+
+	public void setNumber(String number) {
 		this.number = number;
 	}
 }

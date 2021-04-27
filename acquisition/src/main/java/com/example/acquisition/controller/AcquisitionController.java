@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,17 +24,18 @@ import com.example.acquisition.model.User;
 @RestController
 @RequestMapping("/acquisition")
 public class AcquisitionController {
-	
+
 	private IAcquisitionService acquisitionService;
 	private IPropertyService propertyService;
 	private IUserService userService;
-	
-	public AcquisitionController (IAcquisitionService service, IPropertyService propertyService, IUserService userService) {
+
+	public AcquisitionController(IAcquisitionService service, IPropertyService propertyService,
+			IUserService userService) {
 		this.acquisitionService = service;
 		this.propertyService = propertyService;
 		this.userService = userService;
 	}
-	
+
 	@PostMapping("/save")
 	public void saveAcquisition(@RequestBody AcquisitionDTO dto) {
 		Property property = propertyService.findPropertyById(dto.getIdProperty());
@@ -47,7 +47,7 @@ public class AcquisitionController {
 		acquisition.setUser(user);
 		acquisition.setValue(dto.getValue());
 		acquisition.setAmount(dto.getAmount());
-		acquisitionService.saveAcquisition(acquisition); 
+		acquisitionService.saveAcquisition(acquisition);
 	}
 
 	@GetMapping("/user/find/{id}")

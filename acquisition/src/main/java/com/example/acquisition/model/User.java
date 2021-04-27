@@ -1,12 +1,8 @@
 package com.example.acquisition.model;
 
-
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 @Entity
 public class User {
@@ -16,7 +12,6 @@ public class User {
 
 	@Column(name = "name")
 	private String name;
-
 
 	public User(String name) {
 		this.name = name;
@@ -41,6 +36,5 @@ public class User {
 	public void setName(String name) {
 		this.name = name;
 	}
-
 
 }

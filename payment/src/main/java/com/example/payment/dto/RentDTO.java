@@ -1,13 +1,11 @@
 package com.example.payment.dto;
 
 import java.util.Date;
-import java.util.List;
 
 import com.example.payment.model.Property;
-import com.example.payment.model.PropertyRent;
 
 public class RentDTO {
-	
+
 	private Long id;
 	private Date data;
 	private Property propertie;
