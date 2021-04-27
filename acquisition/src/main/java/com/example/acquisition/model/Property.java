@@ -14,12 +14,12 @@ public class Property {
 	@Column(name = "amount", length = 10)
 	private Integer amount;
 
+	@Column(name = "price")
+	private double price;
+
 	public Long getId() {
 		return id;
 	}
-
-	@Column(name = "price")
-	private double price;
 
 	public void setId(Long id) {
 		this.id = id;
