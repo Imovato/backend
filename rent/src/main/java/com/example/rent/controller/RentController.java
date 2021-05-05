@@ -7,11 +7,14 @@ import com.example.rent.interfaces.services.IUserService;
 import com.example.rent.model.Property;
 import com.example.rent.model.Rent;
 import com.example.rent.model.User;
+import com.example.rent.service.RentServiceImp;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -65,11 +68,12 @@ public class RentController {
         return new ResponseEntity<>(rentFind, HttpStatus.OK);
     }
 
-    @GetMapping("/findall")
-    @ApiOperation(value = "pega uma lista de arrendamentos/aluguéis")
-    public ResponseEntity<?> getRentById(@PathVariable("id") Long id) {
-        Rent rentFind = rentService.getRentById(id);
-        return new ResponseEntity<>(rentFind, HttpStatus.OK);
+    @GetMapping("/user/find/{id}")
+    @ApiOperation(value = "Busca aluguéis através do id de um usuário")
+    public ResponseEntity<?> getAcquisitionsByUserId(@PathVariable("id") Long id) {
+        User user = userService.finUserById(id);
+        List<Rent> rents = RentServiceImp.findAllRentsByUser(user);
+        return new ResponseEntity<>(acquisitions, HttpStatus.OK);
     }
 
 }
