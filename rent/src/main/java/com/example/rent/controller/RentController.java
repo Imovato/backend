@@ -72,8 +72,8 @@ public class RentController {
     @ApiOperation(value = "Busca aluguéis através do id de um usuário")
     public ResponseEntity<?> getAcquisitionsByUserId(@PathVariable("id") Long id) {
         User user = userService.finUserById(id);
-        List<Rent> rents = RentServiceImp.findAllRentsByUser(user);
-        return new ResponseEntity<>(acquisitions, HttpStatus.OK);
+        List<Rent> rents = rentService.findAllRentsByUser(user);
+        return new ResponseEntity<>(rents, HttpStatus.OK);
     }
 
 }

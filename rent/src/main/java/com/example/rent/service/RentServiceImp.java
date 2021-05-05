@@ -32,6 +32,6 @@ public class RentServiceImp implements IRentServices {
 
     @Override
     public List<Rent> findAllRentsByUser(User user) {
-        return null;
+        return rentRepository.findAllAcquisitionsByUser(user);
     }
 }
