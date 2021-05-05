@@ -17,7 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-  
+
   @Autowired
   private JwtTokenProvider jwtTokenProvider;
 
@@ -31,16 +31,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
     // Entry points
-    http.authorizeRequests()
-      .antMatchers("/users/signin").permitAll()
-      .antMatchers("/users/signup").permitAll()
-      .anyRequest().authenticated();
+    http.authorizeRequests().antMatchers("/users/signin").permitAll().antMatchers("/users/signup").permitAll()
+        .anyRequest().authenticated();
 
     // If a user try to access a resource without having enough permissions
     http.exceptionHandling().accessDeniedPage("/login");
-    
-    http.formLogin().usernameParameter("email").permitAll()
-      .and().logout().permitAll();
+
+    http.formLogin().usernameParameter("email").permitAll().and().logout().permitAll();
 
     // Apply JWT
     http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
@@ -49,12 +46,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   public void configure(WebSecurity web) throws Exception {
     // Allow swagger to be accessed without authentication
-    web.ignoring().antMatchers("/v2/api-docs")
-      .antMatchers("/swagger-resources/**")
-      .antMatchers("/swagger-ui.html")
-      .antMatchers("/configuration/**")
-      .antMatchers("/webjars/**")
-      .antMatchers("/public");
+    web.ignoring().antMatchers("/v2/api-docs").antMatchers("/swagger-resources/**").antMatchers("/swagger-ui.html")
+        .antMatchers("/configuration/**").antMatchers("/webjars/**").antMatchers("/public");
   }
 
   @Bean

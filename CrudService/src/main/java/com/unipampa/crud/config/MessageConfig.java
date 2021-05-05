@@ -8,21 +8,28 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-
 @Configuration
 public class MessageConfig {
 
 	@Value("${crud.rabbitmq.exchange}")
 	String exchange;
-	
+
+	@Value("${crud.rabbitmq.authExchange}")
+	String authExchange;
+
 	@Bean
 	public Exchange declareExchange() {
 		return ExchangeBuilder.directExchange(exchange).durable(true).build();
 	}
-	
+
+	@Bean
+	public Exchange declareExchangeAuth() {
+		return ExchangeBuilder.directExchange(authExchange).durable(true).build();
+	}
+
 	@Bean
 	public MessageConverter jsonMessageConverter() {
 		return new Jackson2JsonMessageConverter();
 	}
-	
+
 }

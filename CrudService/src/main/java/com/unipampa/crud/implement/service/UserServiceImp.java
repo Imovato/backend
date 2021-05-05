@@ -14,13 +14,12 @@ import com.unipampa.crud.model.User;
 import com.unipampa.crud.repository.UserRepository;
 import com.unipampa.crud.sender.UserSender;
 
-
 @Service
 public class UserServiceImp implements IUserService {
-	
+
 	private UserRepository userRepository;
 	private UserSender userSender;
-	
+
 	@Autowired
 	public UserServiceImp(UserRepository repository, UserSender userSend) {
 		this.userRepository = repository;
@@ -82,6 +81,11 @@ public class UserServiceImp implements IUserService {
 	@Override
 	public Boolean existsByEmail(String email) {
 		return userRepository.existsByEmail(email);
+	}
+
+	@Override
+	public Customer findCustomerByEmail(String email) {
+		return userRepository.findCustomerByEmail(email);
 	}
 
 }

@@ -1,10 +1,10 @@
-package com.example.auth.dto;
+package com.unipampa.crud.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 
-import com.example.auth.model.Role;
+// import com.unipampa.crud.model.Role;
 
 public class CompleteUserDTO {
 
@@ -20,8 +20,9 @@ public class CompleteUserDTO {
 	private String phone;
 	@ApiModelProperty(position = 5)
 	private String address;
+
 	@ApiModelProperty(position = 6)
-	List<Role> roles;
+	// List<Role> roles;
 
 	public String getEmail() {
 		return email;
@@ -71,12 +72,12 @@ public class CompleteUserDTO {
 		this.address = address;
 	}
 
-	public List<Role> getRoles() {
-		return roles;
-	}
+	// public List<Role> getRoles() {
+	// return roles;
+	// }
 
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
-	}
+	// public void setRoles(List<Role> roles) {
+	// this.roles = roles;
+	// }
 
 }

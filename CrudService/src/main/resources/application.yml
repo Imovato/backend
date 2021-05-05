@@ -31,6 +31,8 @@ crud:
     exchange: crud.exchange
     routingkeyProperty: crud.property.routingkey
     routingkeyUser: crud.user.routingkey
+    authExchange: auth.exchange
+    signupQueue: auth.signup
 
 eureka:
   instance:
