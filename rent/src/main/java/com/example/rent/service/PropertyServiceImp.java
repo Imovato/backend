@@ -20,4 +20,9 @@ public class PropertyServiceImp implements IPropertyService {
     public Property findPropertyById(Long id) {
         return propertyRepository.findPropertyById(id);
     }
+
+    @Override
+    public void updateProperty(Property property) {
+         propertyRepository.save(property);
+    }
 }

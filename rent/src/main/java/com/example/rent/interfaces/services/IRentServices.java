@@ -6,6 +6,6 @@ public interface IRentServices {
 	
 	void saveRent(Rent rent);
 	public Rent updateRent(Rent rent);
-	public Rent findRentById(Long id);
+	public Rent getRentById(Long id);
 
 }

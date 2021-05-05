@@ -3,6 +3,7 @@ package com.example.rent.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Property {
@@ -15,6 +16,9 @@ public class Property {
 
 	@Column(name = "price")
 	private double price;
+
+	@Column
+	private String status;
 
 	public Long getId() {
 		return id;
@@ -40,4 +44,11 @@ public class Property {
 		this.price = price;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 }

@@ -23,7 +23,7 @@ public class RentServiceImp implements IRentServices {
     }
 
     @Override
-    public Rent findRentById(Long id) {
-        return null;
+    public Rent getRentById(Long id) {
+        return rentRepository.findRentById(id);
     }
 }
