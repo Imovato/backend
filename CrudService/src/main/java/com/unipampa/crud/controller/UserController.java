@@ -110,8 +110,8 @@ public class UserController {
 	@PutMapping("/customer/update")
 	@ApiOperation(value = "Atualiza um usuario do tipo cliente pelo id")
 	public ResponseEntity<?> updateCustomer(@RequestBody Customer customer) {
-		Customer updateCustomer = userService.updateCustomer(customer);
-		return new ResponseEntity<>(updateCustomer, HttpStatus.OK);
+		userService.saveUser(customer);
+		return new ResponseEntity<>(customer, HttpStatus.OK);
 	}
 
 	// Add an owner user

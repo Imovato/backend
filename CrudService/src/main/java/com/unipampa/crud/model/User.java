@@ -14,12 +14,12 @@ import javax.persistence.Table;
 @Table(name = "tbl_user_registration")
 public class User {
 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(unique = true, name = "email")
+	@Column(name = "email")
 	private String email;
 
 	@Column(name = "name")
