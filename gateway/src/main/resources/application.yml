@@ -1,5 +1,7 @@
 server:
   port: 8080
+  servlet:
+    context-path: /gateway
 
 spring:
   application:
@@ -10,7 +12,7 @@ eureka:
     hostname: localhost
   client: 
     serviceUrl:
-      defaultZone: http://localhost:8761/discovery/eureka
+      defaultZone: http://localhost:8087/discovery/eureka
 
 zuul:
   prefix: /api

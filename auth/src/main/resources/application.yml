@@ -1,5 +1,7 @@
 server:
   port: 8083
+  servlet:
+    context-path: /authService
     
 spring:
   datasource:
@@ -12,7 +14,7 @@ spring:
     max-idle: 20
     min-idle: 15
   application:
-    name: auth
+    name: authService
   jpa:
     hibernate:
       ddl-auto: create
@@ -33,7 +35,7 @@ eureka:
     hostname: localhost
   client: 
     serviceUrl:
-      defaultZone: http://localhost:8761/discovery/eureka
+      defaultZone: http://localhost:8087/discovery/eureka
 
 auth:
   rabbitmq:

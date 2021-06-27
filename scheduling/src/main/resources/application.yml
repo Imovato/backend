@@ -1,5 +1,5 @@
 server:
-  port: 8089
+  port: 8086
   servlet:
     context-path: /schedulingService
     
@@ -31,7 +31,7 @@ eureka:
     hostname: localhost
   client: 
     serviceUrl:
-      defaultZone: http://localhost:8761/discovery/eureka
+      defaultZone: http://localhost:8087/discovery/eureka
       
 crud:
   rabbitmq:
