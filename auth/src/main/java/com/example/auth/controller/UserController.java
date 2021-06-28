@@ -34,7 +34,7 @@ import io.swagger.annotations.Authorization;
 @RequestMapping("/users")
 @Api(tags = "users")
 public class UserController {
-  
+
   @Autowired
   private UserService userService;
 
@@ -46,12 +46,9 @@ public class UserController {
 
   @PostMapping("/signin")
   @ApiOperation(value = "${UserController.signin}")
-  @ApiResponses(value = {
-    @ApiResponse(code = 400, message = "Algo deu errado"),
-    @ApiResponse(code = 422, message = "Nome/senha inválidos")
-  })
-  public ResponseEntity<String> login(
-      @ApiParam("Email") @RequestParam String email,
+  @ApiResponses(value = { @ApiResponse(code = 400, message = "Algo deu errado"),
+      @ApiResponse(code = 422, message = "Nome/senha inválidos") })
+  public ResponseEntity<String> login(@ApiParam("Email") @RequestParam String email,
       @ApiParam("Senha") @RequestParam String password) {
     try {
       String token = userService.signin(email, password);
@@ -63,19 +60,17 @@ public class UserController {
 
   @PostMapping("/signup")
   @ApiOperation(value = "${UserController.signup}")
-  @ApiResponses(value = {
-    @ApiResponse(code = 400, message = "Algo deu errado"),
-    @ApiResponse(code = 422, message = "Email em uso"),
-  })
+  @ApiResponses(value = { @ApiResponse(code = 400, message = "Algo deu errado"),
+      @ApiResponse(code = 422, message = "Email em uso"), })
   public ResponseEntity<String> signup(@ApiParam("Usuário cadastrando") @RequestBody CompleteUserDTO user) {
     // cria um usuario basico para salvar aqui no microsserviço de autenticação
     // (usuario, email e senha)
     // o usuario real vai para a fila do rabbit para ser consumido pelo CRUD
     User basicUser = new User();
-    basicUser.setUsername(user.getUsername());
-    basicUser.setEmail(user.getEmail());
-    basicUser.setPassword(user.getPassword());
-    basicUser.setRoles(user.getRoles());
+    basicUser.setUsername(user.username());
+    basicUser.setEmail(user.email());
+    basicUser.setPassword(user.password());
+    basicUser.setRoles(user.roles());
     try {
       String token = userService.signup(basicUser);
       signupSender.sendMessage(user);
@@ -87,52 +82,43 @@ public class UserController {
 
   @DeleteMapping(value = "/{email}")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  @ApiOperation(value = "${UserController.delete}", authorizations = {@Authorization(value = "apiKey")})
-  @ApiResponses(value = {
-    @ApiResponse(code = 400, message = "Algo deu errado"),
-    @ApiResponse(code = 403, message = "Acesso negado"),
-    @ApiResponse(code = 404, message = "O usuário não existe"),
-    @ApiResponse(code = 500, message = "Token JWT expirado ou inválido")
-  })
-  public String delete(
-      @ApiParam("Email") @PathVariable String email) {
+  @ApiOperation(value = "${UserController.delete}", authorizations = { @Authorization(value = "apiKey") })
+  @ApiResponses(value = { @ApiResponse(code = 400, message = "Algo deu errado"),
+      @ApiResponse(code = 403, message = "Acesso negado"), @ApiResponse(code = 404, message = "O usuário não existe"),
+      @ApiResponse(code = 500, message = "Token JWT expirado ou inválido") })
+  public String delete(@ApiParam("Email") @PathVariable String email) {
     userService.delete(email);
     return email;
   }
 
   @GetMapping(value = "/{email}")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  @ApiOperation(value = "${UserController.search}", response = UserDTO.class, authorizations = {@Authorization(value = "apiKey")})
-  @ApiResponses(value = {
-    @ApiResponse(code = 400, message = "Algo deu errado"),
-    @ApiResponse(code = 403, message = "Acesso negado"),
-    @ApiResponse(code = 404, message = "O usuário não existe"),
-    @ApiResponse(code = 500, message = "Token JWT expirado ou inválido")
-  })
-  public UserDTO search(
-      @ApiParam("Email") @PathVariable String email) {
+  @ApiOperation(value = "${UserController.search}", response = UserDTO.class, authorizations = {
+      @Authorization(value = "apiKey") })
+  @ApiResponses(value = { @ApiResponse(code = 400, message = "Algo deu errado"),
+      @ApiResponse(code = 403, message = "Acesso negado"), @ApiResponse(code = 404, message = "O usuário não existe"),
+      @ApiResponse(code = 500, message = "Token JWT expirado ou inválido") })
+  public UserDTO search(@ApiParam("Email") @PathVariable String email) {
     return modelMapper.map(userService.search(email), UserDTO.class);
   }
 
   @GetMapping(value = "/me")
   @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
-  @ApiOperation(value = "${UserController.me}", response = UserDTO.class, authorizations = {@Authorization(value = "apiKey")})
-  @ApiResponses(value = {
-    @ApiResponse(code = 400, message = "Algo deu errado"),
-    @ApiResponse(code = 403, message = "Acesso negado"),
-    @ApiResponse(code = 500, message = "Token JWT expirado ou inválido")
-  })
+  @ApiOperation(value = "${UserController.me}", response = UserDTO.class, authorizations = {
+      @Authorization(value = "apiKey") })
+  @ApiResponses(value = { @ApiResponse(code = 400, message = "Algo deu errado"),
+      @ApiResponse(code = 403, message = "Acesso negado"),
+      @ApiResponse(code = 500, message = "Token JWT expirado ou inválido") })
   public UserDTO whoami(HttpServletRequest req) {
     return modelMapper.map(userService.whoami(req), UserDTO.class);
   }
 
   @GetMapping("/refresh")
   @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
-  @ApiOperation(value = "${UserController.refresh}", response = UserDTO.class, authorizations = {@Authorization(value = "apiKey")})
-  @ApiResponses(value = {
-    @ApiResponse(code = 400, message = "Algo deu errado"),
-    @ApiResponse(code = 403, message = "Acesso negado"),
-  })
+  @ApiOperation(value = "${UserController.refresh}", response = UserDTO.class, authorizations = {
+      @Authorization(value = "apiKey") })
+  @ApiResponses(value = { @ApiResponse(code = 400, message = "Algo deu errado"),
+      @ApiResponse(code = 403, message = "Acesso negado"), })
   public String refresh(HttpServletRequest req) {
     return userService.refresh(req.getRemoteUser());
   }
