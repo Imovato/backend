@@ -10,7 +10,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Table(name = "property_rent")
 public class PropertyRent {
 
@@ -27,33 +36,4 @@ public class PropertyRent {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_rent")
 	private Rent rent;
-
-	public Long getId() {
-		return id;
-	}
-
-	public Long getIdProperty() {
-		return idProperty;
-	}
-
-	public void setIdProperty(Long idProperty) {
-		this.idProperty = idProperty;
-	}
-
-	public Integer getAmount() {
-		return amount;
-	}
-
-	public void setAmount(Integer amount) {
-		this.amount = amount;
-	}
-
-	public Rent getRent() {
-		return rent;
-	}
-
-	public void setRent(Rent rent) {
-		this.rent = rent;
-	}
-
 }

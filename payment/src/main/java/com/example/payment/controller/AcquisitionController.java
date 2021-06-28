@@ -34,10 +34,10 @@ public class AcquisitionController {
 	@ApiOperation(value = "Salva uma aquisição")
 	public void saveAcquisition(@RequestBody AcquisitionDTO dto) {
 		Acquisition acquisition = new Acquisition();
-		acquisition.setDate(dto.getDate());
-		acquisition.setId(dto.getId());
-		acquisition.setProperty(dto.getProperty());
-		acquisition.setValue(dto.getValue());
+		acquisition.setDate(dto.date());
+		acquisition.setId(dto.id());
+		acquisition.setProperty(dto.property());
+		acquisition.setValue(dto.value());
 		acquisitionService.saveAcquisition(acquisition);
 	}
 

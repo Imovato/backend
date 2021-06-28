@@ -32,9 +32,9 @@ public class RentController {
 	@ApiOperation(value = "Salva uma arrendamento/aluguel")
 	public void saveRent(@RequestBody RentDTO dto) {
 		Rent rent = new Rent();
-		rent.setData(dto.getData());
-		rent.setPropertie(dto.getPropertie());
-		rent.setValue(dto.getAmountValue());
+		rent.setData(dto.data());
+		rent.setPropertie(dto.propertie());
+		rent.setValue(dto.amountValue());
 		rentService.saveRent(rent);
 	}
 

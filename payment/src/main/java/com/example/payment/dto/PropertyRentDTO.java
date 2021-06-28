@@ -1,42 +1,16 @@
 package com.example.payment.dto;
 
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.Accessors;
+
+@RequiredArgsConstructor
+@Accessors(fluent = true)
+@Getter
 public class PropertyRentDTO {
 
 	private Long id;
-	private Long idProperty;
-	private Integer amount;
-
-	public PropertyRentDTO() {
-	}
-
-	public PropertyRentDTO(Long id, Long idProperty, Integer amount) {
-		this.id = id;
-		this.idProperty = idProperty;
-		this.amount = amount;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Long getIdProperty() {
-		return idProperty;
-	}
-
-	public void setIdProperty(Long idProperty) {
-		this.idProperty = idProperty;
-	}
-
-	public Integer getAmount() {
-		return amount;
-	}
-
-	public void setAmount(Integer amount) {
-		this.amount = amount;
-	}
-
+	private final @NonNull Long idProperty;
+	private final @NonNull Integer amount;
 }
