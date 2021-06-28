@@ -10,6 +10,6 @@ import lombok.experimental.Accessors;
 @Getter
 public class PropertyDTO {
 
-	private Long id;
+	private final Long id;
 	private final @NonNull Integer amount;
 }

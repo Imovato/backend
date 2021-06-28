@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/rent")
 @Api(value = "MICROSERVICE Rent")
@@ -26,8 +25,7 @@ public class RentController {
     private IPropertyService propertyService;
     private IUserService userService;
 
-
-    public RentController(IRentServices rentService, IPropertyService propertyService, IUserService userService ) {
+    public RentController(IRentServices rentService, IPropertyService propertyService, IUserService userService) {
         this.rentService = rentService;
         this.propertyService = propertyService;
         this.userService = userService;
@@ -36,11 +34,11 @@ public class RentController {
     @PostMapping("/save")
     @ApiOperation(value = "Salva uma arrendamento/aluguel")
     public void saveRent(@RequestBody RentDto dto) {
-        Property property = propertyService.findPropertyById(dto.getId());
+        Property property = propertyService.findPropertyById(dto.id());
 
-        if(property.getStatus() == null){
+        if (property.getStatus() == null) {
             Rent rent = new Rent();
-            User user = userService.finUserById(dto.getIdUser());
+            User user = userService.finUserById(dto.idUser());
             rent.setAmount(property.getAmount());
             rent.setValue(property.getPrice());
             rent.setProperty(property);
@@ -54,13 +52,13 @@ public class RentController {
         }
     }
 
-//    @PutMapping("/update")
-//    @ApiOperation(value = "atualiza um arrendamento/aluguel")
-//    public ResponseEntity<?> updateRent(@RequestBody Rent rent) {
-//        Rent updateRent = rentService.updateRent(rent);
-//        return new ResponseEntity<>(updateRent, HttpStatus.OK);
-//    }
-//
+    // @PutMapping("/update")
+    // @ApiOperation(value = "atualiza um arrendamento/aluguel")
+    // public ResponseEntity<?> updateRent(@RequestBody Rent rent) {
+    // Rent updateRent = rentService.updateRent(rent);
+    // return new ResponseEntity<>(updateRent, HttpStatus.OK);
+    // }
+    //
     @GetMapping("/find/{id}")
     @ApiOperation(value = "pega um arrendamento/aluguel pelo id")
     public ResponseEntity<?> getRentById(@PathVariable("id") Long id) {

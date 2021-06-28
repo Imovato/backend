@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
 @Getter
 public class RentDTO {
 
-	private Long id;
+	private final Long id;
 	private final @NonNull Date data;
 	private final @NonNull Property propertie;
 	private final @NonNull Double amountValue;

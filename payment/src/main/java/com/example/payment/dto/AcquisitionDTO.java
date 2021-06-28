@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
 @Getter
 public class AcquisitionDTO {
 
-	private long id;
+	private final long id;
 	private final @NonNull Date date;
 	private final @NonNull Property property;
 	private final @NonNull Double value;
