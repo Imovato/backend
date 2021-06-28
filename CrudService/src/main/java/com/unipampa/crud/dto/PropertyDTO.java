@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 @Getter
 public class PropertyDTO {
 
-	private final @NonNull Long idProperty;
+	private final Long idProperty;
 	private final @NonNull String name;
 	private final @NonNull float area;
 	private final @NonNull String neighborhood;

@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 @Getter
 public class UserDTO {
 
-	private final @NonNull Long id;
+	private final Long id;
 	private final @NonNull String email;
 	private final @NonNull String name;
 	private final @NonNull String password;
