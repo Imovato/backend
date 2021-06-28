@@ -30,50 +30,50 @@ public class AppointmentController {
 	public AppointmentController(IAppointmentService appointmentService) {
 		this.appointmentService = appointmentService;
 	}
-	
+
 	@PostMapping("/add")
 	@ApiOperation(value = "add an appointment")
 	public void saveAppointment(@RequestBody AppointmentDTO dto) {
 		Appointment appointment = new Appointment();
-		appointment.setCustomer(dto.getCustomer());
-		appointment.setDate(dto.getDate());
-		appointment.setId(dto.getId());
-		appointment.setProperty(dto.getProperty());
+		appointment.setCustomer(dto.customer());
+		appointment.setDate(dto.date());
+		appointment.setId(dto.id());
+		appointment.setProperty(dto.property());
 		appointmentService.saveAppointment(appointment);
 	}
-	
+
 	@GetMapping("/all")
 	@ApiOperation(value = "get all appointments")
-	public ResponseEntity<?> getAllAppointments(){
+	public ResponseEntity<?> getAllAppointments() {
 		List<Appointment> appointments = appointmentService.findAllAppointments();
 		return new ResponseEntity<>(appointments, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/find/{id}")
 	@ApiOperation(value = "get appointment by id")
-	public ResponseEntity<?> getAppointmentById (@PathVariable("id") Long id) {
+	public ResponseEntity<?> getAppointmentById(@PathVariable("id") Long id) {
 		Appointment appointment = appointmentService.findAppointmentById(id);
 		return new ResponseEntity<>(appointment, HttpStatus.OK);
-    }
-	
+	}
+
 	@GetMapping("/find/{id}/days")
 	@ApiOperation(value = "get days until appointment by id")
-	public ResponseEntity<?> getDaysUntilAppointment (@PathVariable("id") Long id) {
+	public ResponseEntity<?> getDaysUntilAppointment(@PathVariable("id") Long id) {
 		Appointment appointment = appointmentService.findAppointmentById(id);
 		return new ResponseEntity<>(appointment.daysUntilAppointment(), HttpStatus.OK);
-    }
+	}
 
-    @PutMapping("/update")
-    @ApiOperation(value = "update an appointments")
-    public ResponseEntity<?> updateAppointment(@RequestBody Appointment appointment) {
-    	Appointment updateAppointment = appointmentService.updateAppointment(appointment);
+	@PutMapping("/update")
+	@ApiOperation(value = "update an appointments")
+	public ResponseEntity<?> updateAppointment(@RequestBody Appointment appointment) {
+		Appointment updateAppointment = appointmentService.updateAppointment(appointment);
 		return new ResponseEntity<>(updateAppointment, HttpStatus.OK);
-    }
-	
-    @DeleteMapping("/delete/{id}")
-    @ApiOperation(value = "delete a appointment by id")
-    public void deleteAppointment(@PathVariable("id") Long id) {
-    	appointmentService.deleteAppointment(id);
-    }
-    
+	}
+
+	@DeleteMapping("/delete/{id}")
+	@ApiOperation(value = "delete a appointment by id")
+	public void deleteAppointment(@PathVariable("id") Long id) {
+		appointmentService.deleteAppointment(id);
+	}
+
 }
