@@ -22,12 +22,12 @@ public class UserReceiver {
   @RabbitListener(queues = "${crud.rabbitmq.signupQueue}")
   public void receive(@Payload CompleteUserDTO user) {
     Customer cust = new Customer();
-    cust.setAddress(user.getAddress());
-    cust.setCpf(user.getCpf());
-    cust.setName(user.getUsername());
-    cust.setEmail(user.getEmail());
-    cust.setPhone(user.getPhone());
-    cust.setPassword(user.getPassword());
+    cust.setAddress(user.address());
+    cust.setCpf(user.cpf());
+    cust.setName(user.username());
+    cust.setEmail(user.email());
+    cust.setPhone(user.phone());
+    cust.setPassword(user.password());
     userRepository.save(cust);
   }
 

@@ -51,10 +51,10 @@ public class UserController {
 	@ApiOperation(value = "Adiciona um usuario do tipo empregado")
 	public void saveEmployee(@RequestBody UserDTO userDto) {
 		Employee employee = new Employee();
-		employee.setEmail(userDto.getEmail());
-		employee.setName(userDto.getName());
-		employee.setId(userDto.getId());
-		employee.setPassword(userDto.getPassword());
+		employee.setEmail(userDto.email());
+		employee.setName(userDto.name());
+		employee.setId(userDto.id());
+		employee.setPassword(userDto.password());
 		userService.saveUser(employee);
 	}
 
@@ -79,13 +79,13 @@ public class UserController {
 	@ApiOperation(value = "Adiciona um usuario do tipo cliente")
 	public void saveCustomer(@RequestBody UserDTO userDto) {
 		Customer customer = new Customer();
-		customer.setEmail(userDto.getEmail());
-		customer.setName(userDto.getName());
-		customer.setPassword(userDto.getPassword());
-		customer.setId(userDto.getId());
-		customer.setAddress(userDto.getAddress());
-		customer.setPhone(userDto.getPhone());
-		customer.setCpf(userDto.getCpf());
+		customer.setEmail(userDto.email());
+		customer.setName(userDto.name());
+		customer.setPassword(userDto.password());
+		customer.setId(userDto.id());
+		customer.setAddress(userDto.address());
+		customer.setPhone(userDto.phone());
+		customer.setCpf(userDto.cpf());
 		userService.saveUser(customer);
 	}
 
@@ -102,7 +102,7 @@ public class UserController {
 	@PostMapping("/checkEmail")
 	@ApiOperation(value = "Retorna true se o email existe no banco de dados")
 	public ResponseEntity<?> getCustomerEmail(@RequestBody UserDTO userDTO) {
-		Boolean result = userService.existsByEmail(userDTO.getEmail());
+		Boolean result = userService.existsByEmail(userDTO.email());
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
@@ -119,13 +119,13 @@ public class UserController {
 	@ApiOperation(value = "Adiciona um usuario do tipo proprietario")
 	public void saveOwner(@RequestBody UserDTO userDto) {
 		Owner owner = new Owner();
-		owner.setEmail(userDto.getEmail());
-		owner.setName(userDto.getName());
-		owner.setPassword(userDto.getPassword());
-		owner.setId(userDto.getId());
-		owner.setAddress(userDto.getAddress());
-		owner.setPhone(userDto.getPhone());
-		owner.setCpf(userDto.getCpf());
+		owner.setEmail(userDto.email());
+		owner.setName(userDto.name());
+		owner.setPassword(userDto.password());
+		owner.setId(userDto.id());
+		owner.setAddress(userDto.address());
+		owner.setPhone(userDto.phone());
+		owner.setCpf(userDto.cpf());
 		userService.saveUser(owner);
 	}
 
