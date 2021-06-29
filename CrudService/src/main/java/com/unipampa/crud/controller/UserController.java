@@ -38,7 +38,6 @@ public class UserController {
 		this.userService = userService;
 	}
 
-	// Find all users
 	@GetMapping("/all")
 	@ApiOperation(value = "Retorna todos os usuarios cadastrados")
 	public ResponseEntity<?> getAllUsers() {
@@ -46,19 +45,13 @@ public class UserController {
 		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
 
-	// Add an employee user
 	@PostMapping("/employee/add")
 	@ApiOperation(value = "Adiciona um usuario do tipo empregado")
-	public void saveEmployee(@RequestBody UserDTO userDto) {
-		Employee employee = new Employee();
-		employee.setEmail(userDto.email());
-		employee.setName(userDto.name());
-		employee.setId(userDto.id());
-		employee.setPassword(userDto.password());
-		userService.saveUser(employee);
+	public ResponseEntity<?> saveEmployee(@RequestBody UserDTO userDto) {
+		UserDTO dtoReturn = userService.createEmployee(userDto);
+		return new ResponseEntity<>(dtoReturn, HttpStatus.OK);
 	}
 
-	// Get an employee user
 	@GetMapping("/employee/find/{id}")
 	@ApiOperation(value = "Retorna um usuario do tipo empregado pelo id")
 	public ResponseEntity<?> getEmployeeById(@PathVariable("id") Long id) {
@@ -66,7 +59,6 @@ public class UserController {
 		return new ResponseEntity<>(employee, HttpStatus.OK);
 	}
 
-	// Put employee
 	@PutMapping("/employee/update")
 	@ApiOperation(value = "Atualiza um usuario cadastrado do tipo empregado")
 	public ResponseEntity<?> updateEmployee(@RequestBody Employee employee) {
@@ -74,22 +66,13 @@ public class UserController {
 		return new ResponseEntity<>(updateEmployee, HttpStatus.OK);
 	}
 
-	// Add an customer user
 	@PostMapping("/customer/add")
 	@ApiOperation(value = "Adiciona um usuario do tipo cliente")
-	public void saveCustomer(@RequestBody UserDTO userDto) {
-		Customer customer = new Customer();
-		customer.setEmail(userDto.email());
-		customer.setName(userDto.name());
-		customer.setPassword(userDto.password());
-		customer.setId(userDto.id());
-		customer.setAddress(userDto.address());
-		customer.setPhone(userDto.phone());
-		customer.setCpf(userDto.cpf());
-		userService.saveUser(customer);
+	public ResponseEntity<?> saveCustomer(@RequestBody UserDTO userDto) {
+		UserDTO dtoReturn = userService.createCustomer(userDto);
+		return new ResponseEntity<>(dtoReturn, HttpStatus.OK);
 	}
 
-	// Get an customer user
 	@GetMapping("/customer/find/{email}")
 	@ApiOperation(value = "Retorna um usuario do tipo cliente pelo email")
 	public ResponseEntity<?> getCustomerById(@PathVariable("email") String email) {
@@ -97,16 +80,13 @@ public class UserController {
 		return new ResponseEntity<>(customer, HttpStatus.OK);
 	}
 
-	// Check customer email (to check if it already exists before creating a new
-	// user)
 	@PostMapping("/checkEmail")
 	@ApiOperation(value = "Retorna true se o email existe no banco de dados")
 	public ResponseEntity<?> getCustomerEmail(@RequestBody UserDTO userDTO) {
-		Boolean result = userService.existsByEmail(userDTO.email());
+		Boolean result = userService.existsByEmail(userDTO.getEmail());
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
-	// Put customer
 	@PutMapping("/customer/update")
 	@ApiOperation(value = "Atualiza um usuario do tipo cliente pelo id")
 	public ResponseEntity<?> updateCustomer(@RequestBody Customer customer) {
@@ -114,22 +94,13 @@ public class UserController {
 		return new ResponseEntity<>(customer, HttpStatus.OK);
 	}
 
-	// Add an owner user
 	@PostMapping("/owner/add")
 	@ApiOperation(value = "Adiciona um usuario do tipo proprietario")
-	public void saveOwner(@RequestBody UserDTO userDto) {
-		Owner owner = new Owner();
-		owner.setEmail(userDto.email());
-		owner.setName(userDto.name());
-		owner.setPassword(userDto.password());
-		owner.setId(userDto.id());
-		owner.setAddress(userDto.address());
-		owner.setPhone(userDto.phone());
-		owner.setCpf(userDto.cpf());
-		userService.saveUser(owner);
+	public ResponseEntity<?> saveOwner(@RequestBody UserDTO userDto) {
+		UserDTO dtoReturn = userService.createOwner(userDto);
+		return new ResponseEntity<>(dtoReturn, HttpStatus.OK);
 	}
 
-	// Get an owner user
 	@GetMapping("/owner/find/{id}")
 	@ApiOperation(value = "Retorna um usuario do tipo proprietario pelo id")
 	public ResponseEntity<?> getOwnerById(@PathVariable("id") Long id) {
@@ -137,7 +108,6 @@ public class UserController {
 		return new ResponseEntity<>(owner, HttpStatus.OK);
 	}
 
-	// Put owner
 	@PutMapping("/owner/update")
 	@ApiOperation(value = "Atualiza um usuario do tipo proprietario")
 	public ResponseEntity<?> updateOwner(@RequestBody Owner owner) {
@@ -145,7 +115,6 @@ public class UserController {
 		return new ResponseEntity<>(updateOwner, HttpStatus.OK);
 	}
 
-	// Delete user
 	@DeleteMapping("/delete/{id}")
 	@ApiOperation(value = "Remove um usuario pelo seu id")
 	public void deleteUser(@PathVariable("id") Long id) {
@@ -158,5 +127,4 @@ public class UserController {
 		property.setUser(user);
 		propertyService.saveProperty(property);
 	}
-
 }

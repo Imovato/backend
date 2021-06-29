@@ -1,20 +1,34 @@
 package com.unipampa.crud.dto;
 
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.Accessors;
+import com.unipampa.crud.model.Customer;
+import com.unipampa.crud.model.Employee;
+import com.unipampa.crud.model.Owner;
+import lombok.*;
+import org.modelmapper.ModelMapper;
 
-@RequiredArgsConstructor
-@Accessors(fluent = true)
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
 public class UserDTO {
 
-	private final Long id;
-	private final @NonNull String email;
-	private final @NonNull String name;
-	private final @NonNull String password;
-	private final @NonNull String cpf;
-	private final @NonNull String phone;
-	private final @NonNull String address;
+	private Long id;
+	private @NonNull String email;
+	private @NonNull String name;
+	private @NonNull String password;
+	private @NonNull String cpf;
+	private @NonNull String phone;
+	private @NonNull String address;
+
+	public static UserDTO createEmployee(Employee employee){
+		return new ModelMapper().map(employee, UserDTO.class);
+	}
+
+	public static UserDTO createCustomer(Customer customer){
+		return new ModelMapper().map(customer, UserDTO.class);
+	}
+
+	public static UserDTO createOwner(Owner owner){
+		return new ModelMapper().map(owner, UserDTO.class);
+	}
 }

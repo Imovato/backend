@@ -1,12 +1,14 @@
 package com.unipampa.crud.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-
+import com.unipampa.crud.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.modelmapper.ModelMapper;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
 
 @Entity
 @AllArgsConstructor
@@ -21,4 +23,8 @@ public class Owner extends User {
 	private String phone;
 	@Column(name = "address")
 	private String address;
+
+	public static Owner createOwner(UserDTO userDTO) {
+		return new ModelMapper().map(userDTO, Owner.class);
+	}
 }

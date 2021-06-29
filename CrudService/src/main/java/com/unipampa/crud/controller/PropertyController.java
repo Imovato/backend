@@ -50,15 +50,12 @@ public class PropertyController {
 	@PostMapping("/add")
 	@ApiOperation(value = "Salva uma propriedade definindo o seu tipo com base nas suas propriedades (e. g. se não houverem quartos será salvo como terreno)")
 	public ResponseEntity<?> saveProperty(@RequestBody PropertyDTO propertyDTO) {
-
 		if (propertyDTO.getRooms() == null) {
 			PropertyDTO dtoReturn = propertyService.createGround(propertyDTO);
 			return new ResponseEntity<>(dtoReturn, HttpStatus.OK);
-
 		} else if (propertyDTO.getBlock() == null) {
 			PropertyDTO dtoReturn = propertyService.createApartment(propertyDTO);
 			return new ResponseEntity<>(dtoReturn, HttpStatus.OK);
-
 		} else {
 			PropertyDTO dtoReturn = propertyService.createHouse(propertyDTO);
 			return new ResponseEntity<>(dtoReturn, HttpStatus.OK);
@@ -114,7 +111,6 @@ public class PropertyController {
 	// ----------------------------
 	// --- APARTMENTS ENDPOINTS ---
 	// ----------------------------
-
 	@PostMapping("/apartment")
 	@ApiOperation(value = "Salva um apartamento")
 	public ResponseEntity<?> saveApartment(@RequestBody PropertyDTO apartmentDto) {
@@ -207,5 +203,4 @@ public class PropertyController {
 		Ground updatedGround = propertyService.updateGround(ground);
 		return new ResponseEntity<>(updatedGround, HttpStatus.OK);
 	}
-
 }
