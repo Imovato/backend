@@ -1,6 +1,7 @@
 package com.example.acquisition.service;
 
 
+import com.example.acquisition.dto.AcquisitionDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +37,11 @@ public class AcquisitionServiceImp implements IAcquisitionService{
 	public Acquisition findAcquisitionByProperty(Property property) {
 		return acquisitionRepository.findAcquisitionByProperty(property);
 	}
-		
-	
+
+	@Override
+	public AcquisitionDTO createAcquisition(AcquisitionDTO acquisitionDTO) {
+		return AcquisitionDTO.createAcquisition(acquisitionRepository.save(Acquisition.createAcquisition(acquisitionDTO)));
+	}
+
+
 }

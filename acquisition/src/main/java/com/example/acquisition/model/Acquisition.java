@@ -11,7 +11,10 @@ import javax.persistence.OneToOne;
 import javax.persistence.JoinColumn;
 import javax.persistence.FetchType;
 
+import com.example.acquisition.dto.AcquisitionDTO;
+import org.modelmapper.ModelMapper;
 import org.springframework.format.annotation.DateTimeFormat;
+
 
 @Entity
 public class Acquisition implements Serializable{
@@ -37,7 +40,7 @@ public class Acquisition implements Serializable{
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_user")
 	private User user;
-	
+
 	public Acquisition() {
 	}
 
@@ -92,5 +95,9 @@ public class Acquisition implements Serializable{
 
 	public void setValue(Double value) {
 		this.value = value;
+	}
+
+	public static Acquisition createAcquisition(AcquisitionDTO acquisitionDTO) {
+		return new ModelMapper().map(acquisitionDTO, Acquisition.class);
 	}
 }

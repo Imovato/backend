@@ -1,6 +1,9 @@
 package com.example.acquisition.dto;
 
 
+import com.example.acquisition.model.Acquisition;
+import org.modelmapper.ModelMapper;
+
 import java.util.Date;
 
 public class AcquisitionDTO {
@@ -70,5 +73,9 @@ public class AcquisitionDTO {
 
 	public void setAmount(Integer amount) {
 		this.amount = amount;
+	}
+
+	public static AcquisitionDTO createAcquisition(Acquisition acquisition){
+		return new ModelMapper().map(acquisition, AcquisitionDTO.class);
 	}
 }
