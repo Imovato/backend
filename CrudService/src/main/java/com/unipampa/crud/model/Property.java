@@ -8,10 +8,12 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.unipampa.crud.dto.PropertyDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.modelmapper.ModelMapper;
 
 @Entity
 @AllArgsConstructor
@@ -57,4 +59,5 @@ public class Property {
 	private int imageQuantity = 0;
 	@ManyToOne
 	private User user;
+
 }

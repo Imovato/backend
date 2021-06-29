@@ -2,6 +2,8 @@ package com.unipampa.crud.interfaces.service;
 
 import java.util.List;
 
+import com.unipampa.crud.dto.PropertyDTO;
+import com.unipampa.crud.dto.UserDTO;
 import com.unipampa.crud.model.Customer;
 import com.unipampa.crud.model.Employee;
 import com.unipampa.crud.model.Owner;
@@ -31,4 +33,11 @@ public interface IUserService {
 	Boolean existsByEmail(String email);
 
 	Customer findCustomerByEmail(String email);
+
+	public UserDTO createEmployee(UserDTO userDTO);
+
+	public UserDTO createCustomer(UserDTO userDTO);
+
+	public UserDTO createOwner(UserDTO userDTO);
+
 }

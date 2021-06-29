@@ -1,10 +1,12 @@
 package com.example.auth.dto;
 
+import com.example.auth.model.User;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 
 import com.example.auth.model.Role;
+import org.modelmapper.ModelMapper;
 
 import lombok.Getter;
 import lombok.NonNull;

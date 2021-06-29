@@ -1,5 +1,9 @@
 package com.example.acquisition.dto;
 
+
+import com.example.acquisition.model.Acquisition;
+import org.modelmapper.ModelMapper;
+
 import java.util.Date;
 
 import lombok.Getter;

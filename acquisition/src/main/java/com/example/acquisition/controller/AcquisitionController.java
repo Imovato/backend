@@ -37,17 +37,12 @@ public class AcquisitionController {
 	}
 
 	@PostMapping("/save")
-	public void saveAcquisition(@RequestBody AcquisitionDTO dto) {
-		Property property = propertyService.findPropertyById(dto.idProperty());
-		User user = userService.findUserById(dto.idUser());
-		System.out.println(user);
-		Acquisition acquisition = new Acquisition();
-		acquisition.setData(dto.data());
-		acquisition.setProperty(property);
-		acquisition.setUser(user);
-		acquisition.setValue(dto.value());
-		acquisition.setAmount(dto.amount());
-		acquisitionService.saveAcquisition(acquisition);
+	public ResponseEntity<?> saveAcquisition(@RequestBody AcquisitionDTO dto) {
+		Property property = propertyService.findPropertyById(dto.getIdProperty());
+		User user = userService.findUserById(dto.getIdUser());
+		AcquisitionDTO dtoReturn = acquisitionService.createAcquisition(dto);
+		acquisitionService.saveAcquisition(Acquisition.createAcquisition(dto));
+		return new ResponseEntity<>(dtoReturn, HttpStatus.OK);
 	}
 
 	@GetMapping("/user/find/{id}")

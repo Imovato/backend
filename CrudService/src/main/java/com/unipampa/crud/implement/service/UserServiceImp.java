@@ -2,6 +2,7 @@ package com.unipampa.crud.implement.service;
 
 import java.util.List;
 
+import com.unipampa.crud.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -88,4 +89,18 @@ public class UserServiceImp implements IUserService {
 		return userRepository.findCustomerByEmail(email);
 	}
 
+	@Override
+	public UserDTO createEmployee(UserDTO userDTO) {
+		return UserDTO.createEmployee(userRepository.save(Employee.createEmployee(userDTO)));
+	}
+
+	@Override
+	public UserDTO createCustomer(UserDTO userDTO) {
+		return UserDTO.createCustomer(userRepository.save(Customer.createCustomer(userDTO)));
+	}
+
+	@Override
+	public UserDTO createOwner(UserDTO userDTO) {
+		return UserDTO.createOwner(userRepository.save(Owner.createOwner(userDTO)));
+	}
 }

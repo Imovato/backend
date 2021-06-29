@@ -2,6 +2,7 @@ package com.example.payment.service;
 
 import java.util.List;
 
+import com.example.payment.dto.AcquisitionDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,6 +46,11 @@ public class AcquisitionServiceImp implements IAcquisitionService {
 	@Override
 	public Acquisition updateAcquisition(Acquisition acquisition) {
 		return acquisitionRepository.save(acquisition);
+	}
+
+	@Override
+	public AcquisitionDTO createAcquisition(AcquisitionDTO acquisitionDTO) {
+		return AcquisitionDTO.createAcquisition(acquisitionRepository.save(Acquisition.createAcquisition(acquisitionDTO)));
 	}
 
 }

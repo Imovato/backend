@@ -33,13 +33,9 @@ public class AppointmentController {
 
 	@PostMapping("/add")
 	@ApiOperation(value = "add an appointment")
-	public void saveAppointment(@RequestBody AppointmentDTO dto) {
-		Appointment appointment = new Appointment();
-		appointment.setCustomer(dto.customer());
-		appointment.setDate(dto.date());
-		appointment.setId(dto.id());
-		appointment.setProperty(dto.property());
-		appointmentService.saveAppointment(appointment);
+	public ResponseEntity<?> saveAppointment(@RequestBody AppointmentDTO dto) {
+		AppointmentDTO dtoReturn = appointmentService.createAppointment(dto);
+		return new ResponseEntity<>(dtoReturn, HttpStatus.OK);
 	}
 
 	@GetMapping("/all")

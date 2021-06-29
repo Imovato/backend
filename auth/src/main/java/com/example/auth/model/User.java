@@ -1,5 +1,8 @@
 package com.example.auth.model;
 
+import com.example.auth.dto.UserDTO;
+import org.modelmapper.ModelMapper;
+
 import java.util.List;
 
 import javax.persistence.Column;

@@ -2,8 +2,10 @@ package com.unipampa.scheduling.dto;
 
 import java.time.LocalDateTime;
 
+import com.unipampa.scheduling.model.Appointment;
 import com.unipampa.scheduling.model.Customer;
 import com.unipampa.scheduling.model.Property;
+import org.modelmapper.ModelMapper;
 
 import lombok.Getter;
 import lombok.NonNull;
