@@ -1,8 +1,9 @@
 package com.unipampa.crud.interfaces.service;
 
-import java.util.List;
-
+import com.unipampa.crud.dto.ContactDTO;
 import com.unipampa.crud.model.Contact;
+
+import java.util.List;
 
 public interface IContactService{
 
@@ -11,4 +12,6 @@ public interface IContactService{
     void deleteContact(Long id);
     List<Contact> findAllContacts();
     Contact findContactById(Long id);
+
+    public ContactDTO createContact(ContactDTO contactDTO);
 }

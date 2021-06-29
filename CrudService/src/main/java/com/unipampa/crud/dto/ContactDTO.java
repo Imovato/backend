@@ -1,18 +1,22 @@
 package com.unipampa.crud.dto;
 
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.Accessors;
+import com.unipampa.crud.model.Contact;
+import lombok.*;
+import org.modelmapper.ModelMapper;
 
-@RequiredArgsConstructor
-@Accessors(fluent = true)
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
 public class ContactDTO {
 
-	private final Long id;
-	private final @NonNull String message;
-	private final @NonNull String name;
-	private final @NonNull String email;
-	private final @NonNull String number;
+	private Long id;
+	private @NonNull String message;
+	private @NonNull String name;
+	private @NonNull String email;
+	private @NonNull String number;
+
+	public static ContactDTO createContact(Contact contact){
+		return new ModelMapper().map(contact, ContactDTO.class);
+	}
 }

@@ -2,6 +2,7 @@ package com.unipampa.crud.implement.service;
 
 import java.util.List;
 
+import com.unipampa.crud.dto.ContactDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,5 +45,10 @@ public class ContactServiceImp implements IContactService {
 	@Override
 	public Contact findContactById(Long id) {
 		return contactRepository.findContactById(id);
+	}
+
+	@Override
+	public ContactDTO createContact(ContactDTO contactDTO) {
+		return ContactDTO.createContact(contactRepository.save(Contact.createContact(contactDTO)));
 	}
 }
