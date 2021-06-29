@@ -2,6 +2,7 @@ package com.unipampa.crud.implement.service;
 
 import java.util.List;
 
+import com.unipampa.crud.dto.PropertyDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -89,4 +90,19 @@ public class PropertyServiceImp implements IPropertyService {
 		return propertyRepository.save(property);
 	}
 
+	@Override
+	public PropertyDTO createApartment(PropertyDTO propertyDTO) {
+		return PropertyDTO.createApartment(propertyRepository.save(Apartment.createApartment(propertyDTO)));
+
+	}
+
+	@Override
+	public PropertyDTO createHouse(PropertyDTO propertyDTO) {
+		return PropertyDTO.createHouse(propertyRepository.save(House.createHouse(propertyDTO)));
+	}
+
+	@Override
+	public PropertyDTO createGround(PropertyDTO propertyDTO) {
+		return PropertyDTO.createGround(propertyRepository.save(Ground.createGround(propertyDTO)));
+	}
 }

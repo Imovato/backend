@@ -1,28 +1,45 @@
 package com.unipampa.crud.dto;
 
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.unipampa.crud.model.Apartment;
+import com.unipampa.crud.model.Ground;
+import com.unipampa.crud.model.House;
+import com.unipampa.crud.model.Property;
+import lombok.*;
 import lombok.experimental.Accessors;
+import org.modelmapper.ModelMapper;
 
-@RequiredArgsConstructor
-@Accessors(fluent = true)
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
 public class PropertyDTO {
 
-	private final Long idProperty;
-	private final @NonNull String name;
-	private final @NonNull float area;
-	private final @NonNull String neighborhood;
-	private final @NonNull String codAddress;
-	private final @NonNull String city;
-	private final @NonNull String description;
-	private final @NonNull String adress;
-	private final @NonNull String state;
-	private final @NonNull double price;
-	private final @NonNull Long number;
-	private final @NonNull Long rooms;
-	private final @NonNull String block;
-	private final @NonNull int amount = 0;
-	private final @NonNull int imageQuantity = 0;
+	private Long idProperty;
+	private @NonNull String name;
+	private @NonNull float area;
+	private @NonNull String neighborhood;
+	private @NonNull String codAddress;
+	private @NonNull String city;
+	private @NonNull String description;
+	private @NonNull String adress;
+	private @NonNull String state;
+	private @NonNull double price;
+	private @NonNull Long number;
+	private @NonNull Long rooms;
+	private @NonNull String block;
+	private @NonNull int amount = 0;
+	private @NonNull int imageQuantity = 0;
+
+	public static PropertyDTO createApartment(Apartment apartment){
+		return new ModelMapper().map(apartment, PropertyDTO.class);
+	}
+
+	public static PropertyDTO createHouse(House house){
+		return new ModelMapper().map(house, PropertyDTO.class);
+	}
+
+	public static PropertyDTO createGround(Ground ground){
+		return new ModelMapper().map(ground, PropertyDTO.class);
+	}
 }
