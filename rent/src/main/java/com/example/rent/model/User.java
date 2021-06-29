@@ -6,7 +6,16 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class User {
 
     @Id
@@ -17,29 +26,4 @@ public class User {
 
     @OneToMany
     private List<Rent> rents;
-
-    public User() {
-    }
-
-    public User(Long id, String name, List<Rent> rents) {
-        this.id = id;
-        this.name = name;
-        this.rents = rents;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

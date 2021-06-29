@@ -12,7 +12,16 @@ import javax.persistence.OneToOne;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class Rent {
 
 	@Id
@@ -28,42 +37,4 @@ public class Rent {
 
 	@Column(name = "value", nullable = false)
 	private Double value;
-	
-	public Rent() {
-	}
-
-	public Rent(Long id, Date data, Property propertie, Double value) {
-		this.id = id;
-		this.data = data;
-		this.propertie = propertie;
-		this.value = value;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public Date getData() {
-		return data;
-	}
-
-	public void setData(Date data) {
-		this.data = data;
-	}
-
-	public Property getPropertie() {
-		return propertie;
-	}
-
-	public void setPropertie(Property properties) {
-		this.propertie = properties;
-	}
-
-	public Double getValue() {
-		return value;
-	}
-
-	public void setValue(Double value) {
-		this.value = value;
-	}
 }

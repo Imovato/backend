@@ -38,15 +38,15 @@ public class AcquisitionController {
 
 	@PostMapping("/save")
 	public void saveAcquisition(@RequestBody AcquisitionDTO dto) {
-		Property property = propertyService.findPropertyById(dto.getIdProperty());
-		User user = userService.findUserById(dto.getIdUser());
+		Property property = propertyService.findPropertyById(dto.idProperty());
+		User user = userService.findUserById(dto.idUser());
 		System.out.println(user);
 		Acquisition acquisition = new Acquisition();
-		acquisition.setData(dto.getData());
+		acquisition.setData(dto.data());
 		acquisition.setProperty(property);
 		acquisition.setUser(user);
-		acquisition.setValue(dto.getValue());
-		acquisition.setAmount(dto.getAmount());
+		acquisition.setValue(dto.value());
+		acquisition.setAmount(dto.amount());
 		acquisitionService.saveAcquisition(acquisition);
 	}
 
