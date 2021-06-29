@@ -21,7 +21,4 @@ public class AcquisitionDTO {
 		return new ModelMapper().map(acquisition, AcquisitionDTO.class);
 	}
 
-	public static AcquisitionDTO createOwner(Acquisition acquisition){
-		return new ModelMapper().map(acquisition, AcquisitionDTO.class);
-	}
 }

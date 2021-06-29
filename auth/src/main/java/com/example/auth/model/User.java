@@ -42,4 +42,8 @@ public class User {
 
   @ElementCollection(fetch = FetchType.EAGER)
   List<Role> roles;
+
+  public static User createUser(UserDTO userDTO) {
+    return new ModelMapper().map(userDTO, User.class);
+  }
 }

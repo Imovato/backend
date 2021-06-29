@@ -23,7 +23,7 @@ public class AcquisitionDTO {
 	private @NonNull Long idProperty;
 	private @NonNull Long idUser;
 
-	public static AcquisitionDTO createOwner(Acquisition acquisition){
+	public static AcquisitionDTO createAcquisition(Acquisition acquisition){
 		return new ModelMapper().map(acquisition, AcquisitionDTO.class);
 	}
 }
