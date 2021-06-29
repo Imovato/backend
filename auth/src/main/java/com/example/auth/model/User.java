@@ -1,5 +1,8 @@
 package com.example.auth.model;
 
+import com.example.auth.dto.UserDTO;
+import org.modelmapper.ModelMapper;
+
 import java.util.List;
 
 import javax.persistence.Column;
@@ -71,5 +74,9 @@ public class User {
 	public void setRoles(List<Role> roles) {
     this.roles = roles;
   }
+
+    public static User createUser(UserDTO userDTO) {
+        return new ModelMapper().map(userDTO, User.class);
+    }
 
 }

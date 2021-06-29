@@ -1,5 +1,6 @@
 package com.example.auth.service;
 
+import com.example.auth.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -69,4 +70,7 @@ public class UserService {
 		return jwtTokenProvider.createToken(username, userRepository.findByEmail(username).getRoles());
 	}
 
+	public UserDTO createUser(UserDTO userDTO) {
+		return UserDTO.createUser(userRepository.save(User.createUser(userDTO)));
+	}
 }

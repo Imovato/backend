@@ -1,10 +1,12 @@
 package com.example.auth.dto;
 
+import com.example.auth.model.User;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 
 import com.example.auth.model.Role;
+import org.modelmapper.ModelMapper;
 
 public class UserDTO {
 
@@ -47,5 +49,9 @@ public class UserDTO {
 
   public void setRoles(List<Role> roles) {
     this.roles = roles;
+  }
+
+  public static UserDTO createUser(User user){
+    return new ModelMapper().map(user, UserDTO.class);
   }
 }
