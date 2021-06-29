@@ -3,7 +3,9 @@ package com.example.payment.dto;
 import java.util.Date;
 
 
+import com.example.payment.model.Acquisition;
 import com.example.payment.model.Property;
+import org.modelmapper.ModelMapper;
 
 public class AcquisitionDTO {
 	
@@ -45,4 +47,7 @@ public class AcquisitionDTO {
 		this.value = value;
 	}
 
+	public static AcquisitionDTO createAcquisition(Acquisition acquisition){
+		return new ModelMapper().map(acquisition, AcquisitionDTO.class);
+	}
 }

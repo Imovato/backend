@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import com.example.payment.dto.AcquisitionDTO;
+import org.modelmapper.ModelMapper;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -66,5 +68,9 @@ public class Acquisition {
 
     public void setValue(Double value) {
         this.value = value;
+    }
+
+    public static Acquisition createAcquisition(AcquisitionDTO acquisitionDTO) {
+        return new ModelMapper().map(acquisitionDTO, Acquisition.class);
     }
 }

@@ -32,13 +32,10 @@ public class AcquisitionController {
 
 	@PostMapping("/save")
 	@ApiOperation(value = "Salva uma aquisição")
-	public void saveAcquisition(@RequestBody AcquisitionDTO dto) {
-		Acquisition acquisition = new Acquisition();
-		acquisition.setDate(dto.getDate());
-		acquisition.setId(dto.getId());
-		acquisition.setProperty(dto.getProperty());
-		acquisition.setValue(dto.getValue());
-		acquisitionService.saveAcquisition(acquisition);
+	public ResponseEntity<?> saveAcquisition(@RequestBody AcquisitionDTO dto) {
+		AcquisitionDTO dtoReturn = acquisitionService.createAcquisition(dto);
+		acquisitionService.saveAcquisition(Acquisition.createAcquisition(dto));
+		return new ResponseEntity<>(dtoReturn, HttpStatus.OK);
 	}
 
 	// Find all acquisitions
