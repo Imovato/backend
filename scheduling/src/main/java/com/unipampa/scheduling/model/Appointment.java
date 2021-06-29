@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.unipampa.scheduling.dto.AppointmentDTO;
+import org.modelmapper.ModelMapper;
 import org.springframework.format.annotation.DateTimeFormat;
 
 
@@ -68,5 +70,9 @@ public class Appointment {
 	
 	public int daysUntilAppointment() {
 		return date.compareTo(LocalDateTime.now());
+	}
+
+	public static Appointment createAppointment(AppointmentDTO appointmentDTO) {
+		return new ModelMapper().map(appointmentDTO, Appointment.class);
 	}
 }

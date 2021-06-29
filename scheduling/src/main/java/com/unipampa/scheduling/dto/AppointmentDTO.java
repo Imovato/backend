@@ -2,8 +2,10 @@ package com.unipampa.scheduling.dto;
 
 import java.time.LocalDateTime;
 
+import com.unipampa.scheduling.model.Appointment;
 import com.unipampa.scheduling.model.Customer;
 import com.unipampa.scheduling.model.Property;
+import org.modelmapper.ModelMapper;
 
 public class AppointmentDTO {
 	
@@ -43,6 +45,9 @@ public class AppointmentDTO {
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
-	
+
+	public static AppointmentDTO createAppointment(Appointment appointment){
+		return new ModelMapper().map(appointment, AppointmentDTO.class);
+	}
 	
 }
