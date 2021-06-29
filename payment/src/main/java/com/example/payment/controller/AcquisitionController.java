@@ -38,7 +38,6 @@ public class AcquisitionController {
 		return new ResponseEntity<>(dtoReturn, HttpStatus.OK);
 	}
 
-	// Find all acquisitions
 	@GetMapping("/all")
 	@ApiOperation(value = "Lista com todas as aquisições")
 	public ResponseEntity<?> getAllAcquisitions() {
@@ -46,7 +45,6 @@ public class AcquisitionController {
 		return new ResponseEntity<>(acquisitions, HttpStatus.OK);
 	}
 
-	// Get an acquisition
 	@GetMapping("/acquisition/find/{id}")
 	@ApiOperation(value = "Pega uma aquisição pelo seu id")
 	public ResponseEntity<?> getAcquisitionById(@PathVariable("id") Long id) {
@@ -54,7 +52,6 @@ public class AcquisitionController {
 		return new ResponseEntity<>(acquisition, HttpStatus.OK);
 	}
 
-	// Put acquisition
 	@PutMapping("/acquisition/update")
 	@ApiOperation(value = "Atualiza uma aquisição")
 	public ResponseEntity<?> updateAcquisition(@RequestBody Acquisition acquisition) {
