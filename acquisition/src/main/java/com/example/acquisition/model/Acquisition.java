@@ -1,25 +1,16 @@
 package com.example.acquisition.model;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.JoinColumn;
-import javax.persistence.FetchType;
-
 import com.example.acquisition.dto.AcquisitionDTO;
-import org.modelmapper.ModelMapper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import org.modelmapper.ModelMapper;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 
 
 @Entity
@@ -45,4 +36,8 @@ public class Acquisition implements Serializable {
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_user")
 	private User user;
+
+	public static Acquisition createAcquisition(AcquisitionDTO acquisitionDTO) {
+		return new ModelMapper().map(acquisitionDTO, Acquisition.class);
+	}
 }

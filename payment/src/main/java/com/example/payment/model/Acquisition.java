@@ -36,4 +36,9 @@ public class Acquisition {
 
     @Column(name = "value", nullable = false)
     private Double value;
+
+    public static Acquisition createAcquisition(AcquisitionDTO acquisitionDTO) {
+        return new ModelMapper().map(acquisitionDTO, Acquisition.class);
+    }
+
 }

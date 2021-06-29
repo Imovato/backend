@@ -1,27 +1,27 @@
 package com.example.payment.dto;
 
-import java.util.Date;
-
-
 import com.example.payment.model.Acquisition;
 import com.example.payment.model.Property;
+import lombok.*;
 import org.modelmapper.ModelMapper;
 
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.Accessors;
+import java.util.Date;
 
-@RequiredArgsConstructor
-@Accessors(fluent = true)
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
 public class AcquisitionDTO {
 
-	private final long id;
-	private final @NonNull Date date;
-	private final @NonNull Property property;
-	private final @NonNull Double value;
+	private long id;
+	private @NonNull Date date;
+	private @NonNull Property property;
+	private @NonNull Double value;
 	public static AcquisitionDTO createAcquisition(Acquisition acquisition){
+		return new ModelMapper().map(acquisition, AcquisitionDTO.class);
+	}
+
+	public static AcquisitionDTO createOwner(Acquisition acquisition){
 		return new ModelMapper().map(acquisition, AcquisitionDTO.class);
 	}
 }

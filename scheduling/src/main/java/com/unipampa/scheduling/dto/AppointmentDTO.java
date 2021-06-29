@@ -1,24 +1,25 @@
 package com.unipampa.scheduling.dto;
 
-import java.time.LocalDateTime;
-
 import com.unipampa.scheduling.model.Appointment;
 import com.unipampa.scheduling.model.Customer;
 import com.unipampa.scheduling.model.Property;
+import lombok.*;
 import org.modelmapper.ModelMapper;
 
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.Accessors;
+import java.time.LocalDateTime;
 
-@RequiredArgsConstructor
-@Accessors(fluent = true)
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
 public class AppointmentDTO {
 
-	private final Long id;
-	private final @NonNull LocalDateTime date;
-	private final @NonNull Property property;
-	private final @NonNull Customer customer;
+	private Long id;
+	private @NonNull LocalDateTime date;
+	private @NonNull Property property;
+	private @NonNull Customer customer;
+
+	public static AppointmentDTO createAppointment(Appointment appointment){
+		return new ModelMapper().map(appointment, AppointmentDTO.class);
+	}
 }
