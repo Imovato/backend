@@ -5,14 +5,20 @@ import io.swagger.annotations.ApiModelProperty;
 import java.util.List;
 
 import com.example.auth.model.Role;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 
+@JsonDeserialize(builder = CompleteUserDTO.CompleteUserDTOBuilder.class)
 @RequiredArgsConstructor
 @Accessors(fluent = true)
 @Getter
+@Builder
 public class CompleteUserDTO {
 
 	@ApiModelProperty(position = 0)
@@ -28,5 +34,10 @@ public class CompleteUserDTO {
 	@ApiModelProperty(position = 5)
 	private final @NonNull String address;
 	@ApiModelProperty(position = 6)
-	final @NonNull List<Role> roles;
+	private final @NonNull List<Role> roles;
+
+	@JsonPOJOBuilder(withPrefix = "")
+	public static class CompleteUserDTOBuilder {
+
+	}
 }

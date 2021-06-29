@@ -9,8 +9,6 @@ import com.example.auth.model.Role;
 import lombok.*;
 import org.modelmapper.ModelMapper;
 
-import lombok.experimental.Accessors;
-
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,9 +22,9 @@ public class UserDTO {
   @ApiModelProperty(position = 2)
   private @NonNull String password;
   @ApiModelProperty(position = 3)
-  @NonNull List<Role> roles;
+  private @NonNull List<Role> roles;
 
-  public static UserDTO createUser(User user){
+  public static UserDTO createUser(User user) {
     return new ModelMapper().map(user, UserDTO.class);
   }
 }
