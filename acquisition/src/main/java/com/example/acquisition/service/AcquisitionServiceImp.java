@@ -39,7 +39,7 @@ public class AcquisitionServiceImp implements IAcquisitionService{
 
 	@Override
 	public AcquisitionDTO createAcquisition(AcquisitionDTO acquisitionDTO) {
-		return AcquisitionDTO.createOwner(acquisitionRepository.save(Acquisition.createAcquisition(acquisitionDTO)));
+		return AcquisitionDTO.createAcquisition(acquisitionRepository.save(Acquisition.createAcquisition(acquisitionDTO)));
 	}
 
 

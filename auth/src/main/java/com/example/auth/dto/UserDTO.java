@@ -6,24 +6,27 @@ import io.swagger.annotations.ApiModelProperty;
 import java.util.List;
 
 import com.example.auth.model.Role;
+import lombok.*;
 import org.modelmapper.ModelMapper;
 
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 
-@RequiredArgsConstructor
-@Accessors(fluent = true)
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
 public class UserDTO {
 
   @ApiModelProperty(position = 0)
-  private final @NonNull String username;
+  private @NonNull String username;
   @ApiModelProperty(position = 1)
-  private final @NonNull String email;
+  private @NonNull String email;
   @ApiModelProperty(position = 2)
-  private final @NonNull String password;
+  private @NonNull String password;
   @ApiModelProperty(position = 3)
-  final @NonNull List<Role> roles;
+  @NonNull List<Role> roles;
+
+  public static UserDTO createUser(User user){
+    return new ModelMapper().map(user, UserDTO.class);
+  }
 }
