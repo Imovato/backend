@@ -19,7 +19,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SwaggerConfig {
 	
 	@Bean
-    public Docket ContaApi() {
+    public Docket contaApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.unipampa.scheduling"))
@@ -30,7 +30,7 @@ public class SwaggerConfig {
 
     private ApiInfo metaInfo() {
 
-        ApiInfo apiInfo = new ApiInfo(
+        ApiInfo<ApiInfo> apiInfo = new ApiInfo<>(
                 "Scheduling API",
                 "API de agendamento.",
                 "1.0",

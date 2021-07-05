@@ -1,7 +1,5 @@
 package com.unipampa.scheduling.controller;
 
-import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,37 +31,32 @@ public class AppointmentController {
 
 	@PostMapping("/add")
 	@ApiOperation(value = "add an appointment")
-	public ResponseEntity<?> saveAppointment(@RequestBody AppointmentDTO dto) {
-		AppointmentDTO dtoReturn = appointmentService.createAppointment(dto);
-		return new ResponseEntity<>(dtoReturn, HttpStatus.OK);
+	public ResponseEntity<> saveAppointment(@RequestBody AppointmentDTO dto) {
+		return new ResponseEntity<>(appointmentService.createAppointment(dto), HttpStatus.OK);
 	}
 
 	@GetMapping("/all")
 	@ApiOperation(value = "get all appointments")
-	public ResponseEntity<?> getAllAppointments() {
-		List<Appointment> appointments = appointmentService.findAllAppointments();
-		return new ResponseEntity<>(appointments, HttpStatus.OK);
+	public ResponseEntity<> getAllAppointments() {
+		return new ResponseEntity<>(appointmentService.findAllAppointments(), HttpStatus.OK);
 	}
 
 	@GetMapping("/find/{id}")
 	@ApiOperation(value = "get appointment by id")
-	public ResponseEntity<?> getAppointmentById(@PathVariable("id") Long id) {
-		Appointment appointment = appointmentService.findAppointmentById(id);
-		return new ResponseEntity<>(appointment, HttpStatus.OK);
+	public ResponseEntity<> getAppointmentById(@PathVariable("id") Long id) {
+		return new ResponseEntity<>(appointmentService.findAppointmentById(id), HttpStatus.OK);
 	}
 
 	@GetMapping("/find/{id}/days")
 	@ApiOperation(value = "get days until appointment by id")
-	public ResponseEntity<?> getDaysUntilAppointment(@PathVariable("id") Long id) {
-		Appointment appointment = appointmentService.findAppointmentById(id);
-		return new ResponseEntity<>(appointment.daysUntilAppointment(), HttpStatus.OK);
+	public ResponseEntity<> getDaysUntilAppointment(@PathVariable("id") Long id) {
+		return new ResponseEntity<>(appointmentService.findAppointmentById(id).daysUntilAppointment(), HttpStatus.OK);
 	}
 
 	@PutMapping("/update")
 	@ApiOperation(value = "update an appointments")
-	public ResponseEntity<?> updateAppointment(@RequestBody Appointment appointment) {
-		Appointment updateAppointment = appointmentService.updateAppointment(appointment);
-		return new ResponseEntity<>(updateAppointment, HttpStatus.OK);
+	public ResponseEntity<> updateAppointment(@RequestBody Appointment appointment) {
+		return new ResponseEntity<>(appointmentService.updateAppointment(appointment), HttpStatus.OK);
 	}
 
 	@DeleteMapping("/delete/{id}")

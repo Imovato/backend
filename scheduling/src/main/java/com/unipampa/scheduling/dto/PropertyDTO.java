@@ -1,7 +1,6 @@
 package com.unipampa.scheduling.dto;
 
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 
