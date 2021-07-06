@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import java.util.Date;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -17,7 +18,8 @@ public class AcquisitionDTO {
 	private @NonNull Date date;
 	private @NonNull Property property;
 	private @NonNull Double value;
-	public static AcquisitionDTO createAcquisition(Acquisition acquisition){
+
+	public static AcquisitionDTO createAcquisition(Acquisition acquisition) {
 		return new ModelMapper().map(acquisition, AcquisitionDTO.class);
 	}
 

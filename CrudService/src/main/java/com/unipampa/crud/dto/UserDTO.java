@@ -7,6 +7,7 @@ import lombok.*;
 import org.modelmapper.ModelMapper;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -20,15 +21,15 @@ public class UserDTO {
 	private @NonNull String phone;
 	private @NonNull String address;
 
-	public static UserDTO createEmployee(Employee employee){
+	public static UserDTO createEmployee(Employee employee) {
 		return new ModelMapper().map(employee, UserDTO.class);
 	}
 
-	public static UserDTO createCustomer(Customer customer){
+	public static UserDTO createCustomer(Customer customer) {
 		return new ModelMapper().map(customer, UserDTO.class);
 	}
 
-	public static UserDTO createOwner(Owner owner){
+	public static UserDTO createOwner(Owner owner) {
 		return new ModelMapper().map(owner, UserDTO.class);
 	}
 }

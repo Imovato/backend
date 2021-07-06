@@ -10,6 +10,7 @@ import lombok.*;
 import org.modelmapper.ModelMapper;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode

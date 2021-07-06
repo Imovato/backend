@@ -5,6 +5,7 @@ import lombok.*;
 import org.modelmapper.ModelMapper;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -16,7 +17,7 @@ public class ContactDTO {
 	private @NonNull String email;
 	private @NonNull String number;
 
-	public static ContactDTO createContact(Contact contact){
+	public static ContactDTO createContact(Contact contact) {
 		return new ModelMapper().map(contact, ContactDTO.class);
 	}
 }

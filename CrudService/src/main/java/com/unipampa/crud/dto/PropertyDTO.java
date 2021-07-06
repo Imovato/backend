@@ -10,12 +10,13 @@ import lombok.experimental.Accessors;
 import org.modelmapper.ModelMapper;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
 public class PropertyDTO {
 
-	private Long idProperty;
+	private Long id;
 	private @NonNull String name;
 	private @NonNull float area;
 	private @NonNull String neighborhood;
@@ -30,16 +31,17 @@ public class PropertyDTO {
 	private @NonNull String block;
 	private @NonNull int amount = 0;
 	private @NonNull int imageQuantity = 0;
+	private @NonNull int virtualImageQuantity = 0;
 
-	public static PropertyDTO createApartment(Apartment apartment){
+	public static PropertyDTO createApartment(Apartment apartment) {
 		return new ModelMapper().map(apartment, PropertyDTO.class);
 	}
 
-	public static PropertyDTO createHouse(House house){
+	public static PropertyDTO createHouse(House house) {
 		return new ModelMapper().map(house, PropertyDTO.class);
 	}
 
-	public static PropertyDTO createGround(Ground ground){
+	public static PropertyDTO createGround(Ground ground) {
 		return new ModelMapper().map(ground, PropertyDTO.class);
 	}
 }
