@@ -20,4 +20,4 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
     - name: Build with Maven
-      run: cd scheduling && mvn springboot:run --file pom.xml
+      run: cd scheduling && mvn spring-boot:run --file pom.xml
