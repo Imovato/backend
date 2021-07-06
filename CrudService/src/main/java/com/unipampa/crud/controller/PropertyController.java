@@ -82,6 +82,22 @@ public class PropertyController {
 		propertyService.deleteProperty(id);
 	}
 
+	private void uploadImages(Property property, String path, MultipartFile img1, Optional<MultipartFile> img2,
+			Optional<MultipartFile> img3) throws IOException {
+		Files.createDirectories(Paths.get(path));
+
+		Stream<Path> files1 = Files.walk(Paths.get(path));
+		FileUploadUtil.saveFile(path, files1.count() + ".jpg", img1);
+		Stream<Path> files2 = Files.walk(Paths.get(path));
+		img2.ifPresent(img -> FileUploadUtil.saveFile(path, files2.count() + ".jpg", img));
+		Stream<Path> files3 = Files.walk(Paths.get(path));
+		img3.ifPresent(img -> FileUploadUtil.saveFile(path, files3.count() + ".jpg", img));
+
+		files1.close();
+		files2.close();
+		files3.close();
+	}
+
 	@PostMapping("property/upload/{id}")
 	@ApiOperation(value = "Sobe três imagens para a propriedade")
 	public ResponseEntity<?> uploadImage(@PathVariable("id") Long id, @RequestParam("img1") MultipartFile img1,
@@ -89,22 +105,26 @@ public class PropertyController {
 			throws IOException {
 		Property property = propertyService.getPropertyById(id);
 		String uploadDir = "src/main/resources/static/images/property/" + id;
-		Files.createDirectories(Paths.get(uploadDir));
 
-		Stream<Path> files1 = Files.walk(Paths.get(uploadDir));
-		FileUploadUtil.saveFile(uploadDir, files1.count() + ".jpg", img1);
-		Stream<Path> files2 = Files.walk(Paths.get(uploadDir));
-		img2.ifPresent(img -> FileUploadUtil.saveFile(uploadDir, files2.count() + ".jpg", img));
-		Stream<Path> files3 = Files.walk(Paths.get(uploadDir));
-		img3.ifPresent(img -> FileUploadUtil.saveFile(uploadDir, files3.count() + ".jpg", img));
-
-		files1.close();
-		files2.close();
-		files3.close();
+		uploadImages(property, uploadDir, img1, img2, img3);
 
 		property.setImageQuantity((int) Files.walk(Paths.get(uploadDir)).count() - 1);
 		propertyService.updateProperty(property);
+		return new ResponseEntity<>(property, HttpStatus.OK);
+	}
 
+	@PostMapping("property/upload/virtual/{id}")
+	@ApiOperation(value = "Sobe imagem para a visita virtual")
+	public ResponseEntity<?> uploadVirtualVisitImage(@PathVariable("id") Long id,
+			@RequestParam("img1") MultipartFile img1, @RequestParam("img2") Optional<MultipartFile> img2,
+			@RequestParam("img3") Optional<MultipartFile> img3) throws IOException {
+		Property property = propertyService.getPropertyById(id);
+		String uploadDir = "src/main/resources/static/images/property/" + id + "/virtual";
+
+		uploadImages(property, uploadDir, img1, img2, img3);
+
+		property.setVirtualImageQuantity((int) Files.walk(Paths.get(uploadDir)).count() - 1);
+		propertyService.updateProperty(property);
 		return new ResponseEntity<>(property, HttpStatus.OK);
 	}
 
@@ -181,7 +201,6 @@ public class PropertyController {
 		PropertyDTO dtoReturn = propertyService.createGround(groundDto);
 		return new ResponseEntity<>(dtoReturn, HttpStatus.OK);
 	}
-
 
 	@GetMapping("ground/all")
 	@ApiOperation(value = "Retorna uma lista de terrenos")

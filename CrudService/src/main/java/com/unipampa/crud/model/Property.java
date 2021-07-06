@@ -57,6 +57,8 @@ public class Property {
 	private int amount = 0;
 	@Column(name = "imageQuantity")
 	private int imageQuantity = 0;
+	@Column(name = "virtualImageQuantity")
+	private int virtualImageQuantity = 0;
 	@ManyToOne
 	private User user;
 

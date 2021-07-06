@@ -26,6 +26,11 @@ spring:
     username: admin
     password: admin
 
+  servlet:
+    multipart:
+      max-file-size: 40MB
+      max-request-size: 40MB
+
 crud:
   rabbitmq:
     exchange: crud.exchange

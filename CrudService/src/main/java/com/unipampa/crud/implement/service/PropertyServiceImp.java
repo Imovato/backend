@@ -93,7 +93,6 @@ public class PropertyServiceImp implements IPropertyService {
 	@Override
 	public PropertyDTO createApartment(PropertyDTO propertyDTO) {
 		return PropertyDTO.createApartment(propertyRepository.save(Apartment.createApartment(propertyDTO)));
-
 	}
 
 	@Override
