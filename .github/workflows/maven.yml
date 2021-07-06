@@ -24,5 +24,11 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
     
-    - name: Build with Maven
+    - name: Build discovery microsservice
+      run: cd discovery && mvn spring-boot:run --file pom.xml
+      
+    - name: Build gateway microsservice
+      run: cd gateway && mvn spring-boot:run --file pom.xml
+      
+    - name: Build scheduling microsservice
       run: cd scheduling && mvn spring-boot:run --file pom.xml
