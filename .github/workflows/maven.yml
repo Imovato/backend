@@ -19,7 +19,7 @@ jobs:
     - name: Compile code
       run: cd discovery && mvn compile
     - name: Run tests
-      run: mvn test
+      run: cd discovery && mvn test
   gateway:
     runs-on: ubuntu-latest
     steps:
@@ -31,7 +31,7 @@ jobs:
     - name: Compile code
       run: cd gateway && mvn compile
     - name: Run tests
-      run: mvn test
+      run: cd gateway && mvn test
   scheduling:
     runs-on: ubuntu-latest
     steps:
@@ -43,4 +43,4 @@ jobs:
     - name: Compile code
       run: cd scheduling && mvn compile
     - name: Run tests
-      run: mvn test
+      run: cd scheduling && mvn test
