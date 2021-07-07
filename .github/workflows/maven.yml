@@ -22,33 +22,24 @@ jobs:
   discovery:
     runs-on: ubuntu-latest
     needs: setup
-    defaults:
-      run: 
-        working-directory: ./discovery
     steps:
     - name: Compile code
-      run: mvn compile
+      run: cd discovery && mvn compile
     - name: Run tests
-      run: mvn test
+      run: cd discovery && mvn test
   gateway:
     runs-on: ubuntu-latest
     needs: [setup, discovery]
-    defaults:
-      run: 
-        working-directory: ./gateway
     steps:
     - name: Compile code
-      run: mvn compile
+      run: cd gateway && mvn compile
     - name: Run tests
-      run: mvn test
+      run: cd gateway && mvn test
   scheduling:
     runs-on: ubuntu-latest
     needs: [setup, discovery]
-    defaults:
-      run: 
-        working-directory: ./scheduling
     steps:
     - name: Compile code
-      run: mvn compile
+      run: cd scheduling && mvn compile
     - name: Run tests
-      run: mvn test
+      run: cd scheduling && mvn test
