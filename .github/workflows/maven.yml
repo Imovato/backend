@@ -8,45 +8,39 @@ on:
     branches: [ develop ]
 
 jobs:
-  setup:
+  discovery:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Set up JDK 11
-      uses: actions/setup-java@v2
+    - uses: actions/setup-java@v2
       with:
         java-version: '11'
         distribution: 'adopt'
-    - name: ls
-      run: ls
-      
-  discovery:
-    runs-on: ubuntu-latest
-    needs: setup
-    steps:
-    - name: Print path
-      run: echo $PWD
     - name: Compile code
-      run: cd ../discovery; mvn compile
+      run: cd discovery && mvn compile
     - name: Run tests
       run: mvn test
   gateway:
     runs-on: ubuntu-latest
-    needs: setup
     steps:
-    - name: Print path
-      run: echo $PWD
+    - uses: actions/checkout@v2
+    - uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
     - name: Compile code
-      run: cd ../gateway; mvn compile
+      run: cd gateway && mvn compile
     - name: Run tests
       run: mvn test
   scheduling:
     runs-on: ubuntu-latest
-    needs: setup
     steps:
-    - name: Print path
-      run: echo $PWD
+    - uses: actions/checkout@v2
+    - uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
     - name: Compile code
-      run: cd ../scheduling; mvn compile
+      run: cd scheduling && mvn compile
     - name: Run tests
       run: mvn test
