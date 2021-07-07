@@ -23,6 +23,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: setup
     steps:
+    - name: Print path
+      run: echo $PWD
     - name: Compile code
       run: cd discovery; mvn compile
     - name: Run tests
@@ -31,6 +33,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: setup
     steps:
+    - name: Print path
+      run: echo $PWD
     - name: Compile code
       run: cd gateway; mvn compile
     - name: Run tests
@@ -39,6 +43,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: setup
     steps:
+    - name: Print path
+      run: echo $PWD
     - name: Compile code
       run: cd scheduling; mvn compile
     - name: Run tests
