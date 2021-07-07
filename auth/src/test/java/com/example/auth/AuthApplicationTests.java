@@ -1,10 +1,10 @@
-package com.unipampa.imobiliaria;
+package com.example.auth;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ContextConfiguration;
 
 @ContextConfiguration
-class ImobiliariaApplicationTests {
+class AuthApplicationTests {
 
 	@Test
 	void contextLoads() {
