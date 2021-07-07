@@ -24,7 +24,7 @@ jobs:
     needs: setup
     defaults:
       run: 
-        working-directory: discovery
+        working-directory: ./discovery
     steps:
     - name: Compile code
       run: mvn compile
@@ -35,7 +35,7 @@ jobs:
     needs: [setup, discovery]
     defaults:
       run: 
-        working-directory: gateway
+        working-directory: ./gateway
     steps:
     - name: Compile code
       run: mvn compile
@@ -46,7 +46,7 @@ jobs:
     needs: [setup, discovery]
     defaults:
       run: 
-        working-directory: scheduling
+        working-directory: ./scheduling
     steps:
     - name: Compile code
       run: mvn compile
