@@ -21,9 +21,9 @@ services:
     working_dir: /var/lib/rabbitmq
     environment: 
       - RABBITMQ_ERLANG_COOKIE=secret_pass
-      #- RABBITMQ_DEFAULT_USER=admin
-      #- RABBITMQ_DEFAULT_PASS=admin
-      #- RABBITMQ_LOAD_DEFINITIONS=./rabbit_definitions.json
+      # - RABBITMQ_DEFAULT_USER=admin
+      # - RABBITMQ_DEFAULT_PASS=admin
+      # - RABBITMQ_LOAD_DEFINITIONS=./rabbit_definitions.json
 volumes:
   db:
   rabbitmq:
