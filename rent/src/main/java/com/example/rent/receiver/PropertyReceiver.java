@@ -11,12 +11,12 @@ import com.example.rent.repository.PropertyRepository;
 
 
 @Component
-public class PropertyReceiveMessage {
+public class PropertyReceiver {
 	
 	private PropertyRepository propertyRepository;
 	
 	@Autowired
-	public PropertyReceiveMessage(PropertyRepository propertyRepository) {
+	public PropertyReceiver(PropertyRepository propertyRepository) {
 		this.propertyRepository = propertyRepository;
 	}
 	
