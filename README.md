@@ -24,3 +24,11 @@ Os links estão disponíveis na documentação para auxiliar o desenvolvedor, po
 | :-------------  | :----------- |
 | Swagger      |  http://localhost:8081/crudService/swagger-ui.html# |
 | RabbitMQ      | http://localhost:15672/#/ |
+
+## Filas
+<p align="center">
+  <a href="https://github.com/SamuelModesto">
+      <img alt="template-method" src="https://github.com/SamuelModesto/Imagens/blob/master/Imagens%20Imovato/ImovatoFilas.jpeg" />
+  </a>
+</p>
+
