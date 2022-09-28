@@ -1,4 +1,4 @@
-package com.example.payment.message;
+package com.example.payment.receiver;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +9,12 @@ import com.example.payment.model.Property;
 import com.example.payment.repository.PropertyRepository;
 
 @Component
-public class PropertyReceiveMessage {
+public class PropertyReceiver {
 	
 	private PropertyRepository propertyRepository;
 	
 	@Autowired
-	public PropertyReceiveMessage(PropertyRepository propertyRepository) {
+	public PropertyReceiver(PropertyRepository propertyRepository) {
 		this.propertyRepository = propertyRepository;
 	}
 	
