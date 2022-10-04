@@ -16,6 +16,7 @@ import com.example.acquisition.repository.PropertyRepository;
 public class PropertyReceiver {
 	
 	private PropertyRepository propertyRepository;
+
 	
 	@Autowired
 	public PropertyReceiver(PropertyRepository propertyRepository) {
