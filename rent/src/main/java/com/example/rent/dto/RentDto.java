@@ -2,40 +2,40 @@ package com.example.rent.dto;
 
 
 import java.util.Date;
-
+import java.util.UUID;
 import com.example.rent.model.Property;
 import com.example.rent.model.User;
 
 public class RentDto {
-	
-	private Long id;
-//	private Date data;
-//	private Property property;
-//	private User user;
-////	private Long idProperty;
-	private Long idUser;
 
-	public RentDto() {
-	}
+    private UUID id;
+    /*private Date data;
+    private Property property;
+    private User user;
+    private Long idProperty;*/
+    private UUID idUser;
 
-	public RentDto(Long id, Long idUser) {
-		this.id = id;
-		this.idUser = idUser;
-	}
+    public RentDto() {
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public RentDto(UUID id, UUID idUser) {
+        this.id = id;
+        this.idUser = idUser;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public UUID getId() {
+        return id;
+    }
 
-	public Long getIdUser() {
-		return idUser;
-	}
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
-	public void setIdUser(Long idUser) {
-		this.idUser = idUser;
-	}
+    public UUID getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(UUID idUser) {
+        this.idUser = idUser;
+    }
 }

@@ -1,16 +1,19 @@
 package com.example.rent.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import lombok.*;
+
+import javax.persistence.*;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
+@Table(name = "tbl_users")
+@Data @AllArgsConstructor @NoArgsConstructor @Builder
 public class User {
 
     @Id
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private UUID id;
 
     @Column(name = "name")
     private String name;
@@ -18,28 +21,4 @@ public class User {
     @OneToMany
     private List<Rent> rents;
 
-    public User() {
-    }
-
-    public User(Long id, String name, List<Rent> rents) {
-        this.id = id;
-        this.name = name;
-        this.rents = rents;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

@@ -12,17 +12,17 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MessageConfig {
 
-	@Value("${crud.rabbitmq.exchange}")
-	String exchange;
-	
-	@Bean
-	public Exchange declareExchange() {
-		return ExchangeBuilder.directExchange(exchange).durable(true).build();
-	}
-	
-	@Bean
-	public MessageConverter jsonMessageConverter() {
-		return new Jackson2JsonMessageConverter();
-	}
-	
+    @Value("${crud.rabbitmq.exchange}")
+    String exchange;
+
+    @Bean
+    public Exchange declareExchange() {
+        return ExchangeBuilder.directExchange(exchange).durable(true).build();
+    }
+
+    @Bean
+    public MessageConverter jsonMessageConverter() {
+        return new Jackson2JsonMessageConverter();
+    }
+
 }

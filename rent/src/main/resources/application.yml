@@ -1,4 +1,3 @@
-
 server:
   port: 8085
   servlet:
@@ -10,7 +9,7 @@ spring:
   jpa:
     show-sql: false
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
       dialect: org.hibernate.dialect.MySQL8Dialect

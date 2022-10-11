@@ -6,6 +6,8 @@ import com.example.rent.repository.PropertyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class PropertyServiceImp implements IPropertyService {
 
@@ -17,7 +19,7 @@ public class PropertyServiceImp implements IPropertyService {
     }
 
     @Override
-    public Property findPropertyById(Long id) {
+    public Property findPropertyById(UUID id) {
         return propertyRepository.findPropertyById(id);
     }
 
