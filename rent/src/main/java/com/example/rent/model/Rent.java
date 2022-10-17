@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
-import java.util.UUID;
 
 @Entity
 @Table(name = "tbl_rents")
@@ -14,7 +13,7 @@ public class Rent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
+    private Long id;
 
     /*@DateTimeFormat(pattern = "MM/dd/yyy")
     @Column(name = "data", nullable = false)
@@ -29,6 +28,7 @@ public class Rent {
     private Property property;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", nullable = true) // ser false, porque obrigatoriamente precisa ter um user para rent
     private User user;
 
 }

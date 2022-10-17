@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "tbl_users")
@@ -12,13 +11,13 @@ import java.util.UUID;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "user_id")
+    private Long id;
 
     @Column(name = "name")
     private String name;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Rent> rents;
 
 }

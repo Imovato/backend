@@ -16,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/rent")
@@ -59,7 +58,7 @@ public class RentController {
 
     @GetMapping("/find/{id}")
     @ApiOperation(value = "Pega um arrendamento/aluguel pelo id")
-    public ResponseEntity<Rent> getRentById(@PathVariable("id") UUID id) {
+    public ResponseEntity<Rent> getRentById(@PathVariable("id") Long id) {
         Rent rentFind = rentService.getRentById(id);
         if (rentFind == null) {
             return ResponseEntity.notFound().build();
@@ -69,7 +68,7 @@ public class RentController {
 
     @GetMapping("/user/find/{id}")
     @ApiOperation(value = "Busca aluguéis através do id de um usuário")
-    public ResponseEntity<List<Rent>> getAcquisitionsByUserId(@PathVariable("id") UUID idUser) {
+    public ResponseEntity<List<Rent>> getAcquisitionsByUserId(@PathVariable("id") Long idUser) {
         User user = userService.findUserById(idUser);
         List<Rent> rents = rentService.findAllRentsByUser(user);
         if (rents.isEmpty()) {

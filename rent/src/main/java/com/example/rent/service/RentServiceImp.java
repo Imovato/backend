@@ -7,7 +7,6 @@ import com.example.rent.repository.RentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class RentServiceImp implements IRentService {
@@ -26,7 +25,7 @@ public class RentServiceImp implements IRentService {
     }
 
     @Override
-    public Rent getRentById(UUID id) {
+    public Rent getRentById(Long id) {
         return rentRepository.findRentById(id);
     }
 

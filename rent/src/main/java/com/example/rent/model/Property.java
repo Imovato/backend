@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
-import java.util.UUID;
 
 @Entity
 @Table(name = "tbl_properties")
@@ -15,13 +14,13 @@ public class Property {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private UUID id;
+	private Long id;
 
 	@Column(name = "amount", length = 10)
 	private Integer amount;
 
 	@Column(name = "price")
-	private double price;
+	private Double price;
 
 	@Column(name = "status")
 	@Enumerated(EnumType.STRING)

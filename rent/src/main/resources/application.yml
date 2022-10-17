@@ -7,7 +7,7 @@ spring:
   application:
     name: rentService
   jpa:
-    show-sql: false
+    show-sql: true
     hibernate:
       ddl-auto: create
     properties:
@@ -16,7 +16,7 @@ spring:
   jmx:
     enabled: false
   datasource:
-    url: jdbc:mysql://localhost:3306/rent?useTimezone=true&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/rent_db?useTimezone=true&serverTimezone=UTC
     username: root
     password: admin
 
