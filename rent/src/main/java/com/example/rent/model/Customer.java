@@ -3,12 +3,13 @@ package com.example.rent.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = "tbl_users")
+@Table(name = "TB_USERS")
 @Data @AllArgsConstructor @NoArgsConstructor @Builder
-public class User {
+public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "user_id")
@@ -17,7 +18,7 @@ public class User {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
     private List<Rent> rents;
 
 }

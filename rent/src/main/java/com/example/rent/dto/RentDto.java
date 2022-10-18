@@ -1,10 +1,9 @@
 package com.example.rent.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-import java.util.Date;
-import com.example.rent.model.Property;
-import com.example.rent.model.User;
-
+@Data @AllArgsConstructor
 public class RentDto {
 
     private Long id;
@@ -14,27 +13,4 @@ public class RentDto {
     private Long idProperty;*/
     private Long idUser;
 
-    public RentDto() {
-    }
-
-    public RentDto(Long id, Long idUser) {
-        this.id = id;
-        this.idUser = idUser;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(Long idUser) {
-        this.idUser = idUser;
-    }
 }

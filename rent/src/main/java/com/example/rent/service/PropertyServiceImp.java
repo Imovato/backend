@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PropertyServiceImp implements IPropertyService {
 
+    @Autowired
     private PropertyRepository propertyRepository;
 
     @Autowired

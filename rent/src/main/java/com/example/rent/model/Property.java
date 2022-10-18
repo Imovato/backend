@@ -6,11 +6,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-@Table(name = "tbl_properties")
+@Table(name = "TB_PROPERTIES")
 @Data @AllArgsConstructor @NoArgsConstructor @Builder
-public class Property {
+public class Property  {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +22,6 @@ public class Property {
 
 	@Column(name = "price")
 	private Double price;
-
 	@Column(name = "status")
 	@Enumerated(EnumType.STRING)
 	private Status status;

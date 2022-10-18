@@ -2,7 +2,7 @@ package com.example.rent.service;
 
 import com.example.rent.interfaces.services.IRentService;
 import com.example.rent.model.Rent;
-import com.example.rent.model.User;
+import com.example.rent.model.Customer;
 import com.example.rent.repository.RentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +30,7 @@ public class RentServiceImp implements IRentService {
     }
 
     @Override
-    public List<Rent> findAllRentsByUser(User user) {
-        return rentRepository.findAllAcquisitionsByUser(user);
+    public List<Rent> findAllRentsByUser(Customer customer) {
+        return rentRepository.findAllAcquisitionsByCustomer(customer);
     }
 }
