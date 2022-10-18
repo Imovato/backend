@@ -1,14 +1,63 @@
-version: '3'
+version: '3.1'
 services:
-  db:
-    image: mysql
+  discovery:
+    image: matt0balda/imovato:discovery
+    ports:
+      - 8087:8087
+    networks:
+      - networkApp
+  gateway:
+    image: matt0balda/imovato:gateway
+    ports:
+      - 8080:8080
+    depends_on:
+      - discovery
+    networks:
+      - networkApp
+
+  crudservice:
+    image: matt0balda/imovato:crudservice
+    ports:
+      - 8081:8081
+    depends_on:
+      - discovery
+      - gateway
+      - database
+      - rabbitmq
+    networks:
+      - networkApp
+  
+  database:
+    image: postgres
     ports: 
-      - 3306:3306
-    volumes: 
-      - ./storage/db:/var/lib/mysql
-      - ./scripts:/docker-entrypoint-initdb.d
+      - 5432:5432
     environment:
-      - MYSQL_ROOT_PASSWORD=admin
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=my_db
+      - PGDATA=/data/postgres
+    volumes: 
+      - ./postgres:/data/postgres
+    restart: unless-stopped
+    
+    networks:
+      - networkApp
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL= admin
+      - PGADMIN_DEFAULT_PASSWORD= root
+    volumes:
+      - ./docker_pgadmin_servers.json:/pgadmin4/servers.json
+    ports:
+      - "16543:80"
+    restart: unless-stopped
+    depends_on:
+      - database
+    networks:
+      - networkApp
+
   rabbitmq:
     image: rabbitmq:3-management
     ports:
@@ -24,6 +73,11 @@ services:
       #- RABBITMQ_DEFAULT_USER=admin
       #- RABBITMQ_DEFAULT_PASS=admin
       #- RABBITMQ_LOAD_DEFINITIONS=./rabbit_definitions.json
+    networks:
+      - networkApp
+
 volumes:
-  db:
+  #database:
   rabbitmq:
+networks:
+  networkApp:

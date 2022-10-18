@@ -1,7 +1,7 @@
 FROM openjdk:17-alpine
 MAINTAINER com.mateusbalda
 VOLUME /tmp
-EXPOSE 8087
+EXPOSE 8080
 
 COPY target/gateway*.jar /gateway.jar
 

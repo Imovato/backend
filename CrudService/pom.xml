@@ -51,16 +51,16 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
-<!-- 		<dependency>
+ 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
-		</dependency> -->
-		<dependency>
+		</dependency> 
+		<!--<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
-		</dependency>
+		</dependency> !-->
 		<!-- https://mvnrepository.com/artifact/com.mysql.jdbc/com.springsource.com.mysql.jdbc -->
 	<dependency>
 	    <groupId>org.springframework.boot</groupId>
