@@ -14,8 +14,8 @@
 	<name>discovery</name>
 	<description>Application Discovery</description>
 	<properties>
-		<java.version>1.8</java.version>
-		<spring-cloud.version>2020.0.1</spring-cloud.version>
+		<java.version>17</java.version>
+		<spring-cloud.version>2021.0.4</spring-cloud.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -56,6 +56,12 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<image>
+						<name>matt0balda/${project.artifactId}:${project.version}</name>
+					</image>
+					<pullPolicy>IF_NOT_PRESENT</pullPolicy>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
