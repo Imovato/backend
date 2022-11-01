@@ -17,7 +17,7 @@ import java.util.Date;
 @Setter
 public class PaymentPropertyDTO {
     private Long paymentId;
-    private ArrayList<User> clienteComprador;
+    private User clienteComprador;
     private int valor;
     private Date datePayment;
     private Property propertyPayment;

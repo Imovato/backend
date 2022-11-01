@@ -23,9 +23,9 @@ public class PaymentProperty {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long paymentId;
-    @ManyToMany
+    @ManyToOne
     @JoinColumn(name = "idUser")
-    private ArrayList<User> clienteComprador;
+    private User clienteComprador;
     @Column
     private int valor;
     @Column
