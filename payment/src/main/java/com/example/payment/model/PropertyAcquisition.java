@@ -1,5 +1,8 @@
 package com.example.payment.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "property_acquisition")
 public class PropertyAcquisition {
@@ -28,35 +33,4 @@ public class PropertyAcquisition {
     @JoinColumn(name = "id_acquisition")
     private Acquisition acquisition;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getIdProperty() {
-        return idProperty;
-    }
-
-    public void setIdProperty(Long idProperty) {
-        this.idProperty = idProperty;
-    }
-
-    public Integer getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Integer amount) {
-        this.amount = amount;
-    }
-
-    public Acquisition getAcquisition() {
-        return acquisition;
-    }
-
-    public void setAcquisition(Acquisition acquisition) {
-        this.acquisition = acquisition;
-    }
 }
