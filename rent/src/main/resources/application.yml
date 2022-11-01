@@ -7,9 +7,11 @@ spring:
   application:
     name: rentService
   jpa:
+    #defer-datasource-initialization: true
+    generate-ddl: true
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
       dialect: org.hibernate.dialect.MySQL8Dialect
@@ -38,4 +40,29 @@ eureka:
   client: 
     serviceUrl:
       defaultZone: http://localhost:8087/discovery/eureka
-  
+
+resilience4j:
+  retry:
+    instances:
+      default:
+        max-attempts: 5
+        wait-duration: 1s
+        enable-exponential-backoff: true
+      default2:
+        max-attempts: 4
+
+  ratelimiter:
+    instances:
+      default:
+        limit-for-period: 2
+        limit-refresh-period: 10s
+  bulkhead:
+    instances:
+      default:
+        max-concurrent-calls: 10
+
+  circuitbreaker:
+    instances:
+      default:
+        minimum-number-of-calls: 4
+        sliding-window-size: 8

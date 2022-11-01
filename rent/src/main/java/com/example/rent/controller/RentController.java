@@ -2,12 +2,17 @@ package com.example.rent.controller;
 
 import com.example.rent.dto.RentDto;
 import com.example.rent.enums.Status;
-import com.example.rent.interfaces.services.IPropertyService;
-import com.example.rent.interfaces.services.IRentService;
-import com.example.rent.interfaces.services.ICustomerService;
+import com.example.rent.service.impl.RentServiceImp;
+import com.example.rent.service.interfaces.IPropertyService;
+import com.example.rent.service.interfaces.IRentService;
+import com.example.rent.service.interfaces.ICustomerService;
 import com.example.rent.model.Property;
 import com.example.rent.model.Rent;
 import com.example.rent.model.Customer;
+import io.github.resilience4j.bulkhead.annotation.Bulkhead;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -31,27 +36,34 @@ public class RentController {
 
     @PostMapping("/save")
     @ApiOperation(value = "Salva um arrendamento/aluguel")
-    public ResponseEntity<?> saveRent(@RequestBody RentDto dto) {
-        Property property = propertyService.findPropertyById(dto.getId());
+    @Retry(name = "default", fallbackMethod = "")
+    @RateLimiter(name = "default")
+    @Bulkhead(name = "default")
+    public ResponseEntity<Rent> saveRent(Long idProperty, Long idCustomer, @RequestBody RentDto rentDto) {
+        Property property = propertyService.findPropertyById(idProperty);
+        Customer customer = userService.findCustomerById(idCustomer);
+        Rent rent = new Rent();
 
-        if(property.getStatus().equals(Status.AVAILABLE)){
-            Customer customer = userService.findCustomerById(dto.getIdUser());
-            Rent rent = Rent.builder()
-                    .customer(customer)
-                    .property(property)
-                    .startDateRent(LocalDate.now())
-                    .amount(property.getAmount())
-                    .value(property.getPrice()).build();
-            rentService.saveRent(rent);
-            property.setStatus(Status.RENTED);
-            propertyService.updateProperty(property);
-            return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.CREATED);
-        }
-        log.error("Você nao pode alugar esse imóvel!");
-        return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.BAD_REQUEST);
+        //if(property.getStatus().equals(Status.AVAILABLE)){
+            //rent.setStartDateRent(LocalDate.now());
+                rent.setCustomer(customer);
+                rent.setProperty(property);
+                rent.setAmount(property.getAmount());
+                rent.setValue(property.getPrice());
+                rent.setIptu(rentDto.getIptu());
+                rent.setExpirationDay(rentDto.getExpirationDay());
+                rent.setDescription(rentDto.getDescription());
+                rentService.saveRent(rent);
+                property.setStatus(Status.RENTED);
+                propertyService.updateProperty(property);
+               // return ResponseEntity.status(HttpStatus.CREATED).body(rent);
+      //  }
+        //log.error("Você nao pode alugar esse imóvel!");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rent);
     }
 
     @PutMapping("/update")
+    @CircuitBreaker(name = "default", fallbackMethod = "s")
     @ApiOperation(value = "Atualiza um arrendamento/aluguel")
     public ResponseEntity<Rent> updateRent(@RequestBody Rent rent) {
         Rent updateRent = rentService.updateRent(rent);
@@ -65,7 +77,7 @@ public class RentController {
         if (rentFind == null) {
             return ResponseEntity.notFound().build();
         }
-        return new ResponseEntity<>(rentFind, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(rentFind);
     }
 
     @GetMapping("/user/find/{id}")
@@ -77,6 +89,10 @@ public class RentController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(rents);
+    }
+
+    public void fallbackMethod() {
+        log.error("Erro");
     }
 
 }
