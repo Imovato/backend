@@ -2,6 +2,7 @@ package com.example.payment.controller;
 
 import com.example.payment.dto.PaymentPropertyDTO;
 import com.example.payment.interfaces.service.IPaymentPropertyService;
+import com.example.payment.interfaces.service.IUserService;
 import com.example.payment.model.PaymentProperty;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,6 +17,8 @@ public class PaymentPropertyController {
 
     private IPaymentPropertyService paymentPropertyService;
 
+    private IUserService userService;
+
     @PostMapping("/save")
     @ApiOperation(value = "Salva um pagamento de uma Propriedade")
     public void savePaymentProperty(@RequestBody PaymentPropertyDTO dto){
@@ -25,6 +28,7 @@ public class PaymentPropertyController {
         paymentProperty.setValor(dto.getValor());
         paymentProperty.setClienteComprador(dto.getClienteComprador());
         paymentProperty.setStatus(dto.getStatus());
+        userService.validarUsuario(paymentProperty.getClienteComprador(), paymentProperty.getPropertyPayment());
         paymentPropertyService.savePayment(paymentProperty);
     }
 
