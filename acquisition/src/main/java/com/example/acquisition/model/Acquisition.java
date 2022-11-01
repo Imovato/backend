@@ -1,7 +1,11 @@
 package com.example.acquisition.model;
+
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
+import lombok.AccessLevel;
+import lombok.Builder;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +18,7 @@ import javax.persistence.FetchType;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
+@Builder
 public class Acquisition implements Serializable{
 
 	@Id
@@ -22,7 +27,7 @@ public class Acquisition implements Serializable{
 
 	@DateTimeFormat(pattern = "MM/dd/yyy")
 	@Column(name = "data", nullable = false)
-	private Date data;
+	private LocalDate data;
 
 	@Column(name = "value", nullable = false)
 	private Double value;
@@ -41,7 +46,7 @@ public class Acquisition implements Serializable{
 	public Acquisition() {
 	}
 
-	public Acquisition(Long id, Date data, Double value, Integer amount,Property property,User user) {
+	public Acquisition(Long id, LocalDate data, Double value, Integer amount,Property property,User user) {
 		this.id = id;
 		this.data = data;
 		this.value = value;
@@ -49,17 +54,17 @@ public class Acquisition implements Serializable{
 		this.property = property;
 		this.user = user;
 	}
-
+	
 	public Long getId() {
 		return id;
 	}
 
-	public Date getData() {
+	public LocalDate getData() {
 		return data;
 	}
 
-	public void setData(Date data) {
-		this.data = data;
+	public void setData(LocalDate localDate) {
+		this.data = localDate;
 	}
 
 	public Integer getAmount() {
