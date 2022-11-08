@@ -1,5 +1,7 @@
 package com.example.acquisition.controller;
 
+import com.example.acquisition.service.ValidaCpfServiceImp;
+import com.example.acquisition.service.ValidaRendaServiceImp;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +23,7 @@ import com.example.acquisition.interfaces.services.IUserService;
 @RequestMapping("/acquisition")
 public class AcquisitionController {
 
+	ValidaRendaServiceImp vrenda;
 	private IAcquisitionService acquisitionService;
 	private IPropertyService propertyService;
 	private IUserService userService;
@@ -33,20 +36,19 @@ public class AcquisitionController {
 
 	@PostMapping("/save")
 	@ApiOperation(value = "Salva uma compra") //Padrão Builder Aplicado
-	public ResponseEntity<?> saveAcquisition(Long idProperty, Long idUser) {
+	public ResponseEntity<Acquisition> saveAcquisition(Long idProperty, Long idUser) {
 		Property property = propertyService.findPropertyById(idProperty);
 		User user = userService.findUserById(idUser);
 
 		userService.validarUsuario(user, property);
 
-			Acquisition acquisition = new Acquisition();
+				Acquisition acquisition = new Acquisition();
 				acquisition.setData(LocalDate.now());
 				acquisition.setProperty(property);
 				acquisition.setUser(user);
 				acquisition.setValue(property.getPrice());
 				acquisitionService.saveAcquisition(acquisition);
-
-		return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.CREATED);	
+		return ResponseEntity.status(HttpStatus.CREATED).body(acquisition);
 	}
 
 	@GetMapping("/user/find/{id}")

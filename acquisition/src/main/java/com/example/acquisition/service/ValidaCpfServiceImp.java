@@ -2,12 +2,16 @@ package com.example.acquisition.service;
 
 import java.util.InputMismatchException;
 import com.example.acquisition.exceptions.ValidacaoException;
+import com.example.acquisition.interfaces.services.IValidacaoService;
 import com.example.acquisition.model.Property;
 import com.example.acquisition.model.User;
 
-public class ValidaCpfService implements ValidacaoService {
+public class ValidaCpfServiceImp implements IValidacaoService {
 
-        public static boolean ehCPF(String CPF) {
+    public static boolean ehCPF(String CPF) {
+            //String CPF2;
+            //CPF2 = CPF.replaceAll("\.", "").replaceAll("\/","").replaceAll("\-","");
+
             if (CPF.equals("00000000000") ||
                 CPF.equals("11111111111") ||
                 CPF.equals("22222222222") || CPF.equals("33333333333") ||
@@ -31,8 +35,7 @@ public class ValidaCpfService implements ValidacaoService {
                 if ((r == 10) || (r == 11))
                     dig10 = '0';
                 else dig10 = (char)(r + 48); // converte no respectivo caractere numerico
-    
-            // Calculo do 2o. Digito Verificador
+
                 sm = 0;
                 peso = 11;
                 for(i=0; i<10; i++) {
@@ -55,10 +58,12 @@ public class ValidaCpfService implements ValidacaoService {
                 }
             }
 
-        public void validar(User user, Property property){
-            if(ehCPF(user.getCpf()) != true) {
-                throw new ValidacaoException("CPF inválido!");
-            }
+    @Override
+    public void validar(User user, Property property) {
+        if(ehCPF(user.getCpf()) != true) {
+
+            throw new ValidacaoException("CPF inválido!");
         }
-        
+    }
+
 }
