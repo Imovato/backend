@@ -1,5 +1,6 @@
 package com.example.rent.service.impl;
 
+import com.example.rent.enums.Status;
 import com.example.rent.service.interfaces.IPropertyService;
 import com.example.rent.model.Property;
 import com.example.rent.repository.PropertyRepository;
@@ -25,5 +26,11 @@ public class PropertyServiceImp implements IPropertyService {
     @Override
     public void updateProperty(Property property) {
          propertyRepository.save(property);
+    }
+
+    @Override
+    public boolean isAvailable(Property property) {
+        if (property.getStatus().equals(Status.AVAILABLE)) return true;
+        return false;
     }
 }
