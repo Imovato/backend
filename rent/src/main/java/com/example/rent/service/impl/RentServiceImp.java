@@ -36,10 +36,11 @@ public class RentServiceImp implements IRentService {
 
     @Override
     public List<Rent> findAllRentsByUser(Customer customer) {
-        return rentRepository.findAllAcquisitionsByCustomer(customer);
+        return rentRepository.findAllRentsByCustomer(customer);
     }
 
-    public static boolean isCPF(Customer customer) {
+    public boolean isCPF(Customer customer) {
+    //String CPF = customer.getCpf();
     String CPF = customer.getCpf().replaceAll("\\.", "").replaceAll("\\/","").replaceAll("\\-","");
 
         if (CPF.equals("00000000000") ||
@@ -90,8 +91,7 @@ public class RentServiceImp implements IRentService {
     }
 
     public boolean isSalary(Customer customer) {
-        if (customer.getSalary() < 0) return false;
-        else if (customer.getSalary() > 1211) return true;
+        if (customer.getSalary() > 1211D) return true;
         return false;
     }
 
@@ -106,15 +106,18 @@ public class RentServiceImp implements IRentService {
         return false;
     }
 
+    public String contractTime(Rent rent) {
+        StringBuilder sb = new StringBuilder();
+        long time = ChronoUnit.MONTHS.between((Temporal) rent.getStartDateRent(), (Temporal) rent.getEndDateRent());
+        sb.append(time).append(" MESES");
+        return sb.toString();
+    }
+
     /*public void calculateLatePayment(Rent rent) {
         if (expirationDay(rent)) {
             Double valueWithRate = rent.getValue();
         }
     } */
 
-   /* public StringBuilder contractTime(Rent rent) {
-        long time = ChronoUnit.MONTHS.between((Temporal) rent.getStartDateRent(), (Temporal) rent.getEndDateRent());
-        return new StringBuilder().append(time).append(" MESES");
-    }*/
 }
 
