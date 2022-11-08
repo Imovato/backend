@@ -21,4 +21,9 @@ public class CustomerServiceImp implements ICustomerService {
     public Customer findCustomerById(Long id) {
         return customerRepository.findCustomerById(id);
     }
+
+    @Override
+    public Customer findUserById(Long id) {
+        return customerRepository.findUserById(id);
+    }
 }
