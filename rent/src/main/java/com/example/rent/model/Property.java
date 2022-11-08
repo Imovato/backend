@@ -9,9 +9,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "TB_PROPERTIES")
+@Table(name = "TB_PROPERTY")
 @Data @AllArgsConstructor @NoArgsConstructor @Builder
-public class Property  {
+public class Property  implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

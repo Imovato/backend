@@ -1,6 +1,6 @@
-package com.example.rent.service;
+package com.example.rent.service.impl;
 
-import com.example.rent.interfaces.services.IPropertyService;
+import com.example.rent.service.interfaces.IPropertyService;
 import com.example.rent.model.Property;
 import com.example.rent.repository.PropertyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PropertyServiceImp implements IPropertyService {
 
-    @Autowired
+
     private PropertyRepository propertyRepository;
 
     @Autowired
