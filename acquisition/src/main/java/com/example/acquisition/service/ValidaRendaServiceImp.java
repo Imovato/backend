@@ -2,10 +2,11 @@ package com.example.acquisition.service;
 
 import com.example.acquisition.exceptions.ValidacaoException;
 import com.example.acquisition.interfaces.services.IPropertyService;
+import com.example.acquisition.interfaces.services.IValidacaoService;
 import com.example.acquisition.model.Property;
 import com.example.acquisition.model.User;
 
-public class ValidaRendaService implements ValidacaoService {
+public class ValidaRendaServiceImp implements IValidacaoService {
 
     private IPropertyService propertyService;
 
