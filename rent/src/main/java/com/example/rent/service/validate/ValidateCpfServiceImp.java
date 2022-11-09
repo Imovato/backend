@@ -4,7 +4,6 @@ import com.example.rent.exceptions.ValidationException;
 import com.example.rent.model.Customer;
 import com.example.rent.model.Property;
 import com.example.rent.service.interfaces.IValidationService;
-
 import java.util.InputMismatchException;
 
 public class ValidateCpfServiceImp implements IValidationService {
@@ -60,7 +59,7 @@ public class ValidateCpfServiceImp implements IValidationService {
     }
 
     @Override
-    public void validate(Customer customer, Property property) {
+    public void validate(Customer customer, Property property) throws ValidationException{
         if (isCPF(customer.getCpf()) != true) {
             throw new ValidationException("CPF inválido");
         }

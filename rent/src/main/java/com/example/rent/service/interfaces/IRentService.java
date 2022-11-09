@@ -12,6 +12,4 @@ public interface IRentService {
 	List<Rent> findAllRentsByUser(Customer customer);
 
 	String contractTime(Rent rent);
-
-
 }

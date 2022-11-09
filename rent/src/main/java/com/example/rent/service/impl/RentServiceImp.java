@@ -6,22 +6,15 @@ import com.example.rent.model.Customer;
 import com.example.rent.repository.RentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
-import java.util.InputMismatchException;
 import java.util.List;
 
 @Service
 public class RentServiceImp implements IRentService {
 
-
-    private RentRepository rentRepository;
     @Autowired
-    public RentServiceImp(RentRepository rentRepository) {
-        this.rentRepository = rentRepository;
-    }
+    private RentRepository rentRepository;
 
     @Override
     public void saveRent(Rent rent) {

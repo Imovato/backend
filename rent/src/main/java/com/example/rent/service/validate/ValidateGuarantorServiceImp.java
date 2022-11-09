@@ -12,7 +12,7 @@ public class ValidateGuarantorServiceImp implements IValidationService {
     }
 
     @Override
-    public void validate(Customer customer, Property property) {
+    public void validate(Customer customer, Property property) throws ValidationException {
         if (hasGuarantor(customer) != true) {
             throw new ValidationException("Necessário um fiador para o aluguel!");
         }

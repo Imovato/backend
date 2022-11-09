@@ -12,7 +12,7 @@ public class ValidateSalaryServiceImp implements IValidationService {
     }
 
     @Override
-    public void validate(Customer customer, Property property) {
+    public void validate(Customer customer, Property property) throws ValidationException{
         if (isSalary(customer) != true) {
             throw new ValidationException("Seu salário é insuficiente para o aluguel!");
         }

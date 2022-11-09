@@ -1,18 +1,19 @@
 package com.example.rent;
 
-import com.example.rent.model.Customer;
-import com.example.rent.model.Property;
-import com.example.rent.service.interfaces.ICustomerService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.rent.exceptions.ValidationException;
 
-public class ValidationChai {
+import javax.xml.bind.SchemaOutputResolver;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ValidationChai  {
     public static void main(String[] args) {
-        ICustomerService iCustomerService = null;
-        Property property = null;
-        Customer customer = Customer.builder()
-                .cpf("000.000.000-00")
-                .salary(1250.00)
-                .build();
-        iCustomerService.validateCustomer(customer, property);
+        List<String> lsitString = new ArrayList<>();
+        lsitString.add("Mateus");
+        if (lsitString.isEmpty()) {
+            System.out.println("vazio");
+        }
+        System.out.println("Nao vazio");
     }
+
 }

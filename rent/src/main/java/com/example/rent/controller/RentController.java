@@ -3,6 +3,7 @@ package com.example.rent.controller;
 import com.example.rent.dto.RentDto;
 import com.example.rent.dto.RentDtoUpdate;
 import com.example.rent.enums.Status;
+import com.example.rent.exceptions.ValidationException;
 import com.example.rent.service.impl.RentServiceImp;
 import com.example.rent.service.interfaces.IPropertyService;
 import com.example.rent.service.interfaces.IRentService;
@@ -46,7 +47,7 @@ public class RentController {
     @PostMapping("/save")
     @ApiOperation(value = "Salva um arrendamento/aluguel")
     @Retry(name = "retrySave")
-    public ResponseEntity<Rent> saveRent(Long idProperty, Long idCustomer, @RequestBody RentDto rentDto) throws Exception {
+    public ResponseEntity<Rent> saveRent(Long idProperty, Long idCustomer, @RequestBody RentDto rentDto) throws ValidationException {
         Property property = propertyService.findPropertyById(idProperty);
         Customer customer = customerService.findCustomerById(idCustomer);
 
