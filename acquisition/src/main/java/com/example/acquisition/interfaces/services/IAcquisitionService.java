@@ -6,7 +6,7 @@ import com.example.acquisition.model.Property;
 import com.example.acquisition.model.User;
 
 public interface IAcquisitionService{
-	void saveAcquisition(Acquisition acquisition);
+	void save(Acquisition acquisition);
 	List<Acquisition> findAllAcquisitionsByUser(User user);
     Acquisition findAcquisitionByProperty(Property property);
 

@@ -21,7 +21,7 @@ public class AcquisitionServiceImp implements IAcquisitionService{
 	}
 
 	@Override
-	public void saveAcquisition(Acquisition acquisition) {
+	public void save(Acquisition acquisition) {
 		acquisitionRepository.save(acquisition);
 	}
 

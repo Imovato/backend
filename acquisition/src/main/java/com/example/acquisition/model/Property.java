@@ -1,6 +1,11 @@
 package com.example.acquisition.model;
 
 
+import com.example.acquisition.enums.Status;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -11,11 +16,11 @@ public class Property {
 	@Id
 	private Long id;
 
-	@Column(name = "amount", length = 10)
-	private Integer amount;
-
 	@Column(name = "price")
 	private double price;
+
+	@Column(name = "status")
+	private Status status;
 
 	public Long getId() {
 		return id;
@@ -23,14 +28,6 @@ public class Property {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Integer getAmount() {
-		return amount;
-	}
-
-	public void setAmount(Integer amount) {
-		this.amount = amount;
 	}
 
 	public double getPrice() {
@@ -41,4 +38,7 @@ public class Property {
 		this.price = price;
 	}
 
+	public Status getStatus() { return status; }
+
+	public void setStatus(Status status) { this.status = status; }
 }

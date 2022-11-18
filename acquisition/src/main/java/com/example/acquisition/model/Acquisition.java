@@ -30,9 +30,6 @@ public class Acquisition implements Serializable{
 	@Column(name = "value", nullable = false)
 	private Double value;
 
-	@Column(name = "amount", length = 10)
-	private Integer amount;
-
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_property")
 	private Property property;
@@ -44,11 +41,10 @@ public class Acquisition implements Serializable{
 	public Acquisition() {
 	}
 
-	public Acquisition(Long id, LocalDate data, Double value, Integer amount,Property property,User user) {
+	public Acquisition(Long id, LocalDate data, Double value,Property property,User user) {
 		this.id = id;
 		this.data = data;
 		this.value = value;
-		this.amount = amount;
 		this.property = property;
 		this.user = user;
 	}
@@ -63,14 +59,6 @@ public class Acquisition implements Serializable{
 
 	public void setData(LocalDate localDate) {
 		this.data = localDate;
-	}
-
-	public Integer getAmount() {
-		return amount;
-	}
-
-	public void setAmount(Integer amount) {
-		this.amount = amount;
 	}
 
 	public Property getProperty() {
