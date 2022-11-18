@@ -1,5 +1,6 @@
 package com.example.acquisition.controller;
 
+import com.example.acquisition.enums.Status;
 import com.example.acquisition.service.ValidaCpfServiceImp;
 import com.example.acquisition.service.ValidaRendaServiceImp;
 import org.springframework.http.HttpStatus;
@@ -35,21 +36,35 @@ public class AcquisitionController {
 	}
 
 	@PostMapping("/save")
-	@ApiOperation(value = "Salva uma compra") //Padrão Builder Aplicado
+	@ApiOperation(value = "Salva uma compra") //Padrão Chain of Responsability Aplicado
 	public ResponseEntity<Acquisition> saveAcquisition(Long idProperty, Long idUser) {
 		Property property = propertyService.findPropertyById(idProperty);
 		User user = userService.findUserById(idUser);
 
-		userService.validarUsuario(user, property);
+        Acquisition acquisition = null;
 
-				Acquisition acquisition = new Acquisition();
-				acquisition.setData(LocalDate.now());
+		userService.validateUser(user, property);
+				//Acquisition acquisition = new Acquisition();
+                acquisition = Acquisition.builder()
+                        .data(LocalDate.now())
+                        .property(property)
+                        .user(user)
+                        .value(property.getPrice())
+                        .build();
+				acquisitionService.save(acquisition);
+				property.setStatus(Status.SOLD);
+		return ResponseEntity.status(HttpStatus.CREATED).body(acquisition);
+	}
+
+    /*
+                acquisition.setData(LocalDate.now());
 				acquisition.setProperty(property);
 				acquisition.setUser(user);
 				acquisition.setValue(property.getPrice());
-				acquisitionService.saveAcquisition(acquisition);
-		return ResponseEntity.status(HttpStatus.CREATED).body(acquisition);
-	}
+				acquisitionService.save(acquisition);
+				property.setStatus(Status.SOLD);
+    */
+
 
 	@GetMapping("/user/find/{id}")
 	@ApiOperation(value = "Encontra acquisitions através do id de um usuário")
