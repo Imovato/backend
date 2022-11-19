@@ -20,11 +20,11 @@ services:
       - imovato-network
 
   crud-service:
-    image: crud-service:2.0
+    image: crud-service
     restart: always
-    #build:
-     # context: .
-     # dockerfile: CrudService/Dockerfile
+    build:
+      context: .
+      dockerfile: CrudService/Dockerfile
     environment:
       TZ: America/Sao_Paulo
       EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://discovery:8087/discovery/eureka
