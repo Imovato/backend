@@ -1,6 +1,11 @@
-FROM openjdk:17-jdk-slim
+FROM maven:3.6-openjdk-17-slim AS MAVEN_BUILD
+COPY rent/pom.xml /build/
+COPY rent/src /build/src/
+WORKDIR /build/
+RUN mvn package -DskipTests
+
+FROM openjdk:17-alpine
 MAINTAINER com.mateusbalda
-ARG JAR_FILE=rent/target/*.jar
-COPY ${JAR_FILE} app.jar
-RUN bash -c 'touch /app.jar'
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+EXPOSE 8085
+COPY --from=MAVEN_BUILD /build/target/*.jar rent.jar
+ENTRYPOINT ["java","-jar","-Dspring.profiles.active=docker-demo","/rent.jar"]
