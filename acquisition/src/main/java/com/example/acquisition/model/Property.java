@@ -6,9 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Property {
@@ -20,6 +18,7 @@ public class Property {
 	private double price;
 
 	@Column(name = "status")
+	@Enumerated(EnumType.STRING)
 	private Status status;
 
 	public Long getId() {

@@ -36,23 +36,22 @@ public class AcquisitionController {
 	}
 
 	@PostMapping("/save")
-	@ApiOperation(value = "Salva uma compra") //Padrão Chain of Responsability Aplicado
+	@ApiOperation(value = "Salva uma compra")
 	public ResponseEntity<Acquisition> saveAcquisition(Long idProperty, Long idUser) {
 		Property property = propertyService.findPropertyById(idProperty);
 		User user = userService.findUserById(idUser);
 
-        Acquisition acquisition = null;
-
+        //Acquisition acquisition = null;
 		userService.validateUser(user, property);
-				//Acquisition acquisition = new Acquisition();
-                acquisition = Acquisition.builder()
-                        .data(LocalDate.now())
-                        .property(property)
-                        .user(user)
-                        .value(property.getPrice())
-                        .build();
+
+				Acquisition acquisition = new Acquisition();
+				acquisition.setData(LocalDate.now());
+				acquisition.setProperty(property);
+				acquisition.setUser(user);
+				acquisition.setValue(property.getPrice());
 				acquisitionService.save(acquisition);
 				property.setStatus(Status.SOLD);
+				propertyService.updateProperty(property);
 		return ResponseEntity.status(HttpStatus.CREATED).body(acquisition);
 	}
 
@@ -64,6 +63,16 @@ public class AcquisitionController {
 				acquisitionService.save(acquisition);
 				property.setStatus(Status.SOLD);
     */
+
+	/*
+
+	acquisition = Acquisition.builder()
+                        .data(LocalDate.now())
+                        .property(property)
+                        .user(user)
+                        .value(property.getPrice())
+                        .build();
+	*/
 
 
 	@GetMapping("/user/find/{id}")

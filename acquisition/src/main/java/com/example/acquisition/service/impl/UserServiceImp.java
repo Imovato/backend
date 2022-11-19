@@ -19,9 +19,8 @@ import com.example.acquisition.interfaces.services.IValidacaoService;
 
 @Service
 public class UserServiceImp implements IUserService{
-    List<IValidacaoService> validacoes = Arrays.asList(
+    List<IValidacaoService> validations = Arrays.asList(
             new ValidaCpfServiceImp(),
-            new ValidaRendaServiceImp(),
 			new ValidaStatusServiceImp()
     );
     @Autowired
@@ -38,7 +37,7 @@ public class UserServiceImp implements IUserService{
 	}
 
 	public void validateUser(User user, Property property) throws ValidacaoException {
-		validacoes.forEach(element->element.validate(user, property));
+		validations.forEach(element->element.validate(user, property));
 	}
 
 }
