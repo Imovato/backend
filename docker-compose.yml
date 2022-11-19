@@ -1,68 +1,68 @@
 version: '3.4'
 services:
 
-  ######################### DATABASES #########################
-
   discovery:
-    image: matt0balda/discovery:0.0.1-SNAPSHOT
+    image: matt0balda/imovato:discovery
     ports:
       - 8087:8087
     networks:
       - imovato-network
 
   gateway:
-    image: matt0balda/gateway:0.0.1-SNAPSHOT
+    image: matt0balda/imovato:gateway
     ports:
       - 8080:8080
     depends_on:
       - discovery
     environment:
-      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://discovery:8087/discovery
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://discovery:8087/discovery/eureka
     networks:
       - imovato-network
 
-  crudservice:
-    image: matt0balda/imovato:crudservice
+  crud-service:
+    image: crud-service:2.0
+    restart: always
+    #build:
+     # context: .
+     # dockerfile: CrudService/Dockerfile
+    environment:
+      TZ: America/Sao_Paulo
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://discovery:8087/discovery/eureka
+      RABBIT_URI: amqp://guest:guest@rabbitmq:5672
+      SPRING.RABBITMQ.HOST: rabbitmq
+      SPRING.RABBITMQ.USERNAME: admin
+      SPRING.RABBITMQ.PASSWORD: admin
+      SPRING.DATASOURCE.URL: jdbc:mysql://crud-db:3308/crud_service?useSSL=false&serverTimezone=UTC&enabledTLSProtocols=TLSv1.2
+      SPRING.DATASOURCE.USERNAME: root
+      SPRING.DATASOURCE.PASSWORD: root
     ports:
       - 8081:8081
     depends_on:
       - discovery
       - gateway
-      - database
+      - crud-db
       - rabbitmq
     networks:
-      - networkApp
+      - imovato-network
   
-  database:
-    image: postgres
-    ports: 
-      - 5432:5432
+  crud-db:
+    image: mysql:5.7.22
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
     environment:
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=my_db
-      - PGDATA=/data/postgres
-    volumes: 
-      - ./postgres:/data/postgres
-    restart: unless-stopped
-    
-    networks:
-      - networkApp
-  
-  pgadmin:
-    image: dpage/pgadmin4
-    environment:
-      - PGADMIN_DEFAULT_EMAIL= admin
-      - PGADMIN_DEFAULT_PASSWORD= root
-    volumes:
-      - ./docker_pgadmin_servers.json:/pgadmin4/servers.json
+      TZ: America/Sao_Paulo
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: crud_service
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_TCP_PORT: 3308
     ports:
-      - "16543:80"
-    restart: unless-stopped
-    depends_on:
-      - database
+      - 3308:3308
+    expose:
+      - 3308
     networks:
-      - networkApp
+      - imovato-network
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -74,13 +74,13 @@ services:
       - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
       - ./storage/rabbitmq1:/var/lib/rabbitmq
     working_dir: /var/lib/rabbitmq
-    environment: 
+    environment:
       - RABBITMQ_ERLANG_COOKIE=secret_pass
       #- RABBITMQ_DEFAULT_USER=admin
       #- RABBITMQ_DEFAULT_PASS=admin
       #- RABBITMQ_LOAD_DEFINITIONS=./rabbit_definitions.json
     networks:
-      - networkApp
+      - imovato-network
 
 volumes:
   #database:
