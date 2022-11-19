@@ -9,8 +9,7 @@ import com.example.acquisition.model.User;
 public class ValidaCpfServiceImp implements IValidacaoService {
 
     public static boolean isCPF(String CPF) {
-            //String CPF2;
-            //CPF2 = CPF.replaceAll("\.", "").replaceAll("\/","").replaceAll("\-","");
+            CPF = CPF.replaceAll("\\.", "").replaceAll("\\/","").replaceAll("\\-","");
 
             if (CPF.equals("00000000000") ||
                 CPF.equals("11111111111") ||
