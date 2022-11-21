@@ -58,7 +58,6 @@ public class RentController {
                 .endDateRent(LocalDate.now().plusYears(1))
                 .customer(customer)
                 .property(property)
-                .amount(property.getAmount())
                 .value(property.getPrice())
                 .iptu(rentDto.getIptu())
                 .expirationDay(rentDto.getExpirationDay())
