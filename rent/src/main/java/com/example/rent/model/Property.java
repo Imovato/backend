@@ -17,9 +17,6 @@ public class Property  implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "amount", length = 10)
-	private Integer amount;
-
 	@Column(name = "price")
 	private Double price;
 	@Column(name = "status")

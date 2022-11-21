@@ -8,14 +8,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PropertyServiceImp implements IPropertyService {
-
-
-    private PropertyRepository propertyRepository;
-
     @Autowired
-    public PropertyServiceImp(PropertyRepository propertyRepository) {
-        this.propertyRepository = propertyRepository;
-    }
+    private PropertyRepository propertyRepository;
 
     @Override
     public Property findPropertyById(Long id) {
@@ -26,4 +20,5 @@ public class PropertyServiceImp implements IPropertyService {
     public void updateProperty(Property property) {
          propertyRepository.save(property);
     }
+
 }
