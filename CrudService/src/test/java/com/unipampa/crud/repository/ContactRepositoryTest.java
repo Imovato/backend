@@ -1,6 +1,7 @@
 package com.unipampa.crud.repository;
 
 import com.unipampa.crud.model.Contact;
+import com.unipampa.util.ContactCreator;
 import lombok.extern.log4j.Log4j2;
 import lombok.var;
 import org.assertj.core.api.Assertions;
@@ -24,7 +25,7 @@ class ContactRepositoryTest {
     @Test
     @DisplayName("Save creates contact when Successful")
     void save_PersistContact_WhenSuccessful(){
-        Contact contactToBeSaved = createContact();
+        Contact contactToBeSaved = ContactCreator.createContactToSaved();
         Contact contactSaved = this.contactRepository.save(contactToBeSaved);
         Assertions.assertThat(contactSaved).isNotNull();
         Assertions.assertThat(contactSaved.getId()).isNotNull();
@@ -34,7 +35,7 @@ class ContactRepositoryTest {
     @Test
     @DisplayName("Save updates contact when Successful")
     void save_UpdateContact_WhenSuccessful(){
-        Contact contactToBeSaved = createContact();
+        Contact contactToBeSaved = ContactCreator.createContactToSaved();
         Contact contactSaved = this.contactRepository.save(contactToBeSaved);
 
         contactSaved.setNumber("55777777777");
@@ -47,7 +48,7 @@ class ContactRepositoryTest {
     @Test
     @DisplayName("Deletes removes contact when Successful")
     void delete_RemovesContact_WhenSuccessful(){
-        Contact contactToBeSaved = createContact();
+        Contact contactToBeSaved = ContactCreator.createContactToSaved();
         Contact contactSaved = this.contactRepository.save(contactToBeSaved);
 
         this.contactRepository.delete(contactSaved);
@@ -59,7 +60,7 @@ class ContactRepositoryTest {
     @Test
     @DisplayName("Find by contact when Successful")
     void find_ByContact_WhenSuccessful(){
-        Contact contactToBeSaved = createContact();
+        Contact contactToBeSaved = ContactCreator.createContactToSaved();
         Contact contactSaved = this.contactRepository.save(contactToBeSaved);
         Contact contactFind = this.contactRepository.findContactById(contactSaved.getId());
 
@@ -70,7 +71,7 @@ class ContactRepositoryTest {
     @Test
     @DisplayName("Find by contact return null when no contact not found")
     void findByContact_ReturnsNull_WhenContactIsNotFound() {
-        Contact contactToBeSaved = createContact();
+        Contact contactToBeSaved = ContactCreator.createContactToSaved();
         Contact contactFind = this.contactRepository.findContactById(contactToBeSaved.getId());
 
         Assertions.assertThat(contactFind).isNull();
@@ -84,16 +85,4 @@ class ContactRepositoryTest {
                 .isThrownBy(() -> this.contactRepository.save(contact))
                 .withMessageContaining("The name cannot be empty");
     }
-
-    @Test
-    @DisplayName("")
-    private Contact createContact() {
-        return Contact.builder()
-                .name("Mateus Balda")
-                .email("mateusbalda89@gmail.com")
-                .number("55999896728")
-                .message("Bom dia/boa tarde/boa noite")
-                .build();
-    }
-
 }

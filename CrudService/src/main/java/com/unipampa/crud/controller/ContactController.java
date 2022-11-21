@@ -36,13 +36,14 @@ public class ContactController {
 	//add
     @PostMapping("contact")
 	@ApiOperation(value = "Salva uma requisição de contato com a imobiliária")
-	public void saveContact(@RequestBody ContactDTO contactDto) {
+	public ResponseEntity<Void> saveContact(@RequestBody ContactDTO contactDto) {
 		Contact contact = new Contact();
 		contact.setMessage(contactDto.getMessage());
 		contact.setName(contactDto.getName());
 		contact.setEmail(contactDto.getEmail());
 		contact.setNumber(contactDto.getNumber());
 		contactService.saveContact(contact);
+        return new ResponseEntity<>(HttpStatus.CREATED);
 	}
     
     //update
@@ -71,7 +72,8 @@ public class ContactController {
     //delete
     @DeleteMapping("/delete/{id}")
     @ApiOperation(value = "Deleta uma requisição de contato com a imobiliária")
-    public void deleteContact(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteContact(@PathVariable("id") Long id) {
     	contactService.deleteContact(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
