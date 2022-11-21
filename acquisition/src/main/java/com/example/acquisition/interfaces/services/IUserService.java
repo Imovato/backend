@@ -7,5 +7,5 @@ public interface IUserService{
 	
 	User findUserById(Long id);
 
-	void validarUsuario(User user, Property property);
+	void validateUser(User user, Property property);
 }

@@ -29,4 +29,9 @@ public class PropertyServiceImp implements IPropertyService{
 		double parcela = property.getPrice() * PERCENTUAL;
 		return parcela;
 	}
+
+	@Override
+	public void updateProperty(Property property) {
+		propertyRepository.save(property);
+	}
 }

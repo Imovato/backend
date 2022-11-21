@@ -8,9 +8,8 @@ import com.example.acquisition.model.User;
 
 public class ValidaCpfServiceImp implements IValidacaoService {
 
-    public static boolean ehCPF(String CPF) {
-            //String CPF2;
-            //CPF2 = CPF.replaceAll("\.", "").replaceAll("\/","").replaceAll("\-","");
+    public static boolean isCPF(String CPF) {
+            CPF = CPF.replaceAll("\\.", "").replaceAll("\\/","").replaceAll("\\-","");
 
             if (CPF.equals("00000000000") ||
                 CPF.equals("11111111111") ||
@@ -59,10 +58,9 @@ public class ValidaCpfServiceImp implements IValidacaoService {
             }
 
     @Override
-    public void validar(User user, Property property) {
-        if(ehCPF(user.getCpf()) != true) {
-
-            throw new ValidacaoException("CPF inválido!");
+    public void validate(User user, Property property) throws ValidacaoException {
+        if(isCPF(user.getCpf()) != true) {
+            throw new ValidacaoException("Seu CPF é inválido!");
         }
     }
 

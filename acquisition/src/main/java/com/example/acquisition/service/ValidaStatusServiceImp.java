@@ -1,19 +1,20 @@
 package com.example.acquisition.service;
 
+import com.example.acquisition.enums.Status;
 import com.example.acquisition.exceptions.ValidacaoException;
 import com.example.acquisition.interfaces.services.IPropertyService;
 import com.example.acquisition.interfaces.services.IValidacaoService;
 import com.example.acquisition.model.Property;
 import com.example.acquisition.model.User;
 
-public class ValidaRendaServiceImp implements IValidacaoService {
+public class ValidaStatusServiceImp implements IValidacaoService {
 
     private IPropertyService propertyService;
 
     @Override
-    public void validate(User user, Property property) throws ValidacaoException { //tem mais coisas pra levar em conta, mais pra frente REVER!!!
-        if(user.getRenda() * 0.3 < propertyService.calculaParcela(property)){
-            throw new ValidacaoException("Sua renda mensal é insuficiente para a compra!");
+    public void validate(User user, Property property) throws ValidacaoException {
+        if(!property.getStatus().equals(Status.AVAILABLE)) {
+            throw new ValidacaoException("Essa casa não esta disponível, ja foi vendida!");
         }
-    }    
+    }
 }
