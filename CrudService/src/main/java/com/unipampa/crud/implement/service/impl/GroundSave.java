@@ -9,7 +9,7 @@ public class GroundSave implements StrategySaveProperty {
 
     @Override
     public Property save(PropertyDTO propertyDTO) {
-        Ground ground = Ground.builder()
+        Ground ground = (Ground) Ground.builder()
                 .area(propertyDTO.getArea())
                 .name(propertyDTO.getName())
                 .neighborhood(propertyDTO.getNeighborhood())
