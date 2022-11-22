@@ -40,21 +40,31 @@ public class UserController {
 
 	// Find all users
 	@GetMapping("/all")
-	@ApiOperation(value = "Retorna todos os usuarios cadastrados")
+	@ApiOperation(value = "Retorna todos os usuários cadastrados")
+	public ResponseEntity<List<User>> getAllUsers() {
+		List<User> users = userService.findAllUsers();
+		return ResponseEntity.status(HttpStatus.OK).body(users);
+	}
+
+	/*
 	public ResponseEntity<?> getAllUsers() {
 		List<User> users = userService.findAllUsers();
 		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
+	*/
+
 
 	// Add an employee user
 	@PostMapping("/employee/add")
 	@ApiOperation(value = "Adiciona um usuario do tipo empregado")
 	public void saveEmployee(@RequestBody UserDTO userDto) {
-		Employee employee = new Employee();
-		employee.setEmail(userDto.getEmail());
-		employee.setName(userDto.getName());
-		employee.setId(userDto.getId());
-		employee.setPassword(userDto.getPassword());
+
+		Employee employee = Employee.builder()
+				.email(userDto.getEmail())
+				.name(userDto.getName())
+				.id(userDto.getId())
+				.password(userDto.getPassword())
+				.build();
 		userService.saveUser(employee);
 	}
 
@@ -74,22 +84,26 @@ public class UserController {
 		return new ResponseEntity<>(updateEmployee, HttpStatus.OK);
 	}
 
-	// Add an customer user
+	// Add a customer user
 	@PostMapping("/customer/add")
 	@ApiOperation(value = "Adiciona um usuario do tipo cliente")
-	public void saveCustomer(@RequestBody UserDTO userDto) {
-		Customer customer = new Customer();
-		customer.setEmail(userDto.getEmail());
-		customer.setName(userDto.getName());
-		customer.setPassword(userDto.getPassword());
-		customer.setId(userDto.getId());
-		customer.setAddress(userDto.getAddress());
-		customer.setPhone(userDto.getPhone());
-		customer.setCpf(userDto.getCpf());
+	public ResponseEntity<Void> saveCustomer(@RequestBody UserDTO userDto) {
+
+		Customer customer = Customer.builder()
+				.email(userDto.getEmail())
+				.email(userDto.getName())
+				.password(userDto.getPassword())
+				.id(userDto.getId())
+				.address(userDto.getAddress())
+				.phone(userDto.getPhone())
+				.cpf(userDto.getCpf())
+				.build();
+
 		userService.saveUser(customer);
+		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
-	// Get an customer user
+	// Get a customer user
 	@GetMapping("/customer/find/{email}")
 	@ApiOperation(value = "Retorna um usuario do tipo cliente pelo email")
 	public ResponseEntity<?> getCustomerById(@PathVariable("email") String email) {
@@ -118,14 +132,16 @@ public class UserController {
 	@PostMapping("/owner/add")
 	@ApiOperation(value = "Adiciona um usuario do tipo proprietario")
 	public void saveOwner(@RequestBody UserDTO userDto) {
-		Owner owner = new Owner();
-		owner.setEmail(userDto.getEmail());
-		owner.setName(userDto.getName());
-		owner.setPassword(userDto.getPassword());
-		owner.setId(userDto.getId());
-		owner.setAddress(userDto.getAddress());
-		owner.setPhone(userDto.getPhone());
-		owner.setCpf(userDto.getCpf());
+
+		Owner owner = Owner.builder()
+				.email(userDto.getEmail())
+				.name(userDto.getName())
+				.password(userDto.getPassword())
+				.id(userDto.getId())
+				.address(userDto.getAddress())
+				.phone(userDto.getPhone())
+				.cpf(userDto.getCpf())
+				.build();
 		userService.saveUser(owner);
 	}
 

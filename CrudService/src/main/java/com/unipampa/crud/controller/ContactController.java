@@ -23,49 +23,49 @@ import io.swagger.annotations.ApiOperation;
 @Api(value = "API Contato")
 public class ContactController {
 
-	private IContactService contactService;
+    private IContactService contactService;
 
-	public ContactController(IContactService service) {
-		this.contactService = service;
-	}
+    public ContactController(IContactService service) {
+        this.contactService = service;
+    }
 
     @PostMapping("contact")
-	@ApiOperation(value = "Salva uma requisição de contato com a imobiliária")
-	public ResponseEntity<Void> saveContact(@RequestBody ContactDTO contactDto) {
-		Contact contact = Contact.builder()
+    @ApiOperation(value = "Salva uma requisição de contato com a imobiliária")
+    public ResponseEntity<Void> saveContact(@RequestBody ContactDTO contactDto) {
+        Contact contact = Contact.builder()
                 .message(contactDto.getMessage())
                 .name(contactDto.getName())
                 .email(contactDto.getEmail())
                 .number(contactDto.getNumber()).build();
-		contactService.saveContact(contact);
+        contactService.saveContact(contact);
         return new ResponseEntity<>(HttpStatus.CREATED);
-	}
-    
+    }
+
     @PutMapping("/update")
     @ApiOperation(value = "Atualiza uma requisição de contato com a imobiliária")
     public ResponseEntity<Contact> updateContact(Contact contact) {
-    	contactService.updateContact(contact);
+        contactService.updateContact(contact);
         return ResponseEntity.status(HttpStatus.OK).body(contact);
     }
-    
+
     @GetMapping("/all")
     @ApiOperation(value = "Retorna todas requisições de contato com a imobiliária")
     public ResponseEntity<List<Contact>> getAllContacts(){
-    	List<Contact> contacts = contactService.findAllContacts();
-    	return ResponseEntity.status(HttpStatus.OK).body(contacts);
+        List<Contact> contacts = contactService.findAllContacts();
+        return ResponseEntity.status(HttpStatus.OK).body(contacts);
     }
-    
+
     @GetMapping("/{id}")
     @ApiOperation(value = "Retorna todas requisições de contato com a imobiliária")
     public ResponseEntity<?> getContactById(@PathVariable("id") Long id){
-    	Contact contact = contactService.findContactById(id);
-    	return new ResponseEntity<>(contact, HttpStatus.OK);
+        Contact contact = contactService.findContactById(id);
+        return new ResponseEntity<>(contact, HttpStatus.OK);
     }
-    
+
     @DeleteMapping("/delete/{id}")
     @ApiOperation(value = "Deleta uma requisição de contato com a imobiliária")
     public ResponseEntity<Void> deleteContact(@PathVariable("id") Long id) {
-    	contactService.deleteContact(id);
+        contactService.deleteContact(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

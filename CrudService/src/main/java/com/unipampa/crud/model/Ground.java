@@ -1,11 +1,13 @@
 package com.unipampa.crud.model;
 
-import lombok.experimental.SuperBuilder;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 
 @Entity
-@SuperBuilder(toBuilder = true)
+@NoArgsConstructor
 public class Ground extends Property {
 
     public Ground() {
