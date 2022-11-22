@@ -205,23 +205,25 @@ public class PropertyController {
 	@PostMapping("/house")
 	@ApiOperation(value = "Salva uma casa ")
 	public ResponseEntity<?> saveHouse(@RequestBody PropertyDTO houseDto) {
-		House house = new House();
-		house.setArea(houseDto.getArea());
-		house.setName(houseDto.getName());
-		house.setNeighborhood(houseDto.getNeighborhood());
-		house.setCodAddress(houseDto.getCodAddress());
-		house.setCity(houseDto.getCity());
-		house.setDescription(houseDto.getDescription());
-		house.setAdress(houseDto.getAdress());
-		house.setState(houseDto.getState());
-		house.setPrice(houseDto.getPrice());
-		house.setNumber(houseDto.getNumber());
-		house.setRooms(houseDto.getRooms());
-		house.setAmount(houseDto.getAmount());
+
+		House house = House.builder()
+				.area(houseDto.getArea())
+				.name(houseDto.getName())
+				.neighborhood(houseDto.getNeighborhood())
+				.codAddress(houseDto.getCodAddress())
+				.city(houseDto.getCity())
+				.description(houseDto.getDescription())
+				.adress(houseDto.getAdress())
+				.state(houseDto.getState())
+				.price(houseDto.getPrice())
+				.number(houseDto.getNumber())
+				.rooms(houseDto.getRooms())
+				.amount(houseDto.getAmount())
+				.build();
 		propertyService.saveProperty(house);
 		return new ResponseEntity<>(house, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("house/all")
 	@ApiOperation(value = "Retorna uma lista de casas")
 	public ResponseEntity<?> getAllHouses() {
@@ -250,8 +252,26 @@ public class PropertyController {
 	@PostMapping("/ground")
 	@ApiOperation(value = "Salva um terreno")
 	public ResponseEntity<?> saveGround(@RequestBody PropertyDTO groundDto) {
-		Ground ground = new Ground();
-		ground.setArea(groundDto.getArea());
+
+		Ground ground = (Ground) Ground.builder()
+				.area(groundDto.getArea())
+				.name(groundDto.getName())
+				.neighborhood(groundDto.getNeighborhood())
+				.codAddress(groundDto.getCodAddress())
+				.city(groundDto.getCity())
+				.description(groundDto.getDescription())
+				.adress(groundDto.getAdress())
+				.state(groundDto.getState())
+				.price(groundDto.getPrice())
+				.number(groundDto.getNumber())
+				.amount(groundDto.getAmount())
+				.build();
+		propertyService.saveProperty(ground);
+		return new ResponseEntity<>(ground, HttpStatus.OK);
+	}
+
+	/*
+	ground.setArea(groundDto.getArea());
 		ground.setName(groundDto.getName());
 		ground.setNeighborhood(groundDto.getNeighborhood());
 		ground.setCodAddress(groundDto.getCodAddress());
@@ -262,10 +282,8 @@ public class PropertyController {
 		ground.setPrice(groundDto.getPrice());
 		ground.setNumber(groundDto.getNumber());
 		ground.setAmount(groundDto.getAmount());
-		propertyService.saveProperty(ground);
-		return new ResponseEntity<>(ground, HttpStatus.OK);
-	}
-	
+	 */
+
 	@GetMapping("ground/all")
 	@ApiOperation(value = "Retorna uma lista de terrenos")
 	public ResponseEntity<?> getAllGrounds() {

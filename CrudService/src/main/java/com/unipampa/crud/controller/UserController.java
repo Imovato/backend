@@ -78,7 +78,9 @@ public class UserController {
 	@PostMapping("/customer/add")
 	@ApiOperation(value = "Adiciona um usuario do tipo cliente")
 	public void saveCustomer(@RequestBody UserDTO userDto) {
+
 		Customer customer = new Customer();
+
 		customer.setEmail(userDto.getEmail());
 		customer.setName(userDto.getName());
 		customer.setPassword(userDto.getPassword());

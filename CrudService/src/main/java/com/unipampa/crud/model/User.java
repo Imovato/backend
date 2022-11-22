@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
+@Data
 @Table(name = "tbl_user_registration")
 @Data @SuperBuilder
 public class User {
