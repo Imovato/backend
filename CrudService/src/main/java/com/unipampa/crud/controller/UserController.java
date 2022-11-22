@@ -77,7 +77,7 @@ public class UserController {
 	// Add an customer user
 	@PostMapping("/customer/add")
 	@ApiOperation(value = "Adiciona um usuario do tipo cliente")
-	public void saveCustomer(@RequestBody UserDTO userDto) {
+	public ResponseEntity<Void> saveCustomer(@RequestBody UserDTO userDto) {
 
 		Customer customer = new Customer();
 
@@ -89,6 +89,7 @@ public class UserController {
 		customer.setPhone(userDto.getPhone());
 		customer.setCpf(userDto.getCpf());
 		userService.saveUser(customer);
+		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
 	// Get an customer user
