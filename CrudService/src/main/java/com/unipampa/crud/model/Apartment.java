@@ -9,7 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-@Data @AllArgsConstructor @SuperBuilder
+@Data @AllArgsConstructor
+@SuperBuilder(toBuilder = true)
 public class Apartment extends Property {
 
     @Column(name = "block")

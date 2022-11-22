@@ -4,7 +4,8 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
 
-@Entity @SuperBuilder
+@Entity
+@SuperBuilder(toBuilder = true)
 public class Ground extends Property {
 
     public Ground() {
