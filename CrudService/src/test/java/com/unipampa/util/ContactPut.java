@@ -1,7 +1,6 @@
 package com.unipampa.util;
 
 
-import com.unipampa.crud.dto.ContactDTO;
 import com.unipampa.crud.model.Contact;
 
 public class ContactPut {

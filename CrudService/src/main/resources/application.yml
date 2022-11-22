@@ -7,9 +7,9 @@ spring:
   application:
     name: CrudService
   jpa:
-    show-sql: false
+    show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     properties:
       hibernate:
       dialect: org.hibernate.dialect.MySQL8Dialect

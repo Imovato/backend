@@ -1,12 +1,9 @@
 package com.unipampa.crud.controller;
 
-
 import com.unipampa.crud.dto.ContactDTO;
 import com.unipampa.crud.interfaces.service.IContactService;
 import com.unipampa.crud.model.Contact;
-
 import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,36 +29,32 @@ public class ContactController {
 		this.contactService = service;
 	}
 
-	
-	//add
     @PostMapping("contact")
 	@ApiOperation(value = "Salva uma requisição de contato com a imobiliária")
 	public ResponseEntity<Void> saveContact(@RequestBody ContactDTO contactDto) {
-		Contact contact = new Contact();
-		contact.setMessage(contactDto.getMessage());
-		contact.setName(contactDto.getName());
-		contact.setEmail(contactDto.getEmail());
-		contact.setNumber(contactDto.getNumber());
+		Contact contact = Contact.builder()
+                .message(contactDto.getMessage())
+                .name(contactDto.getName())
+                .email(contactDto.getEmail())
+                .number(contactDto.getNumber()).build();
 		contactService.saveContact(contact);
         return new ResponseEntity<>(HttpStatus.CREATED);
 	}
     
-    //update
     @PutMapping("/update")
     @ApiOperation(value = "Atualiza uma requisição de contato com a imobiliária")
-    public Contact updateContact(Contact contact) {
-    	return contactService.updateContact(contact);
+    public ResponseEntity<Contact> updateContact(Contact contact) {
+    	contactService.updateContact(contact);
+        return ResponseEntity.status(HttpStatus.OK).body(contact);
     }
     
-    //get all
     @GetMapping("/all")
     @ApiOperation(value = "Retorna todas requisições de contato com a imobiliária")
-    public ResponseEntity<?> getAllContacts(){
+    public ResponseEntity<List<Contact>> getAllContacts(){
     	List<Contact> contacts = contactService.findAllContacts();
-    	return new ResponseEntity<>(contacts, HttpStatus.OK);
+    	return ResponseEntity.status(HttpStatus.OK).body(contacts);
     }
     
-    //get contact by id
     @GetMapping("/{id}")
     @ApiOperation(value = "Retorna todas requisições de contato com a imobiliária")
     public ResponseEntity<?> getContactById(@PathVariable("id") Long id){
@@ -69,7 +62,6 @@ public class ContactController {
     	return new ResponseEntity<>(contact, HttpStatus.OK);
     }
     
-    //delete
     @DeleteMapping("/delete/{id}")
     @ApiOperation(value = "Deleta uma requisição de contato com a imobiliária")
     public ResponseEntity<Void> deleteContact(@PathVariable("id") Long id) {

@@ -1,54 +1,32 @@
 package com.unipampa.crud.model;
 
+import lombok.Builder;
+import lombok.Data;
+import lombok.experimental.SuperBuilder;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-@Entity
+@Entity @Data @SuperBuilder
 public class Owner extends User {
 
-	@Column(name = "cpf")
-	private String cpf;
-	
-	@Column(name = "phone")
-	private String phone;
-	
-	@Column(name = "address")
-	private String address;
+    @Column(name = "cpf")
+    private String cpf;
 
-	public Owner(String email, String name, String password, String cpf, String phone, String address) {
-		super(email, name, password);
-		this.cpf = cpf;
-		this.phone = phone;
-		this.address = address;
-	}
+    @Column(name = "phone")
+    private String phone;
 
-	public Owner() {
-		super();
-	}
-	
-	public String getCPF() {
-		return cpf;
-	}
+    @Column(name = "address")
+    private String address;
 
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
+    public Owner(String email, String name, String password, String cpf, String phone, String address) {
+        super(email, name, password);
+        this.cpf = cpf;
+        this.phone = phone;
+        this.address = address;
+    }
 
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-	
-	
+    public Owner() {
+        super();
+    }
 }

@@ -18,62 +18,22 @@ import javax.validation.constraints.NotEmpty;
 @Builder @Data @AllArgsConstructor @NoArgsConstructor
 public class Contact {
 
-	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(name = "message")
-	private String message;
+    @Column(name = "message")
+    private String message;
 
-	@Column(name = "name")
-	@NotEmpty(message = "The name cannot be empty")
-	private String name;
+    @Column(name = "name")
+    @NotEmpty(message = "The name cannot be empty")
+    private String name;
 
-	@Column(name = "email")
-	private String email;
+    @Column(name = "email")
+    private String email;
 
-	@Column(name = "number")
-	private String number;
+    @Column(name = "number")
+    private String number;
 
-
-	public Long getId() {
-		return id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public String getNumber() {
-		return number;
-	}
-
-	public void setId(Long idProperty) {
-		this.id = idProperty;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public void setNumber(String number) {
-		this.number = number;
-	}
 }

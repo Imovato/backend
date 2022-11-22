@@ -2,6 +2,7 @@ package com.unipampa.crud.controller;
 
 import com.unipampa.crud.interfaces.service.IContactService;
 import com.unipampa.crud.model.Contact;
+import com.unipampa.crud.model.Customer;
 import com.unipampa.util.ContactCreator;
 import com.unipampa.util.ContactDTO1;
 import com.unipampa.util.ContactPut;
@@ -97,8 +98,8 @@ class ContactControllerTest {
     @Test
     @DisplayName("Update return contact when successful")
     void update_ReturnContact_WhenSuccessful() {
-        Contact contact = contactController.updateContact(ContactPut.createContactPutRequestBody());
-        Assertions.assertThat(contact).isNotNull().isEqualTo(ContactCreator.createValidUpdateContact());
+        Contact contact = contactController.updateContact(ContactPut.createContactPutRequestBody()).getBody();
+        Assertions.assertThat(contact.getId()).isNotNull().isEqualTo(ContactCreator.createValidUpdateContact().getId());
 
     }
 
