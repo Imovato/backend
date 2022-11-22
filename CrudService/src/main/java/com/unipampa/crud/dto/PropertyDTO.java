@@ -1,5 +1,8 @@
 package com.unipampa.crud.dto;
 
+import lombok.Builder;
+
+
 public class PropertyDTO {
 
 	private Long idProperty;
@@ -20,6 +23,13 @@ public class PropertyDTO {
 
 	public PropertyDTO() {
 
+	}
+	@Builder
+	public PropertyDTO(Long idProperty, String adress, String name, String city){
+		this.idProperty = idProperty;
+		this.adress = adress;
+		this.name = name;
+		this.city = city;
 	}
 
 	public PropertyDTO(Long idProperty, String name, float area, String neighborhood, String codAddress, String city,

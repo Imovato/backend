@@ -25,26 +25,26 @@ import java.util.List;
 
 public class UserControllerTest {
 
-    @InjectMocks
-    private UserController userController;
-    @Mock
-    private IUserService iUserService;
+@InjectMocks
+private UserController userController;
+@Mock
+private IUserService iUserService;
 
-    @BeforeEach
-    void setUp(){
-        BDDMockito.when(iUserService.findAllUsers())
-                .thenReturn(Arrays.asList(UserCreator.createValidUser()));
+@BeforeEach
+void setUp(){
+    BDDMockito.when(iUserService.findAllUsers())
+            .thenReturn(Arrays.asList(UserCreator.createValidUser()));
 
-        BDDMockito.when(iUserService.findUserById(ArgumentMatchers.anyLong()))
-                .thenReturn(UserCreator.createValidUser());
+    BDDMockito.when(iUserService.findUserById(ArgumentMatchers.anyLong()))
+            .thenReturn(UserCreator.createValidUser());
 
-        BDDMockito.doNothing().when(iUserService).saveUser(ArgumentMatchers.any(User.class));
+    BDDMockito.doNothing().when(iUserService).saveUser(ArgumentMatchers.any(User.class));
 
-        BDDMockito.when(iUserService.updateCustomer(ArgumentMatchers.any())) //rever aqui
-                .thenReturn((Customer) UserCreator.createValidUpdateUser());
+    BDDMockito.when(iUserService.updateCustomer(ArgumentMatchers.any())) //rever aqui
+            .thenReturn((Customer) UserCreator.createValidUpdateUser());
 
-        BDDMockito.doNothing().when(iUserService).deleteUser(ArgumentMatchers.anyLong());
-    }
+    BDDMockito.doNothing().when(iUserService).deleteUser(ArgumentMatchers.anyLong());
+}
 
     @Test
     @DisplayName("ListAll returns list of users when successful")
@@ -64,27 +64,29 @@ public class UserControllerTest {
         BDDMockito.when(iUserService.findAllUsers())
                 .thenReturn(Collections.emptyList());
 
-        List<User> users = (List<User>) userController.getAllUsers().getBody();
-        Assertions.assertThat(users)
-                .isNotNull()
-                .isEmpty();
-    }
+@Test
+@DisplayName("ListAll returns an empty list of users when an user is not found")
+void listAll_ReturnsEmptyListOfAnime_WhenAnimeIsNotFound() {
+    BDDMockito.when(iUserService.findAllUsers())
+            .thenReturn(Collections.emptyList());
 
-    @Test
-    @DisplayName("Find By Id return user when successful")
-    void findById_ReturnUser_WhenSuccessful() {
-        Long expectedId = UserCreator.createValidUser().getId();
+    List<User> users = (List<User>) userController.getAllUsers().getBody();
+    Assertions.assertThat(users)
+            .isNotNull()
+            .isEmpty();
+}
 
-        User user = (User) userController.getCustomerById(String.valueOf(1L)).getBody();
+@Test
+@DisplayName("Find By Id return user when successful")
+void findById_ReturnUser_WhenSuccessful() {
+    Long expectedId = UserCreator.createValidUser().getId();
 
-        Assertions.assertThat(user)
-                .isNotNull();
-        Assertions.assertThat(user.getId()).isNotNull().isEqualTo(expectedId);
-    }
+    User user = (User) userController.getCustomerById(String.valueOf(1L)).getBody();
 
-    @Test
-    @DisplayName("Save user when successful")
-    void save_User_WhenSuccessful() {
+    Assertions.assertThat(user)
+            .isNotNull();
+    Assertions.assertThat(user.getId()).isNotNull().isEqualTo(expectedId);
+}
 
         Assertions.assertThatCode(() -> userController.saveCustomer(UserDTO1.createUserPostRequestBody()))
                 .doesNotThrowAnyException();
@@ -93,3 +95,4 @@ public class UserControllerTest {
         Assertions.assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
 }*/
+

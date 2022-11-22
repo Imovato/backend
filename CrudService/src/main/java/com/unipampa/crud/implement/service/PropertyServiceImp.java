@@ -2,6 +2,12 @@ package com.unipampa.crud.implement.service;
 
 import java.util.List;
 
+import com.unipampa.crud.dto.PropertyDTO;
+import com.unipampa.crud.implement.service.impl.ApartmentSave;
+import com.unipampa.crud.implement.service.impl.GroundSave;
+import com.unipampa.crud.implement.service.impl.HouseSave;
+import com.unipampa.crud.interfaces.service.StrategySaveProperty;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +25,8 @@ public class PropertyServiceImp implements IPropertyService {
 
 	private PropertyRepository propertyRepository;
 	private PropertySender propertySender;
+
+	private StrategySaveProperty strategySaveProperty;
 
 	@Autowired
 	public PropertyServiceImp(PropertyRepository repository, PropertySender sendMessage) {
@@ -87,6 +95,21 @@ public class PropertyServiceImp implements IPropertyService {
 	@Override
 	public Property updateProperty(Property property) {
 		return propertyRepository.save(property);
+	}
+
+	@Override
+	public Property strategySave(PropertyDTO propertyDTO){
+
+		if(propertyDTO.getRooms() == null) {
+			strategySaveProperty = new GroundSave();
+			return (Property) strategySaveProperty;
+		} else if (propertyDTO.getBlock() == null) {
+			strategySaveProperty = new HouseSave();
+			return (Property) strategySaveProperty;
+		} else {
+			strategySaveProperty = new ApartmentSave();
+			return (Property) strategySaveProperty;
+		}
 	}
 
 }
