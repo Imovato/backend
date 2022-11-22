@@ -57,7 +57,7 @@ public class UserControllerTest {
                 .hasSize(1);
         Assertions.assertThat(users.get(0).getName()).isEqualTo(expectedName);
     }
-
+    /*
     @Test
     @DisplayName("ListAll returns an empty list of users when an user is not found")
     void listAll_ReturnsEmptyListOfAnime_WhenAnimeIsNotFound() {
@@ -83,13 +83,13 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("Save contact when successful")
-    void save_Contact_WhenSuccessful() {
+    @DisplayName("Save user when successful")
+    void save_User_WhenSuccessful() {
 
         Assertions.assertThatCode(() -> userController.saveCustomer(UserDTO1.createUserPostRequestBody()))
                 .doesNotThrowAnyException();
         ResponseEntity<Void> entity = userController.saveCustomer(UserDTO1.createUserPostRequestBody());
         Assertions.assertThat(entity).isNotNull();
         Assertions.assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-    }
+    }*/
 }

@@ -40,11 +40,19 @@ public class UserController {
 
 	// Find all users
 	@GetMapping("/all")
-	@ApiOperation(value = "Retorna todos os usuarios cadastrados")
+	@ApiOperation(value = "Retorna todos os usuários cadastrados")
+	public ResponseEntity<List<User>> getAllUsers() {
+		List<User> users = userService.findAllUsers();
+		return ResponseEntity.status(HttpStatus.OK).body(users);
+	}
+
+	/*
 	public ResponseEntity<?> getAllUsers() {
 		List<User> users = userService.findAllUsers();
 		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
+	*/
+
 
 	// Add an employee user
 	@PostMapping("/employee/add")

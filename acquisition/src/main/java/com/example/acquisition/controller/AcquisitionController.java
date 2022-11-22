@@ -57,16 +57,6 @@ public class AcquisitionController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(acquisition);
 	}
 
-    /*
-    			Acquisition acquisition = new Acquisition();
-                acquisition.setData(LocalDate.now());
-				acquisition.setProperty(property);
-				acquisition.setUser(user);
-				acquisition.setValue(property.getPrice());
-				acquisitionService.save(acquisition);
-				property.setStatus(Status.SOLD);
-    */
-
 	@GetMapping("/user/find/{id}")
 	@ApiOperation(value = "Encontra acquisitions através do id de um usuário")
 	public ResponseEntity<?> getAcquisitionsByUserId(@PathVariable("id") Long id) {

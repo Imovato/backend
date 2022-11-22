@@ -1,12 +1,14 @@
 package com.unipampa.util;
 
 import com.unipampa.crud.model.Contact;
+import com.unipampa.crud.model.Customer;
 import com.unipampa.crud.model.User;
 
 public class UserCreator {
 
     public static User createUserToSaved() {
         return User.builder()
+                .id(1L)
                 .name("Mateus Balda")
                 .email("mateusbalda89@gmail.com")
                 .build();
