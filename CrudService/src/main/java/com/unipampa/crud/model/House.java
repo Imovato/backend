@@ -1,6 +1,5 @@
 package com.unipampa.crud.model;
 
-import lombok.Builder;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;

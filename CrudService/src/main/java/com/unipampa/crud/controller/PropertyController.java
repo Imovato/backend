@@ -49,7 +49,7 @@ public class PropertyController {
 	public ResponseEntity<Void> saveProperty(@RequestBody PropertyDTO propertyDTO) {
 		
 		if(propertyDTO.getRooms() == null) {
-			Ground ground = (Ground) Ground.builder()
+			Ground ground = Ground.builder()
 					.area(propertyDTO.getArea())
 					.name(propertyDTO.getName())
 					.neighborhood(propertyDTO.getNeighborhood())
