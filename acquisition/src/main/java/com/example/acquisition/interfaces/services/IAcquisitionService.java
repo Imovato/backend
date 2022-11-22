@@ -9,6 +9,7 @@ public interface IAcquisitionService{
 	void save(Acquisition acquisition);
 	List<Acquisition> findAllAcquisitionsByUser(User user);
     Acquisition findAcquisitionByProperty(Property property);
+	Acquisition findAcquisitionById(Long id);
 
 	/*Boolean validarCpf(User user);
 	Boolean validaRenda(User user, Property property);

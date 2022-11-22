@@ -34,4 +34,9 @@ public class AcquisitionServiceImp implements IAcquisitionService{
 	public Acquisition findAcquisitionByProperty(Property property) {
 		return acquisitionRepository.findAcquisitionByProperty(property);
 	}
+
+	@Override
+	public Acquisition findAcquisitionById(Long id) {
+		return acquisitionRepository.findAcquisitionById(id);
+	}
 }

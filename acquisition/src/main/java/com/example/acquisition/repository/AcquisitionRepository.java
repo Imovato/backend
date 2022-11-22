@@ -15,4 +15,7 @@ public interface AcquisitionRepository extends JpaRepository<Acquisition, Long> 
     List<Acquisition> findAllAcquisitionsByUser(User user);
 
     Acquisition findAcquisitionByProperty(Property property);
+
+    Acquisition findAcquisitionById(Long id);
+
 }
