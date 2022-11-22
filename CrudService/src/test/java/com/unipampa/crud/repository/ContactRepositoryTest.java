@@ -45,6 +45,7 @@ class ContactRepositoryTest {
         Assertions.assertThat(contactSaved.getId()).isNotNull();
         Assertions.assertThat(contactUpdated.getName()).isEqualTo(contactToBeSaved.getName());
     }
+
     @Test
     @DisplayName("Deletes removes contact when Successful")
     void delete_RemovesContact_WhenSuccessful(){
