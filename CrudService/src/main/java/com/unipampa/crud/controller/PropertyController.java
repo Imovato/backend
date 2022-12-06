@@ -267,20 +267,6 @@ public class PropertyController {
 		return new ResponseEntity<>(ground, HttpStatus.OK);
 	}
 
-	/*
-	ground.setArea(groundDto.getArea());
-		ground.setName(groundDto.getName());
-		ground.setNeighborhood(groundDto.getNeighborhood());
-		ground.setCodAddress(groundDto.getCodAddress());
-		ground.setCity(groundDto.getCity());
-		ground.setDescription(groundDto.getDescription());
-		ground.setAdress(groundDto.getAdress());
-		ground.setState(groundDto.getState());
-		ground.setPrice(groundDto.getPrice());
-		ground.setNumber(groundDto.getNumber());
-		ground.setAmount(groundDto.getAmount());
-	 */
-
 	@GetMapping("ground/all")
 	@ApiOperation(value = "Retorna uma lista de terrenos")
 	public ResponseEntity<?> getAllGrounds() {

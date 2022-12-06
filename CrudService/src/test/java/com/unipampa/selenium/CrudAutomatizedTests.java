@@ -1,34 +1,41 @@
 package com.unipampa.selenium;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.After;
+import org.junit.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static org.junit.Assert.assertEquals;
 
-/**
- * @author <João Villa>
- * @version 1.0
- */
-
 public class CrudAutomatizedTests {
-
+/*
     private WebDriver driver;
     @Before
     public void before() {
         System.setProperty("webdriver.chrome.driver", "Driver\\chromedriver.exe");
         driver = new ChromeDriver();
     }
+*/
+    public CrudAutomatizedTests() {
+    }
 
+        @BeforeClass
+        public static void setUpClass() {
+        }
+
+        @AfterClass
+        public static void tearDownClass() {
+        }
     @Test
-    public void TestAdicionandoNovoApartamento(){
+    public void TestAdicionandoNovoApartamento() {
+        System.setProperty("webdriver.chrome.driver", "C:\\Users\\Usuario\\Documents\\chromedriver.exe");
+        WebDriver driver = new ChromeDriver();
         driver.get("http://localhost:3000/");
+
         driver.findElement(By.xpath("//div[@id='root']/div/div/section/div/a/button/p")).click();
         driver.findElement(By.xpath("//select[@id='Tipo']")).click();
         driver.findElement(By.id("Tipo")).sendKeys("Apartamento");

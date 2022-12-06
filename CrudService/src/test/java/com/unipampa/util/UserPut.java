@@ -10,6 +10,6 @@ public class UserPut {
                 .name(UserCreator.createValidUpdateUser().getName())
                 .build();
     }
-}*/
+}
 
 }*/
