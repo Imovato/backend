@@ -40,40 +40,22 @@ public class AcquisitionController {
 	public ResponseEntity<Acquisition> saveAcquisition(Long idProperty, Long idUser) {
 		Property property = propertyService.findPropertyById(idProperty);
 		User user = userService.findUserById(idUser);
+        Acquisition acquisition = null;
 
-        //Acquisition acquisition = null;
 		userService.validateUser(user, property);
 
-				Acquisition acquisition = new Acquisition();
-				acquisition.setData(LocalDate.now());
-				acquisition.setProperty(property);
-				acquisition.setUser(user);
-				acquisition.setValue(property.getPrice());
+			acquisition = Acquisition.builder()
+				.data(LocalDate.now())
+				.property(property)
+				.user(user)
+				.value(property.getPrice())
+				.build();
+
 				acquisitionService.save(acquisition);
 				property.setStatus(Status.SOLD);
 				propertyService.updateProperty(property);
 		return ResponseEntity.status(HttpStatus.CREATED).body(acquisition);
 	}
-
-    /*
-                acquisition.setData(LocalDate.now());
-				acquisition.setProperty(property);
-				acquisition.setUser(user);
-				acquisition.setValue(property.getPrice());
-				acquisitionService.save(acquisition);
-				property.setStatus(Status.SOLD);
-    */
-
-	/*
-
-	acquisition = Acquisition.builder()
-                        .data(LocalDate.now())
-                        .property(property)
-                        .user(user)
-                        .value(property.getPrice())
-                        .build();
-	*/
-
 
 	@GetMapping("/user/find/{id}")
 	@ApiOperation(value = "Encontra acquisitions através do id de um usuário")
