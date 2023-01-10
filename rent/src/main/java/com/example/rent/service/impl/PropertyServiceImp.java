@@ -3,13 +3,15 @@ package com.example.rent.service.impl;
 import com.example.rent.service.interfaces.IPropertyService;
 import com.example.rent.model.Property;
 import com.example.rent.repository.PropertyRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class PropertyServiceImp implements IPropertyService {
-    @Autowired
-    private PropertyRepository propertyRepository;
+
+    private final PropertyRepository propertyRepository;
 
     @Override
     public Property findPropertyById(Long id) {

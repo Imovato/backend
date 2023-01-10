@@ -6,10 +6,11 @@ server:
 spring:
   application:
     name: rentService
+  datasource:
+    url: jdbc:mysql://localhost:3306/rent_db?useTimezone=true&serverTimezone=UTC
+    username: root
+    password: admin
   jpa:
-    #defer-datasource-initialization: true
-    #generate-ddl: true
-    show-sql: true
     hibernate:
       ddl-auto: update
     properties:
@@ -17,16 +18,13 @@ spring:
       dialect: org.hibernate.dialect.MySQL8Dialect
   jmx:
     enabled: false
-  datasource:
-    url: jdbc:mysql://localhost:3306/rent_db?useTimezone=true&serverTimezone=UTC
-    username: root
-    password: admin
 
   rabbitmq:
     host:  localhost
     port: 5672
     username: guest
     password: guest
+
   sleuth:
     sampler:
       probability: 1.0
@@ -44,29 +42,35 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8087/discovery/eureka
 
-resilience4j:
-  retry:
-    instances:
-      default:
-        max-attempts: 5
-        wait-duration: 1s
-        enable-exponential-backoff: true
-      retrySave:
-        max-attempts: 10
-        wait-duration: 1s
-        enable-exponential-backoff: true
-  ratelimiter:
-    instances:
-      default:
-        limit-for-period: 2
-        limit-refresh-period: 10s
-  bulkhead:
-    instances:
-      default:
-        max-concurrent-calls: 10
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
 
-  circuitbreaker:
-    instances:
-      default:
-        minimum-number-of-calls: 4
-        sliding-window-size: 8
+#resilience4j:
+#  retry:
+#    instances:
+#      default:
+#        max-attempts: 5
+#        wait-duration: 1s
+#        enable-exponential-backoff: true
+#      retrySave:
+#        max-attempts: 10
+#        wait-duration: 1s
+#        enable-exponential-backoff: true
+#  ratelimiter:
+#    instances:
+#      default:
+#        limit-for-period: 2
+#        limit-refresh-period: 10s
+#  bulkhead:
+#    instances:
+#      default:
+#        max-concurrent-calls: 10
+#
+#  circuitbreaker:
+#    instances:
+#      default:
+#        minimum-number-of-calls: 4
+#        sliding-window-size: 8

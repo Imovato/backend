@@ -6,9 +6,11 @@ import java.util.List;
 
 public interface IRentService {
 	
-	void saveRent(Rent rent);
-	Rent updateRent(Rent rent);
-	Rent getRentById(Long id);
+	void save(Rent rent);
+	Rent replace(Rent rent);
+	Rent findByIdOrThrowBadRequestException(Long id);
+	public void delete(Long id);
+	public List<Rent> listAll();
 	List<Rent> findAllRentsByUser(Customer customer);
 
 	String contractTime(Rent rent);

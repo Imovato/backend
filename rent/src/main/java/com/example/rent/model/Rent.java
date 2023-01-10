@@ -8,43 +8,40 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "TB_RENT")
-@Data @AllArgsConstructor @NoArgsConstructor @Builder @ToString
+@Table(name = "tbl_rent")
+@Data @AllArgsConstructor @NoArgsConstructor @Builder
 public class Rent implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_rent")
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "id_customer")
     private Customer customer;
 
-    /*@OneToOne()
-    private Property property;*/
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_property")
     private Property property;
 
-   /* @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_user")
-    private Customer customer;*/
-
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
-    @DateTimeFormat(pattern="dd/MM/yyyy")
-    @Column(columnDefinition = "DATE", name = "startDateRent", nullable = false)
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate startDateRent;
 
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
-    @DateTimeFormat(pattern="dd/MM/yyyy")
-    @Column(columnDefinition = "DATE", name = "endDateRent", nullable = false)
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate endDateRent;
 
-    @Column(name = "value", nullable = false)
-    private Double value;
-    private Integer amount;
-    private Integer expirationDay;
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private LocalDate dateAdjustmentIGPM;
     private Double iptu;
+    private Double water;
+    private Double energy;
+    private Double condominium;
+    @Column(nullable = false)
+    private Double value;
     @Column(columnDefinition = "TEXT")
     private String description;
 

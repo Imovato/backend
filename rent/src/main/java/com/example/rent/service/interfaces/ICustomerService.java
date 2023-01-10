@@ -5,6 +5,5 @@ import com.example.rent.model.Property;
 
 public interface ICustomerService {
     Customer findCustomerById(Long id);
-    Customer findUserById(Long id);
     void validateCustomer(Customer customer, Property property);
 }

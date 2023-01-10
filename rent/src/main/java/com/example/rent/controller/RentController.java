@@ -4,137 +4,91 @@ import com.example.rent.dto.RentDto;
 import com.example.rent.dto.RentDtoUpdate;
 import com.example.rent.enums.Status;
 import com.example.rent.exceptions.ValidationException;
-import com.example.rent.service.impl.RentServiceImp;
-import com.example.rent.service.interfaces.IPropertyService;
-import com.example.rent.service.interfaces.IRentService;
-import com.example.rent.service.interfaces.ICustomerService;
+import com.example.rent.model.Customer;
 import com.example.rent.model.Property;
 import com.example.rent.model.Rent;
-import com.example.rent.model.Customer;
-import com.example.rent.service.validate.ValidateAvailableServiceImp;
-import com.example.rent.service.validate.ValidateCpfServiceImp;
-import com.example.rent.service.validate.ValidateGuarantorServiceImp;
-import com.example.rent.service.validate.ValidateSalaryServiceImp;
-import io.github.resilience4j.bulkhead.annotation.Bulkhead;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
-import io.github.resilience4j.retry.annotation.Retry;
+import com.example.rent.service.interfaces.ICustomerService;
+import com.example.rent.service.interfaces.IPropertyService;
+import com.example.rent.service.interfaces.IRentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import lombok.var;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @RequestMapping("/rent")
-@Api(value = "MICROSERVICE Rent")
-@Slf4j
-@AllArgsConstructor
+@Api(value = "Microsserviço aluguel")
+@RequiredArgsConstructor
 public class RentController {
 
-    private IRentService rentService;
-    private IPropertyService propertyService;
-    private ICustomerService customerService;
+    private final IRentService rentService;
+    private final IPropertyService propertyService;
+    private final ICustomerService customerService;
 
+    //@Retry(name = "retrySave")
     @PostMapping("/save")
     @ApiOperation(value = "Salva um arrendamento/aluguel")
-    @Retry(name = "retrySave")
-    public ResponseEntity<Rent> saveRent(Long idProperty, Long idCustomer, @RequestBody RentDto rentDto) throws ValidationException {
-        Property property = propertyService.findPropertyById(idProperty);
-        Customer customer = customerService.findCustomerById(idCustomer);
+    public ResponseEntity<Rent> save(@RequestBody @Valid RentDto rentDto) throws ValidationException {
+        Property property = propertyService.findPropertyById(rentDto.getId_property());
+        Customer customer = customerService.findCustomerById(rentDto.getId_customer());
 
-        customerService.validateCustomer(customer, property);
+        //customerService.validateCustomer(customer, property);
 
         Rent rent = Rent.builder()
-                .startDateRent(LocalDate.now())
-                .endDateRent(LocalDate.now().plusYears(1))
                 .customer(customer)
                 .property(property)
-                .value(property.getPrice())
+                .endDateRent(LocalDate.now().plusYears(1))
+                .dateAdjustmentIGPM(rentDto.getDateAdjustmentIGPM())
                 .iptu(rentDto.getIptu())
-                .expirationDay(rentDto.getExpirationDay())
+                .water(rentDto.getWater())
+                .energy(rentDto.getEnergy())
+                .condominium(rentDto.getCondominium())
+                .value(property.getPrice())
                 .description(rentDto.getDescription())
                 .build();
-        rentService.saveRent(rent);
+        rentService.save(rent);
         property.setStatus(Status.RENTED);
         propertyService.updateProperty(property);
-        log.info(rentService.contractTime(rent));
-        return ResponseEntity.status(HttpStatus.CREATED).body(rent);
+        return new ResponseEntity<>(rent, HttpStatus.CREATED);
     }
 
-    @Retry(name = "default")
-    @PutMapping("/update")
+    //@Retry(name = "default")
+    @PutMapping("/replace")
     @ApiOperation(value = "Atualiza um arrendamento/aluguel")
-    public ResponseEntity<Rent> updateRent(Long idRent, @RequestBody RentDtoUpdate rentDtoUpdate) {
-        Rent rent = rentService.getRentById(idRent);
+    public ResponseEntity<Void> replace(@RequestBody RentDtoUpdate rentDtoUpdate) {
+        Rent rent = rentService.findByIdOrThrowBadRequestException(rentDtoUpdate.getId_rent());
         rent.setValue(rentDtoUpdate.getValue());
-        rent.setExpirationDay(rentDtoUpdate.getExpirationDay());
         rent.setIptu(rentDtoUpdate.getIptu());
         rent.setDescription(rentDtoUpdate.getDescription());
-        rentService.updateRent(rent);
-        return ResponseEntity.status(HttpStatus.OK).body(rent);
+        rentService.replace(rent);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @Retry(name = "default")
+   // @Retry(name = "default")
     @GetMapping("/find/{id}")
     @ApiOperation(value = "Pega um arrendamento/aluguel pelo id")
-    public ResponseEntity<Rent> getRentById(@PathVariable("id") Long id) {
-        Rent rentFind = rentService.getRentById(id);
+    public ResponseEntity<Rent> findById(@PathVariable("id") Long id) {
+        Rent rentFind = rentService.findByIdOrThrowBadRequestException(id);
         if (rentFind == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(rentFind);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(rentFind);
+        return ResponseEntity.ok(rentFind);
     }
 
-    @Retry(name = "default")
+   // @Retry(name = "default")
     @GetMapping("/user/find/{id}")
     @ApiOperation(value = "Busca aluguéis através do id de um usuário")
     public ResponseEntity<List<Rent>> getAcquisitionsByUserId(@PathVariable("id") Long idUser) {
-        Customer customer = customerService.findUserById(idUser);
+        Customer customer = customerService.findCustomerById(idUser);
         List<Rent> rents = rentService.findAllRentsByUser(customer);
         if (rents.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(rents);
     }
-
-    @GetMapping("/foo-bar")
-    @Retry(name = "default", fallbackMethod = "fallBackMethod")
-    //@CircuitBreaker(name = "default", fallbackMethod = "fallBackMethod")
-    public String foobar() {
-        log.info("Request to foo-bar is received");
-        var response = new RestTemplate()
-                .getForEntity("http://localhost:8080/foo-bar", String.class);
-        return response.getBody();
-    }
-
-    @GetMapping("/foo-bar1")
-    @RateLimiter(name = "default")
-    //@Bulkhead(name = "default")
-    public String foobar1() {
-        log.info("Request to foo-bar is received");
-        return "Foo-Bar!!!";
-    }
-
-    @GetMapping("/foo-bar2")
-    @CircuitBreaker(name = "default", fallbackMethod = "fallBackMethod")
-    public String foobar2() {
-        log.info("Request to foo-bar is received");
-        var response = new RestTemplate()
-                .getForEntity("http://localhost:8080/foo-bar", String.class);
-        return response.getBody();
-    }
-
-    public String fallBackMethod(Exception ex) {
-        return "ERRO CAIU NO FALLBACKMETHOD";
-    }
-
 }

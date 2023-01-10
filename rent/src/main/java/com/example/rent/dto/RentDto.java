@@ -1,28 +1,29 @@
 package com.example.rent.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.example.rent.model.Customer;
+import com.example.rent.model.Property;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Column;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
-import java.util.Date;
 
-@Data @AllArgsConstructor @NoArgsConstructor @ToString
+@Data @Builder
+@AllArgsConstructor @NoArgsConstructor
 public class RentDto {
 
-    //private Long id;
-    //private LocalDate startDateRent;
-    //private LocalDate endDateRent;
-    //private Integer amount;
-    //private Double value;
-    private Integer expirationDay;
+    private Long id_property;
+    private Long id_customer;
+    private LocalDate startDateRent = LocalDate.now();
+    private LocalDate endDateRent;
+    @NotEmpty(message = "The start date rent cannot be empty")
+    private LocalDate dateAdjustmentIGPM;
     private Double iptu;
+    private Double water;
+    private Double energy;
+    private Double condominium;
+    private Double value;
     private String description;
-    //private Long idCostumer;
-    //private Long idProperty;
-
 }

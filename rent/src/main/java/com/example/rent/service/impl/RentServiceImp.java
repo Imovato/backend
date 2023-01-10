@@ -1,9 +1,11 @@
 package com.example.rent.service.impl;
 
+import com.example.rent.exceptions.BadRequestException;
 import com.example.rent.service.interfaces.IRentService;
 import com.example.rent.model.Rent;
 import com.example.rent.model.Customer;
 import com.example.rent.repository.RentRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.temporal.ChronoUnit;
@@ -11,26 +13,34 @@ import java.time.temporal.Temporal;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class RentServiceImp implements IRentService {
 
-    @Autowired
-    private RentRepository rentRepository;
+    private final RentRepository rentRepository;
 
     @Override
-    public void saveRent(Rent rent) {
+    public void save(Rent rent) {
         rentRepository.save(rent);
     }
 
     @Override
-    public Rent updateRent(Rent rent) {
+    public Rent replace(Rent rent) {
         return rentRepository.save(rent);
     }
 
     @Override
-    public Rent getRentById(Long id) {
-        return rentRepository.findRentById(id);
+    public Rent findByIdOrThrowBadRequestException(Long id) {
+        return rentRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException("Rent not found"));
     }
 
+    public void delete(Long id) {
+        rentRepository.delete(findByIdOrThrowBadRequestException(id));
+    }
+
+    public List<Rent> listAll(){
+        return rentRepository.findAll();
+    }
     @Override
     public List<Rent> findAllRentsByUser(Customer customer) {
         return rentRepository.findAllRentsByCustomer(customer);
@@ -42,20 +52,5 @@ public class RentServiceImp implements IRentService {
         sb.append(time).append(" MESES");
         return sb.toString();
     }
-
-    /*private boolean expirationDay(Rent rent) {
-        Integer expirationDay = rent.getExpirationDay();
-        LocalDate now = LocalDate.now();
-        if (now.getDayOfMonth() > expirationDay ) return true;
-        return false;
-    }
-
-
-    /*public void calculateLatePayment(Rent rent) {
-        if (expirationDay(rent)) {
-            Double valueWithRate = rent.getValue();
-        }
-    } */
-
 }
 

@@ -1,4 +1,4 @@
-package com.example.rent.swagger.config;
+package com.example.rent.swagger;
 
 import java.util.ArrayList;
 import org.springframework.context.annotation.Bean;
@@ -33,8 +33,8 @@ public class SwaggerConfig {
                 "API de aluguel.",
                 "1.0",
                 "Terms of Service",
-                new Contact("Samuel Modesto", "https://www.linkedin.com/in/samuelmodesto/",
-                        "samuelmodestoes@gmail.com"),
+                new Contact("Samuel Modesto, Mateus Balda", "https://www.linkedin.com/in/samuelmodesto/",
+                        "{samuelmodestoes, mateusbalda89}@gmail.com"),
                 "Apache License Version 2.0",
                 "https://www.apache.org/licesen.html", new ArrayList<VendorExtension>()
         );
