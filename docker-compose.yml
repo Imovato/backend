@@ -1,14 +1,14 @@
 version: '3'
 services:
-  db:
-    image: mysql
-    ports: 
-      - 3306:3306
-    volumes: 
-      - ./storage/db:/var/lib/mysql
-      - ./scripts:/docker-entrypoint-initdb.d
-    environment:
-      - MYSQL_ROOT_PASSWORD=admin
+  # db:
+  #   image: mysql
+  #   ports: 
+  #     - 3306:3306
+  #   volumes: 
+  #     - ./storage/db:/var/lib/mysql
+  #     # - ./scripts:/docker-entrypoint-initdb.d
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=admin
   rabbitmq:
     image: rabbitmq:3-management
     ports:

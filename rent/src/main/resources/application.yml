@@ -22,8 +22,8 @@ spring:
   rabbitmq:
     host:  localhost
     port: 5672
-    username: guest
-    password: guest
+    username: admin
+    password: admin
 
   sleuth:
     sampler:
@@ -47,6 +47,17 @@ logging:
     org:
       hibernate:
         SQL: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, health, metrics
+
+info:
+  app: Microsserviço de Aluguel
+  website: bla
+  github: https://github.com/imovato
 
 #resilience4j:
 #  retry:
