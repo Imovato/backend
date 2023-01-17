@@ -1,10 +1,9 @@
 package com.example.rent.service.impl;
 
-import com.example.rent.service.interfaces.IPropertyService;
 import com.example.rent.model.Property;
 import com.example.rent.repository.PropertyRepository;
+import com.example.rent.service.interfaces.IPropertyService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service

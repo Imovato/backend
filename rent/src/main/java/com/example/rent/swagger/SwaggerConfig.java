@@ -1,5 +1,6 @@
 package com.example.rent.swagger;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,7 @@ public class SwaggerConfig {
 	@Bean
     public Docket ContaApi() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .directModelSubstitute(LocalDate.class, String.class)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.example.rent"))
                 .paths(PathSelectors.any())

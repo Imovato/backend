@@ -1,7 +1,9 @@
 package com.example.rent.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.io.Serializable;
@@ -26,15 +28,13 @@ public class Rent implements Serializable {
     private Property property;
 
     @DateTimeFormat(pattern="yyyy-MM-dd")
-    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate startDateRent;
 
     @DateTimeFormat(pattern="yyyy-MM-dd")
-    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate endDateRent;
 
     @DateTimeFormat(pattern="yyyy-MM-dd")
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @Column(name = "date_Adjustment_IGPM")
     private LocalDate dateAdjustmentIGPM;
     private Double iptu;
     private Double water;

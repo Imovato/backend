@@ -1,14 +1,14 @@
 package com.example.rent.service.impl;
 
-import com.example.rent.model.Property;
-import com.example.rent.service.interfaces.ICustomerService;
 import com.example.rent.model.Customer;
+import com.example.rent.model.Property;
 import com.example.rent.repository.CustomerRepository;
+import com.example.rent.service.interfaces.ICustomerService;
 import com.example.rent.service.interfaces.IValidationService;
 import com.example.rent.service.validate.ValidateCpfServiceImp;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.Arrays;
 import java.util.List;
 

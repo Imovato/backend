@@ -2,10 +2,20 @@ INSERT INTO tbl_property (id_property, price, salesman, status) values (1, 1000,
 INSERT INTO tbl_property (id_property, price, salesman, status) values (2, 1250, 'Thiago', 'AVAILABLE');
 INSERT INTO tbl_property (id_property, price, salesman, status) values (3, 1375, 'Aline', 'AVAILABLE');
 
-INSERT INTO tbl_guarantor (id_guarantor,address, cep, city, cpf, district, name, nationality, phone, profession, rg, uf) values (1,'Rua x','97677228','Alegrete Azul','04408178030','Lagoa Azul','Miro','Brasileiro','99989678','Administrador',1126629815,'RS');
-INSERT INTO tbl_guarantor (id_guarantor,address, cep, city, cpf, district, name, nationality, phone, profession, rg, uf) values (2,'Rua Y','97677229','Alegrete Verde','04408178031','Lagoa Preta','Mira','Brasileiro','99989679','Engenheiro',1126629816,'SP');
-INSERT INTO tbl_guarantor (id_guarantor,address, cep, city, cpf, district, name, nationality, phone, profession, rg, uf) values (3,'Rua Z','97677230','Alegrete Marrom','04408178032','Lagoa Vermelho','Miru','Brasileiro','99989680','Garçom',1126629817,'PA');
+insert into tbl_address (id_address, address, city, cpe, district, uf) values (1,'Bairro x', 'Alegrete', '97556565','Canudos','RS');
+insert into tbl_address (id_address, address, city, cpe, district, uf) values (2,'Bairro y', 'Alegreti', '97556565','Canudos','RS');
 
-INSERT INTO tbl_customer (id_customer,address, city, cpe, cpf, district, name, salary, uf, id_guarantor) values (1, 'Ivojohann', 'Novo Hamburgo', '97544228','044085556636','Canudos','Adão',1500, 'RS',1);
-INSERT INTO tbl_customer (id_customer,address, city, cpe, cpf, district, name, salary, uf, id_guarantor) values (2, 'Vera Cruz', 'Uruguaina', '97544229','044085557736','Villa','Eva',1550, 'SP',2);
-INSERT INTO tbl_customer (id_customer,address, city, cpe, cpf, district, name, salary, uf, id_guarantor) values (3, 'Indio Azul', 'Manoel Viana', '97555228','055095557736','Centro','Eva',1667, 'RO',3);
+insert into tbl_contact_info (id_contact, email, phone) VALUES (1, 'mateusbalda89@gmail.com', '55999896728');
+insert into tbl_contact_info (id_contact, email, phone) VALUES (2, 'mateusbalda85@gmail.com', '55999896730');
+
+insert into tbl_personal_info (id_personal, cpf, name) VALUES (1, '04408178055','Joao');
+insert into tbl_personal_info (id_personal, cpf, name) VALUES (2, '04408178040','Pedro');
+
+insert into tbl_guarantor (id_guarantor, nationality, profession, rg, id_address, id_contact, id_personal) values (1, 'Brasileiro','Pintor',112626565,1,1,1);
+insert into tbl_guarantor (id_guarantor, nationality, profession, rg, id_address, id_contact, id_personal) values (2, 'Brasileira','Atriz',112626570,2,2,2);
+
+insert into tbl_customer (id_customer, salary, id_address, id_guarantor, id_personal) values (1, 1500, 1, 1,1);
+insert into tbl_customer (id_customer, salary, id_address, id_guarantor, id_personal) values (2, 1500, 2, 2,1);
+
+insert into tbl_rent (id_rent, condominium, date_adjustment_igpm, description, end_date_rent, energy, iptu, start_date_rent, value, water, id_customer, id_property) values (1, 1500, '2023-01-16', 'adnasdasdas', '2024-01-20', 150, 50, '2023-01-16', 800, 80, 1, 1);
+

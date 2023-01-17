@@ -29,6 +29,10 @@ spring:
     sampler:
       probability: 1.0
 
+  jackson:
+    date-format: yyyy-MM-dd
+    time-zone: UTC
+
 crud:
   rabbitmq:
     exchange: crud.exchange

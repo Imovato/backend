@@ -1,5 +1,8 @@
 package com.example.rent.model;
 
+import com.example.rent.model.composite.Address;
+import com.example.rent.model.composite.ContactInformation;
+import com.example.rent.model.composite.PersonalInformation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,15 +19,16 @@ public class Guarantor implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_guarantor")
     private Long id;
-    private String name;
-    private String cpf;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_personal")
+    private PersonalInformation personalInformation;
     private Long rg;
     private String nationality;
     private String profession;
-    private String phone;
-    private String cep;
-    private String district;
-    private String address;
-    private String city;
-    private String uf;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_contact")
+    private ContactInformation contactInformation;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_address")
+    private Address address;
 }

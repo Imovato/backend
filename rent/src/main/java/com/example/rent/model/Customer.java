@@ -1,11 +1,11 @@
 package com.example.rent.model;
 
+import com.example.rent.model.composite.Address;
+import com.example.rent.model.composite.PersonalInformation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.br.CPF;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -18,21 +18,16 @@ public class Customer implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_customer")
     private Long id;
-    private String name;
-    private String cpe;
-    private String address;
-    private String city;
-    private String district;
-    private String uf;
-    private String cpf;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_personal")
+    private PersonalInformation personalInformation;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_address")
+    private Address address;
     private Double salary;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_guarantor")
     private Guarantor guarantor;
-
-//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JoinColumn(name = "customer_id")
-//    private List<Rent> rents = new ArrayList<>();
 
 }

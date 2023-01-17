@@ -60,7 +60,7 @@ public class ValidateCpfServiceImp implements IValidationService {
 
     @Override
     public void validate(Customer customer, Property property) throws ValidationException{
-        if (isCPF(customer.getCpf()) != true) {
+        if (isCPF(customer.getPersonalInformation().getCpf()) != true) {
             throw new ValidationException("CPF inválido");
         }
     }
