@@ -22,4 +22,9 @@ public class PropertyServiceImp implements IPropertyService {
          propertyRepository.save(property);
     }
 
+    @Override
+    public Property save(Property property){
+        return propertyRepository.save(property);
+    }
+
 }

@@ -27,6 +27,11 @@ public class CustomerServiceImp implements ICustomerService {
     }
 
     @Override
+    public Customer save(Customer customer) {
+        return customerRepository.save(customer);
+    }
+
+    @Override
     public void validateCustomer(Customer customer, Property property) {
         this.validations.forEach(element->element.validate(customer, property));
     }
