@@ -11,6 +11,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Data @Builder
@@ -39,6 +41,7 @@ public class RentDto {
     private Double water;
     private Double energy;
     private Double condominium;
+    @NotNull(message = "The value of rent cannot be empty")
     private Double value;
     private String description;
 }

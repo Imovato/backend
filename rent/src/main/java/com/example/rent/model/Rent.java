@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -40,7 +42,7 @@ public class Rent implements Serializable {
     private Double water;
     private Double energy;
     private Double condominium;
-    @Column(nullable = false)
+    @NotNull(message = "The value of rent cannot be empty")
     private Double value;
     @Column(columnDefinition = "TEXT")
     private String description;
