@@ -1,14 +1,34 @@
 pipeline {
     agent any
     stages {
-        stage ('Build Backend') {
+        stage ('Build Discovery') {
             steps {
-                bat 'mvn clean package -DskipTests=true'
+                dir('build-discovery') {
+                    git branch: 'feature/refactoring_service_rent', credentialsId: 'github_login', url: 'https://github.com/Imovato/backend/'
+                    bat 'mvn clean package -DskipTests=true'
+                }
             }
         }
-        stage ('Unit Tests') {
+        stage ('Deploy Discovery') {
             steps {
-                bat 'mvn test'
+                deploy adapters: [tomcat8(credentialsId: 'TomcatLogin', path: '', url: 'http://localhost:8001/')], contextPath: 'discovery', war: 'target/discovery-0.0.1-SNAPSHOT.war'
+            }
+        }
+
+        stage ('Build Rent') {
+            steps {
+                dir('build-rent') {
+                    git branch: 'feature/refactoring_service_rent', credentialsId: 'github_login', url: 'https://github.com/Imovato/backend/'
+                    bat 'mvn clean package -DskipTests=true'
+                }
+            }
+        }
+
+        stage ('Unit Tests-Rent') {
+            steps {
+                dir('build-rent'){
+                    bat 'mvn test'
+                }
             }
         }
          stage ('Sonar Analysis') {
@@ -21,47 +41,16 @@ pipeline {
                 }
             }
         }
-        stage ('Deploy Backend') {
+        stage ('Deploy Rent') {
             steps {
-                deploy adapters: [tomcat8(credentialsId: 'TomcatLogin', path: '', url: 'http://localhost:8001/')], contextPath: 'tasks-backend', war: 'target/tasks-backend.war'
+                deploy adapters: [tomcat8(credentialsId: 'TomcatLogin', path: '', url: 'http://localhost:8001/')], contextPath: 'rentService', war: 'target/rent-0.0.1-SNAPSHOT.war'
             }
         }
-        stage ('API Test') {
+        stage ('API Test-Rent') {
             steps {
-                dir('api-test') {
-                    git branch: 'main', credentialsId: 'github_login', url: 'https://github.com/matt-balda/tasks-api-test'
+                dir('api-test-rent') {
+                    git branch: 'feature/refactoring_service_rent', credentialsId: 'github_login', url: 'https://github.com/Imovato/backend/'
                     bat 'mvn test'
-                }
-            }
-        }
-        stage ('Deploy Frontend') {
-            steps {
-                dir('frontend') {
-                    git branch: 'master', credentialsId: 'github_login', url: 'https://github.com/matt-balda/tasks-frontend'
-                    bat 'mvn clean package'
-                    deploy adapters: [tomcat8(credentialsId: 'TomcatLogin', path: '', url: 'http://localhost:8001/')], contextPath: 'tasks', war: 'target/tasks.war'
-                }
-            }
-        }
-        stage ('Functional Test') {
-            steps {
-                dir('functional-test') {
-                    git branch: 'main', credentialsId: 'github_login', url: 'https://github.com/matt-balda/tasks-functional-test'
-                    bat 'mvn test'
-                }
-            }
-        }
-        stage ('Deploy Prod') {
-            steps {
-                bat 'docker-compose build'
-                bat 'docker-compose up -d'
-            }
-        }
-        stage ('Health Check') {
-            steps {
-                sleep(20)
-                dir('functional-test') {
-                    bat 'mvn verify -Dskip.surefire.tests'
                 }
             }
         }
