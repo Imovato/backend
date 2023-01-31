@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/rent")
-@Api(value = "Microsserviço aluguel")
+@Api(value = "Microserviço aluguel")
 @RequiredArgsConstructor
 public class RentController {
 
