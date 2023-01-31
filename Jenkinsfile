@@ -18,10 +18,11 @@ pipeline {
             }
         }
 
-
         stage ('Deploy Discovery') {
             steps {
-                deploy adapters: [tomcat8(credentialsId: 'TomcatLogin', path: '', url: 'http://localhost:8001/')], contextPath: 'discovery', war: 'target/discovery-0.0.1-SNAPSHOT.war'
+                dir('discovery') {
+                    deploy adapters: [tomcat8(credentialsId: 'TomcatLogin', path: '', url: 'http://localhost:8001/')], contextPath: 'discovery', war: 'target/discovery-0.0.1-SNAPSHOT.war'
+                }
             }
         }
 
