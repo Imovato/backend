@@ -19,7 +19,7 @@ pipeline {
         stage ('Deploy Discovery') {
             steps {
                 dir('discovery') {
-                    deploy adapters: [tomcat8(credentialsId: 'TomcatLogin', path: '', url: 'http://localhost:8001/')], contextPath: 'discovery/eureka', war: 'target/discovery-0.0.1-SNAPSHOT.war'
+                    deploy adapters: [tomcat8(credentialsId: 'TomcatLogin', path: '', url: 'http://localhost:8001/')], contextPath: 'discovery/eureka/', war: 'target/discovery-0.0.1-SNAPSHOT.war'
                 }
             }
         }
