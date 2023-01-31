@@ -10,13 +10,10 @@ pipeline {
                         userRemoteConfigs: [[
                             credentialsId: 'github_login',
                             url: 'https://github.com/imovato/backend/'
-                        ]],
-                        doGenerateSubmoduleConfigurations: false,
-                        extensions: [
-                            [$class: 'RelativeTargetDirectory', relativeTargetDir: 'discovery']
-                        ]
-                    ])
-                    bat 'mvn clean package -DskipTests=true'
+                        ]]])
+                    dir('discovery') {
+                        bat 'mvn clean package -DskipTests=true'
+                    }
                 }
             }
         }
