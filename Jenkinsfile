@@ -3,17 +3,15 @@ pipeline {
     stages {
         stage ('Build Discovery') {
             steps {
-                dir('build-discovery') {
-                    checkout([
-                        $class: 'GitSCM',
-                        branches: [[name: 'feature/refactoring_service_rent']],
-                        userRemoteConfigs: [[
-                            credentialsId: 'github_login',
-                            url: 'https://github.com/imovato/backend/'
-                        ]]])
-                    dir('discovery') {
-                        bat 'mvn clean package -DskipTests=true'
-                    }
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: 'feature/refactoring_service_rent']],
+                    userRemoteConfigs: [[
+                        credentialsId: 'github_login',
+                        url: 'https://github.com/imovato/backend/'
+                    ]]])
+                dir('discovery') {
+                    bat 'mvn clean package -DskipTests=true'
                 }
             }
         }
