@@ -5,21 +5,22 @@ pipeline {
             steps {
                 dir('build-discovery') {
                     checkout([
-                            $class: 'GitSCM',
-                            branches: [[name: 'feature/refactoring_service_rent']],
-                            userRemoteConfigs: [[
+                        $class: 'GitSCM',
+                        branches: [[name: 'feature/refactoring_service_rent']],
+                        userRemoteConfigs: [[
                             credentialsId: 'github_login',
                             url: 'https://github.com/imovato/backend/'
-                                                ]],
-                            doGenerateSubmoduleConfigurations: false,
-                                extensions: [
-                                [$class: 'RelativeTargetDirectory', relativeTargetDir: 'discovery']
-                                            ]
-                            ])
+                        ]],
+                        doGenerateSubmoduleConfigurations: false,
+                        extensions: [
+                            [$class: 'RelativeTargetDirectory', relativeTargetDir: 'discovery']
+                        ]
+                    ])
                     bat 'mvn clean package -DskipTests=true'
                 }
             }
         }
+
 
         stage ('Deploy Discovery') {
             steps {
