@@ -26,8 +26,7 @@ pipeline {
 
         stage ('Build Rent') {
             steps {
-                dir('build-rent') {
-                    git branch: 'feature/refactoring_service_rent', credentialsId: 'github_login', url: 'https://github.com/Imovato/backend/'
+                dir('rent') {
                     bat 'mvn clean package -DskipTests=true'
                 }
             }
@@ -35,7 +34,7 @@ pipeline {
 
         stage ('Unit Tests-Rent') {
             steps {
-                dir('build-rent'){
+                dir('rent'){
                     bat 'mvn test'
                 }
             }
@@ -57,8 +56,7 @@ pipeline {
         }
         stage ('API Test-Rent') {
             steps {
-                dir('api-test-rent') {
-                    git branch: 'feature/refactoring_service_rent', credentialsId: 'github_login', url: 'https://github.com/Imovato/backend/'
+                dir('tests-api') {
                     bat 'mvn test'
                 }
             }
