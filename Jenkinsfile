@@ -4,11 +4,23 @@ pipeline {
         stage ('Build Discovery') {
             steps {
                 dir('build-discovery') {
-                    git branch: 'feature/refactoring_service_rent', credentialsId: 'github_login', url: 'https://github.com/Imovato/backend/'
+                    checkout([
+                            $class: 'GitSCM',
+                            branches: [[name: 'feature/refactoring_service_rent']],
+                            userRemoteConfigs: [[
+                            credentialsId: 'github_login',
+                            url: 'https://github.com/imovato/backend/'
+                                                ]],
+                            doGenerateSubmoduleConfigurations: false,
+                                extensions: [
+                                [$class: 'RelativeTargetDirectory', relativeTargetDir: 'discovery']
+                                            ]
+                            ])
                     bat 'mvn clean package -DskipTests=true'
                 }
             }
         }
+
         stage ('Deploy Discovery') {
             steps {
                 deploy adapters: [tomcat8(credentialsId: 'TomcatLogin', path: '', url: 'http://localhost:8001/')], contextPath: 'discovery', war: 'target/discovery-0.0.1-SNAPSHOT.war'
