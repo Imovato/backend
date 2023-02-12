@@ -14,6 +14,8 @@ target/
 .sts4-cache
 
 ### IntelliJ IDEA ###
+mvnw.cmd
+mvnw
 .idea
 *.iws
 *.iml
