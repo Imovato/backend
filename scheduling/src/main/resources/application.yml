@@ -12,7 +12,7 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-      dialect: org.hibernate.dialect.MySQL8Dialect
+      dialect: org.hib  ernate.dialect.MySQL8Dialect
   jmx:
     enabled: false
   datasource:

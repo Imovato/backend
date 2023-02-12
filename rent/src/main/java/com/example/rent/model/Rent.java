@@ -1,91 +1,50 @@
 package com.example.rent.model;
 
-
-
-import java.util.Date;
-
-import javax.persistence.*;
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.time.LocalDate;
 
 @Entity
-public class Rent {
+@Table(name = "tbl_rent")
+@Data @AllArgsConstructor @NoArgsConstructor @Builder
+public class Rent implements Serializable {
 
-	@Id
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_rent")
+    private Long id;
 
-//	@DateTimeFormat(pattern = "MM/dd/yyy")
-//	@Column(name = "data", nullable = false)
-//	private Date data;
+    @ManyToOne
+    @JoinColumn(name = "id_customer")
+    private Customer customer;
 
-	@Column(name = "value", nullable = false)
-	private Double value;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_property")
+    private Property property;
 
-	private Integer amount;
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    private LocalDate startDateRent;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	private Property property;
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    private LocalDate endDateRent;
 
-	@ManyToOne(cascade = CascadeType.ALL)
-	private  User user;
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @Column(name = "date_Adjustment_IGPM")
+    private LocalDate dateAdjustmentIGPM;
+    private Double iptu;
+    private Double water;
+    private Double energy;
+    private Double condominium;
+    @NotNull(message = "The value of rent cannot be empty")
+    private Double value;
+    @Column(columnDefinition = "TEXT")
+    private String description;
 
-	public Rent() {
-	}
-
-	public Rent(Long id, Double value, Integer amount, Property property, User user) {
-		this.id = id;
-//		this.data = data;
-		this.value = value;
-		this.amount = amount;
-		this.property = property;
-		this.user = user;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-//	public Date getData() {
-//		return data;
-//	}
-
-//	public void setData(Date data) {
-//		this.data = data;
-//	}
-
-	public Double getValue() {
-		return value;
-	}
-
-	public void setValue(Double value) {
-		this.value = value;
-	}
-
-	public Integer getAmount() {
-		return amount;
-	}
-
-	public void setAmount(Integer amount) {
-		this.amount = amount;
-	}
-
-	public Property getProperty() {
-		return property;
-	}
-
-	public void setProperty(Property property) {
-		this.property = property;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
 }

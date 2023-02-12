@@ -7,7 +7,6 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.unipampa.crud.dto.PropertyDTO;
 import com.unipampa.crud.interfaces.service.IPropertyService;
 import com.unipampa.crud.model.Apartment;
@@ -28,7 +26,6 @@ import com.unipampa.crud.model.Ground;
 import com.unipampa.crud.model.House;
 import com.unipampa.crud.model.Property;
 import com.unipampa.crud.utils.FileUploadUtil;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -43,74 +40,70 @@ public class PropertyController {
 		this.propertyService = service;
 	}
 
-	// --------------------------------
-	// --- ALL PROPERTIES ENDPOINTS ---
-	// --------------------------------
 	
 	@PostMapping("/add")
 	@ApiOperation(value = "Salva uma propriedade definindo o seu tipo com base nas suas propriedades (e. g. se não houverem quartos será salvo como terreno)")
-	public ResponseEntity<?> saveProperty(@RequestBody PropertyDTO propertyDTO) {
+	public ResponseEntity<Void> saveProperty(@RequestBody PropertyDTO propertyDTO) {
 		
 		if(propertyDTO.getRooms() == null) {
-			Ground ground = new Ground();
-			ground.setArea(propertyDTO.getArea());
-			ground.setName(propertyDTO.getName());
-			ground.setNeighborhood(propertyDTO.getNeighborhood());
-			ground.setCodAddress(propertyDTO.getCodAddress());
-			ground.setCity(propertyDTO.getCity());
-			ground.setDescription(propertyDTO.getDescription());
-			ground.setAdress(propertyDTO.getAdress());
-			ground.setState(propertyDTO.getState());
-			ground.setPrice(propertyDTO.getPrice());
-			ground.setNumber(propertyDTO.getNumber());
-			ground.setAmount(propertyDTO.getAmount());
+			Ground ground = (Ground) Ground.builder()
+					.area(propertyDTO.getArea())
+					.name(propertyDTO.getName())
+					.neighborhood(propertyDTO.getNeighborhood())
+					.codAddress(propertyDTO.getCodAddress())
+					.city(propertyDTO.getCity())
+					.description(propertyDTO.getDescription())
+					.adress(propertyDTO.getAdress())
+					.state(propertyDTO.getState())
+					.price(propertyDTO.getPrice())
+					.number(propertyDTO.getNumber())
+					.amount(propertyDTO.getAmount()).build();
+		   // Property property = propertyService.strategySave(propertyDTO);
 			propertyService.saveProperty(ground);
-			return new ResponseEntity<>(ground, HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.CREATED);
 			
 		} else if (propertyDTO.getBlock() == null) {
-			House house = new House();
-			house.setArea(propertyDTO.getArea());
-			house.setName(propertyDTO.getName());
-			house.setNeighborhood(propertyDTO.getNeighborhood());
-			house.setCodAddress(propertyDTO.getCodAddress());
-			house.setCity(propertyDTO.getCity());
-			house.setDescription(propertyDTO.getDescription());
-			house.setAdress(propertyDTO.getAdress());
-			house.setState(propertyDTO.getState());
-			house.setPrice(propertyDTO.getPrice());
-			house.setNumber(propertyDTO.getNumber());
-			house.setRooms(propertyDTO.getRooms());
-			house.setAmount(propertyDTO.getAmount());
+			House house = House.builder()
+					.area(propertyDTO.getArea())
+					.name(propertyDTO.getName())
+					.neighborhood(propertyDTO.getNeighborhood())
+					.codAddress(propertyDTO.getCodAddress())
+					.city(propertyDTO.getCity())
+					.description(propertyDTO.getDescription())
+					.adress(propertyDTO.getAdress())
+					.state(propertyDTO.getState())
+					.price(propertyDTO.getPrice())
+					.number(propertyDTO.getNumber())
+					.rooms(propertyDTO.getRooms())
+					.amount(propertyDTO.getAmount()).build();
 			propertyService.saveProperty(house);
-			return new ResponseEntity<>(house, HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.CREATED);
 			
 		} else {
-			Apartment apartment = new Apartment();
-			apartment.setArea(propertyDTO.getArea());
-			apartment.setName(propertyDTO.getName());
-			apartment.setNeighborhood(propertyDTO.getNeighborhood());
-			apartment.setCodAddress(propertyDTO.getCodAddress());
-			apartment.setCity(propertyDTO.getCity());
-			apartment.setDescription(propertyDTO.getDescription());
-			apartment.setAdress(propertyDTO.getAdress());
-			apartment.setState(propertyDTO.getState());
-			apartment.setPrice(propertyDTO.getPrice());
-			apartment.setNumber(propertyDTO.getNumber());
-			apartment.setBlock(propertyDTO.getBlock());
-			apartment.setRooms(propertyDTO.getRooms());
-			apartment.setAmount(propertyDTO.getAmount());
+			Apartment apartment = Apartment.builder()
+					.area(propertyDTO.getArea())
+					.name(propertyDTO.getName())
+					.neighborhood(propertyDTO.getNeighborhood())
+					.codAddress(propertyDTO.getCodAddress())
+					.city(propertyDTO.getCity())
+					.description(propertyDTO.getDescription())
+					.adress(propertyDTO.getAdress())
+					.state(propertyDTO.getState())
+					.price(propertyDTO.getPrice())
+					.number(propertyDTO.getNumber())
+					.block(propertyDTO.getBlock())
+					.rooms(propertyDTO.getRooms())
+					.amount(propertyDTO.getAmount()).build();
 			propertyService.saveProperty(apartment);
-			return new ResponseEntity<>(apartment, HttpStatus.OK);	
-			
+			return new ResponseEntity<>(HttpStatus.CREATED);
 		}
-
 	}
 	
 	@GetMapping("property/all")
 	@ApiOperation(value = "Retorna uma lista com todas as propriedades")
-	public ResponseEntity<?> getAllProperties() {
+	public ResponseEntity<List<Property>> getAllProperties() {
 		List<Property> properties = propertyService.findAllProperties();
-		return new ResponseEntity<>(properties, HttpStatus.OK);
+		return ResponseEntity.status(HttpStatus.OK).body(properties);
 	}
 	
 	@GetMapping("property/find/{id}")
@@ -122,8 +115,9 @@ public class PropertyController {
 	
 	@DeleteMapping("/delete/{id}")
 	@ApiOperation(value = "Deleta uma propriedade através do id")
-	public void deleteProperty(@PathVariable("id") Long id) {
+	public ResponseEntity<Void> deleteProperty(@PathVariable("id") Long id) {
 		propertyService.deleteProperty(id);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
 	@PostMapping("property/upload/{id}")
@@ -161,28 +155,28 @@ public class PropertyController {
 	
 	@PostMapping("/apartment")
 	@ApiOperation(value = "Salva um apartamento")
-	public ResponseEntity<?> saveApartment(@RequestBody PropertyDTO apartmentDto) {
-		Apartment apartment = new Apartment();
-		apartment.setArea(apartmentDto.getArea());
-		apartment.setName(apartmentDto.getName());
-		apartment.setNeighborhood(apartmentDto.getNeighborhood());
-		apartment.setCodAddress(apartmentDto.getCodAddress());
-		apartment.setCity(apartmentDto.getCity());
-		apartment.setDescription(apartmentDto.getDescription());
-		apartment.setAdress(apartmentDto.getAdress());
-		apartment.setState(apartmentDto.getState());
-		apartment.setPrice(apartmentDto.getPrice());
-		apartment.setNumber(apartmentDto.getNumber());
-		apartment.setBlock(apartmentDto.getBlock());
-		apartment.setRooms(apartmentDto.getRooms());
-		apartment.setAmount(apartmentDto.getAmount());
+	public ResponseEntity<Void> saveApartment(@RequestBody PropertyDTO apartmentDto) {
+		Apartment apartment = Apartment.builder()
+				.area(apartmentDto.getArea())
+				.name(apartmentDto.getName())
+				.neighborhood(apartmentDto.getNeighborhood())
+				.codAddress(apartmentDto.getCodAddress())
+				.city(apartmentDto.getCity())
+				.description(apartmentDto.getDescription())
+				.adress(apartmentDto.getAdress())
+				.state(apartmentDto.getState())
+				.price(apartmentDto.getPrice())
+				.number(apartmentDto.getNumber())
+				.block(apartmentDto.getBlock())
+				.rooms(apartmentDto.getRooms())
+				.amount(apartmentDto.getAmount()).build();
 		propertyService.saveProperty(apartment);
-		return new ResponseEntity<>(apartment, HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
 	@GetMapping("apartment/all")
 	@ApiOperation(value = "Retorna uma lista de apartamentos")
-	public ResponseEntity<?> getAllApartments() {
+	public ResponseEntity<List<Property>> getAllApartments() {
 		List<Property> properties = propertyService.findAllByDtype("Apartment");
 		return new ResponseEntity<>(properties, HttpStatus.OK);
 	}
@@ -208,23 +202,25 @@ public class PropertyController {
 	@PostMapping("/house")
 	@ApiOperation(value = "Salva uma casa ")
 	public ResponseEntity<?> saveHouse(@RequestBody PropertyDTO houseDto) {
-		House house = new House();
-		house.setArea(houseDto.getArea());
-		house.setName(houseDto.getName());
-		house.setNeighborhood(houseDto.getNeighborhood());
-		house.setCodAddress(houseDto.getCodAddress());
-		house.setCity(houseDto.getCity());
-		house.setDescription(houseDto.getDescription());
-		house.setAdress(houseDto.getAdress());
-		house.setState(houseDto.getState());
-		house.setPrice(houseDto.getPrice());
-		house.setNumber(houseDto.getNumber());
-		house.setRooms(houseDto.getRooms());
-		house.setAmount(houseDto.getAmount());
+
+		House house = House.builder()
+				.area(houseDto.getArea())
+				.name(houseDto.getName())
+				.neighborhood(houseDto.getNeighborhood())
+				.codAddress(houseDto.getCodAddress())
+				.city(houseDto.getCity())
+				.description(houseDto.getDescription())
+				.adress(houseDto.getAdress())
+				.state(houseDto.getState())
+				.price(houseDto.getPrice())
+				.number(houseDto.getNumber())
+				.rooms(houseDto.getRooms())
+				.amount(houseDto.getAmount())
+				.build();
 		propertyService.saveProperty(house);
 		return new ResponseEntity<>(house, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("house/all")
 	@ApiOperation(value = "Retorna uma lista de casas")
 	public ResponseEntity<?> getAllHouses() {
@@ -253,22 +249,24 @@ public class PropertyController {
 	@PostMapping("/ground")
 	@ApiOperation(value = "Salva um terreno")
 	public ResponseEntity<?> saveGround(@RequestBody PropertyDTO groundDto) {
-		Ground ground = new Ground();
-		ground.setArea(groundDto.getArea());
-		ground.setName(groundDto.getName());
-		ground.setNeighborhood(groundDto.getNeighborhood());
-		ground.setCodAddress(groundDto.getCodAddress());
-		ground.setCity(groundDto.getCity());
-		ground.setDescription(groundDto.getDescription());
-		ground.setAdress(groundDto.getAdress());
-		ground.setState(groundDto.getState());
-		ground.setPrice(groundDto.getPrice());
-		ground.setNumber(groundDto.getNumber());
-		ground.setAmount(groundDto.getAmount());
+
+		Ground ground = (Ground) Ground.builder()
+				.area(groundDto.getArea())
+				.name(groundDto.getName())
+				.neighborhood(groundDto.getNeighborhood())
+				.codAddress(groundDto.getCodAddress())
+				.city(groundDto.getCity())
+				.description(groundDto.getDescription())
+				.adress(groundDto.getAdress())
+				.state(groundDto.getState())
+				.price(groundDto.getPrice())
+				.number(groundDto.getNumber())
+				.amount(groundDto.getAmount())
+				.build();
 		propertyService.saveProperty(ground);
 		return new ResponseEntity<>(ground, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("ground/all")
 	@ApiOperation(value = "Retorna uma lista de terrenos")
 	public ResponseEntity<?> getAllGrounds() {

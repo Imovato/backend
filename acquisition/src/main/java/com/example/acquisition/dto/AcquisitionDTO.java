@@ -7,19 +7,16 @@ public class AcquisitionDTO {
 	
 	private Long id;
 	private Date data;
-	private Integer amount;
 	private Double value;
 	private Long idProperty;
 	private Long idUser;
 
 	public AcquisitionDTO() {
 	}
-
-	public AcquisitionDTO(Long id, Date data, Integer amount, Double value, Long idProperty, Long idUser) {
+	public AcquisitionDTO(Long id, Date data, Double value, Long idProperty, Long idUser) {
 		this.id = id;
 		this.data = data;
 		this.value = value;
-		this.amount = amount;
 		this.idProperty = idProperty;
 		this.idUser = idUser;
 	}
@@ -64,11 +61,4 @@ public class AcquisitionDTO {
 		this.value = value;
 	}
 
-	public Integer getAmount() {
-		return amount;
-	}
-
-	public void setAmount(Integer amount) {
-		this.amount = amount;
-	}
 }

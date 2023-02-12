@@ -14,6 +14,8 @@ target/
 .sts4-cache
 
 ### IntelliJ IDEA ###
+mvnw
+mvnw.cmd
 .idea
 *.iws
 *.iml
@@ -31,3 +33,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Others files ###
+mvnw.cmd
+mvnw
+rent.iml

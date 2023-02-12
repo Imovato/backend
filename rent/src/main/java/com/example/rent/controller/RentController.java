@@ -1,79 +1,65 @@
 package com.example.rent.controller;
 
 import com.example.rent.dto.RentDto;
-import com.example.rent.interfaces.services.IPropertyService;
-import com.example.rent.interfaces.services.IRentServices;
-import com.example.rent.interfaces.services.IUserService;
-import com.example.rent.model.Property;
+import com.example.rent.dto.RentDtoUpdate;
 import com.example.rent.model.Rent;
-import com.example.rent.model.User;
-import com.example.rent.service.RentServiceImp;
+import com.example.rent.service.interfaces.IRentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
-
 
 @RestController
 @RequestMapping("/rent")
-@Api(value = "MICROSERVICE Rent")
+@Api(value = "Microserviço aluguel")
+@RequiredArgsConstructor
 public class RentController {
 
-    private IRentServices rentService;
-    private IPropertyService propertyService;
-    private IUserService userService;
+    private final IRentService rentService;
 
-
-    public RentController(IRentServices rentService, IPropertyService propertyService, IUserService userService ) {
-        this.rentService = rentService;
-        this.propertyService = propertyService;
-        this.userService = userService;
-    }
-
+    //@Retry(name = "retrySave")
     @PostMapping("/save")
-    @ApiOperation(value = "Salva uma arrendamento/aluguel")
-    public void saveRent(@RequestBody RentDto dto) {
-        Property property = propertyService.findPropertyById(dto.getId());
-
-        if(property.getStatus() == null){
-            Rent rent = new Rent();
-            User user = userService.finUserById(dto.getIdUser());
-            rent.setAmount(property.getAmount());
-            rent.setValue(property.getPrice());
-            rent.setProperty(property);
-            rent.setUser(user);
-            rent.setValue(property.getPrice());
-            rentService.saveRent(rent);
-            property.setStatus("Alugado");
-            propertyService.updateProperty(property);
-        } else {
-            System.out.println("você nao pode alugar esse imóvel");
-        }
+    @ApiOperation(value = "Salva um arrendamento/aluguel")
+    public ResponseEntity<Rent> save(@RequestBody @Valid RentDto rentDto) {
+        return new ResponseEntity<>(rentService.save(rentDto), HttpStatus.CREATED);
     }
 
-//    @PutMapping("/update")
-//    @ApiOperation(value = "atualiza um arrendamento/aluguel")
-//    public ResponseEntity<?> updateRent(@RequestBody Rent rent) {
-//        Rent updateRent = rentService.updateRent(rent);
-//        return new ResponseEntity<>(updateRent, HttpStatus.OK);
-//    }
-//
+    //@Retry(name = "default")
+    @PutMapping("/update")
+    @ApiOperation(value = "Atualiza um arrendamento/aluguel")
+    public ResponseEntity<Void> update(@RequestBody RentDtoUpdate rentDtoUpdate) {
+        rentService.update(rentDtoUpdate);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping( "/delete/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        rentService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+   // @Retry(name = "default")
     @GetMapping("/find/{id}")
-    @ApiOperation(value = "pega um arrendamento/aluguel pelo id")
-    public ResponseEntity<?> getRentById(@PathVariable("id") Long id) {
-        Rent rentFind = rentService.getRentById(id);
-        return new ResponseEntity<>(rentFind, HttpStatus.OK);
+    @ApiOperation(value = "Pega um arrendamento/aluguel pelo id")
+    public ResponseEntity<Rent> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(rentService.findById(id));
     }
 
-    @GetMapping("/user/find/{id}")
-    @ApiOperation(value = "Busca aluguéis através do id de um usuário")
-    public ResponseEntity<?> getAcquisitionsByUserId(@PathVariable("id") Long id) {
-        User user = userService.finUserById(id);
-        List<Rent> rents = rentService.findAllRentsByUser(user);
-        return new ResponseEntity<>(rents, HttpStatus.OK);
+    @GetMapping("/all")
+    @ApiOperation(value = "Lista todos os alugueis cadastrados")
+    public ResponseEntity<List<Rent>> listAll() {
+        return ResponseEntity.ok(rentService.listAll());
     }
 
+   // @Retry(name = "default")
+    @GetMapping("/rents/customer/{idCustomer}")
+    @ApiOperation(value = "Busca aluguéis através do id de um cliente")
+    public ResponseEntity<List<Rent>> findRentsByCustomerId(@PathVariable Long idCustomer) {
+        return ResponseEntity.ok(rentService.findRentsByCustomer_Id(idCustomer));
+    }
 }

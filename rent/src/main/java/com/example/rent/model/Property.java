@@ -1,54 +1,25 @@
 package com.example.rent.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import com.example.rent.enums.Status;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class Property {
+@Table(name = "tbl_property")
+@Data @AllArgsConstructor @NoArgsConstructor @Builder
+public class Property  implements Serializable {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_property")
 	private Long id;
+	private String salesman;
+	private Double price;
+	@Enumerated(EnumType.STRING)
+	private Status status;
 
-	@Column(name = "amount", length = 10)
-	private Integer amount;
-
-	@Column(name = "price")
-	private double price;
-
-	@Column
-	private String status;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Integer getAmount() {
-		return amount;
-	}
-
-	public void setAmount(Integer amount) {
-		this.amount = amount;
-	}
-
-	public double getPrice() {
-		return price;
-	}
-
-	public void setPrice(double price) {
-		this.price = price;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
 }

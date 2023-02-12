@@ -1,5 +1,6 @@
 package com.example.acquisition.repository;
 
+import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,4 +16,7 @@ public interface AcquisitionRepository extends JpaRepository<Acquisition, Long> 
     List<Acquisition> findAllAcquisitionsByUser(User user);
 
     Acquisition findAcquisitionByProperty(Property property);
+
+    Acquisition findAcquisitionById(Long id);
+
 }

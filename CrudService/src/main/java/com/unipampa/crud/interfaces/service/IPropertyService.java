@@ -2,10 +2,12 @@ package com.unipampa.crud.interfaces.service;
 
 import java.util.List;
 
+import com.unipampa.crud.dto.PropertyDTO;
 import com.unipampa.crud.model.Apartment;
 import com.unipampa.crud.model.Ground;
 import com.unipampa.crud.model.House;
 import com.unipampa.crud.model.Property;
+import lombok.var;
 
 public interface IPropertyService {
 
@@ -32,4 +34,6 @@ public interface IPropertyService {
 	public List<Property> findAllByDtype(String dtype);
 	
 	public void deleteProperty(Long id);
+
+	public Property strategySave(PropertyDTO propertyDTO);
 }

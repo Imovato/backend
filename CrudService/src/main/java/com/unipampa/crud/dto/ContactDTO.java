@@ -1,5 +1,10 @@
 package com.unipampa.crud.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
+@Builder @AllArgsConstructor @NoArgsConstructor
 public class ContactDTO {
 
 	private Long id;
@@ -7,17 +12,6 @@ public class ContactDTO {
 	private String name;
 	private String email;
 	private String number;
-
-    public ContactDTO() {
-
-	}
-
-	public ContactDTO(String name, String message, String email, String number) {
-		this.name = name;
-		this.message = message;
-		this.email = email;
-		this.number = number;
-	}
 
     public Long getId() {
 		return id;

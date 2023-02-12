@@ -10,14 +10,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+@Getter
+@Setter
 @Entity
 public class Rent {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long idRent;
 
 	@DateTimeFormat(pattern = "MM/dd/yyy")
 	@Column(name = "data", nullable = false)
@@ -32,38 +36,11 @@ public class Rent {
 	public Rent() {
 	}
 
-	public Rent(Long id, Date data, Property propertie, Double value) {
-		this.id = id;
+	public Rent(Long idRent, Date data, Property propertie, Double value) {
+		this.idRent = idRent;
 		this.data = data;
 		this.propertie = propertie;
 		this.value = value;
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public Date getData() {
-		return data;
-	}
-
-	public void setData(Date data) {
-		this.data = data;
-	}
-
-	public Property getPropertie() {
-		return propertie;
-	}
-
-	public void setPropertie(Property properties) {
-		this.propertie = properties;
-	}
-
-	public Double getValue() {
-		return value;
-	}
-
-	public void setValue(Double value) {
-		this.value = value;
-	}
 }
