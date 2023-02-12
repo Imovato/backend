@@ -1,23 +1,22 @@
 package com.example.rent.service.impl;
 
-import com.example.rent.model.Customer;
 import com.example.rent.model.Property;
-import com.example.rent.repository.CustomerRepository;
 import com.example.rent.service.interfaces.ICustomerService;
+import com.example.rent.model.Customer;
+import com.example.rent.repository.CustomerRepository;
 import com.example.rent.service.interfaces.IValidationService;
 import com.example.rent.service.validate.ValidateCpfServiceImp;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Arrays;
 import java.util.List;
 
 
 @Service
-@RequiredArgsConstructor
 public class CustomerServiceImp implements ICustomerService {
 
-    private final CustomerRepository customerRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
 
     private List<IValidationService> validations = Arrays.asList(new ValidateCpfServiceImp());
 
@@ -27,9 +26,10 @@ public class CustomerServiceImp implements ICustomerService {
     }
 
     @Override
-    public Customer save(Customer customer) {
-        return customerRepository.save(customer);
+    public Customer findUserById(Long id) {
+        return customerRepository.findUserById(id);
     }
+
 
     @Override
     public void validateCustomer(Customer customer, Property property) {

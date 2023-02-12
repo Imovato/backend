@@ -9,16 +9,17 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "tbl_property")
+@Table(name = "TB_PROPERTY")
 @Data @AllArgsConstructor @NoArgsConstructor @Builder
 public class Property  implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_property")
 	private Long id;
-	private String salesman;
+
+	@Column(name = "price")
 	private Double price;
+	@Column(name = "status")
 	@Enumerated(EnumType.STRING)
 	private Status status;
 

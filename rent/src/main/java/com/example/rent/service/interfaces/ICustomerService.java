@@ -4,7 +4,7 @@ import com.example.rent.model.Customer;
 import com.example.rent.model.Property;
 
 public interface ICustomerService {
-    Customer save(Customer customer);
     Customer findCustomerById(Long id);
+    Customer findUserById(Long id);
     void validateCustomer(Customer customer, Property property);
 }

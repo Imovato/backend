@@ -2,17 +2,12 @@ package com.example.rent.dto;
 
 import lombok.*;
 
-import java.time.LocalDate;
-
-@Data @Builder @AllArgsConstructor @NoArgsConstructor
+@Data @AllArgsConstructor @NoArgsConstructor @ToString
 public class RentDtoUpdate {
 
-    private Long id;
-    private Double iptu;
-    private Double water;
-    private Double energy;
-    private Double condominium;
     private Double value;
+    private Integer expirationDay;
+    private Double iptu;
     private String description;
 
 }

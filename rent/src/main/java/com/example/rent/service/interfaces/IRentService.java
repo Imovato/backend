@@ -1,17 +1,15 @@
 package com.example.rent.service.interfaces;
 
-import com.example.rent.dto.RentDto;
-import com.example.rent.dto.RentDtoUpdate;
 import com.example.rent.model.Rent;
-
+import com.example.rent.model.Customer;
 import java.util.List;
 
 public interface IRentService {
 	
-	Rent save(RentDto rentDto);
-	void update(RentDtoUpdate rentDtoUpdate);
-	void delete(Long id);
-	Rent findById(Long id);
-	List<Rent> listAll();
-	List<Rent> findRentsByCustomer_Id(Long id);
+	void saveRent(Rent rent);
+	Rent updateRent(Rent rent);
+	Rent getRentById(Long id);
+	List<Rent> findAllRentsByUser(Customer customer);
+
+	String contractTime(Rent rent);
 }

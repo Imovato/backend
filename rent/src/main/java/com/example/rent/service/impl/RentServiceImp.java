@@ -1,68 +1,61 @@
 package com.example.rent.service.impl;
 
-import com.example.rent.dto.RentDto;
-import com.example.rent.dto.RentDtoUpdate;
-import com.example.rent.enums.Status;
-import com.example.rent.exceptions.BadRequestException;
-import com.example.rent.model.Property;
-import com.example.rent.model.Rent;
-import com.example.rent.repository.RentRepository;
-import com.example.rent.service.interfaces.ICustomerService;
-import com.example.rent.service.interfaces.IPropertyService;
 import com.example.rent.service.interfaces.IRentService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
+import com.example.rent.model.Rent;
+import com.example.rent.model.Customer;
+import com.example.rent.repository.RentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.Temporal;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class RentServiceImp implements IRentService {
 
-    private final RentRepository rentRepository;
-    private final IPropertyService propertyService;
-    private final ICustomerService customerService;
+    @Autowired
+    private RentRepository rentRepository;
 
     @Override
-    @Transactional
-    public Rent save(RentDto rentDto) {
-        Rent rent = Rent.builder()
-                .property(propertyService.findPropertyById(rentDto.getId_property()))
-                .customer(customerService.findCustomerById(rentDto.getId_customer())).build();
-        BeanUtils.copyProperties(rentDto, rent);
-        Property property = propertyService.findPropertyById(rentDto.getId_property());
-        property.setStatus(Status.RENTED);
-        propertyService.updateProperty(property);
+    public void saveRent(Rent rent) {
+        rentRepository.save(rent);
+    }
+
+    @Override
+    public Rent updateRent(Rent rent) {
         return rentRepository.save(rent);
     }
 
     @Override
-    public void update(RentDtoUpdate rentDtoUpdate) {
-        Rent savedRent = findById(rentDtoUpdate.getId());
-        BeanUtils.copyProperties(rentDtoUpdate, savedRent);
-        rentRepository.save(savedRent);
+    public Rent getRentById(Long id) {
+        return rentRepository.findRentById(id);
     }
 
     @Override
-    public void delete(Long id) {
-        rentRepository.delete(findById(id));
+    public List<Rent> findAllRentsByUser(Customer customer) {
+        return rentRepository.findAllRentsByCustomer(customer);
     }
 
-    @Override
-    public Rent findById(Long id) {
-        return rentRepository.findById(id)
-                .orElseThrow(() -> new BadRequestException("Rent not found"));
+    public String contractTime(Rent rent) {
+        StringBuilder sb = new StringBuilder();
+        long time = ChronoUnit.MONTHS.between((Temporal) rent.getStartDateRent(), (Temporal) rent.getEndDateRent());
+        sb.append(time).append(" MESES");
+        return sb.toString();
     }
 
-    @Override
-    public List<Rent> listAll(){
-        return rentRepository.findAll();
+    /*private boolean expirationDay(Rent rent) {
+        Integer expirationDay = rent.getExpirationDay();
+        LocalDate now = LocalDate.now();
+        if (now.getDayOfMonth() > expirationDay ) return true;
+        return false;
     }
 
-    @Override
-    public List<Rent> findRentsByCustomer_Id(Long id) {
-        return rentRepository.findByCustomerId(id);
-    }
+
+    /*public void calculateLatePayment(Rent rent) {
+        if (expirationDay(rent)) {
+            Double valueWithRate = rent.getValue();
+        }
+    } */
+
 }
+
