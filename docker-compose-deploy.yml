@@ -1,0 +1,142 @@
+version: '3.4'
+services:
+
+  ################################  DISCOVERY ################################
+  discovery:
+    image: matt0balda/imovato:discovery
+    ports:
+      - 8087:8087
+    networks:
+      - imovato-network
+
+  ################################  GATEWAY ################################
+  gateway:
+    image: matt0balda/imovato:gateway
+    ports:
+      - 8080:8080
+    depends_on:
+      - discovery
+    environment:
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://discovery:8087/discovery/eureka
+    networks:
+      - imovato-network
+
+  ################################  MICRO-SERVICES ################################
+  crud-service:
+    image: crud-service
+    restart: always
+    build:
+      context: .
+      dockerfile: CrudService/Dockerfile
+    environment:
+      TZ: America/Sao_Paulo
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://discovery:8087/discovery/eureka
+      RABBIT_URI: amqp://guest:guest@rabbitmq:5672
+      SPRING.RABBITMQ.HOST: rabbitmq
+      SPRING.RABBITMQ.USERNAME: admin
+      SPRING.RABBITMQ.PASSWORD: admin
+      SPRING.DATASOURCE.URL: jdbc:mysql://crud-db:3308/crud_service?useSSL=false&serverTimezone=UTC&enabledTLSProtocols=TLSv1.2
+      SPRING.DATASOURCE.USERNAME: root
+      SPRING.DATASOURCE.PASSWORD: root
+    ports:
+      - 8081:8081
+    depends_on:
+      - discovery
+      - gateway
+      - crud-db
+      - rabbitmq
+    networks:
+      - imovato-network
+
+  rent-service:
+    image: rent-service
+    restart: always
+    build:
+      context: .
+      dockerfile: rent/Dockerfile
+    environment:
+      TZ: America/Sao_Paulo
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://discovery:8087/discovery/eureka
+      RABBIT_URI: amqp://guest:guest@rabbitmq:5672
+      SPRING.RABBITMQ.HOST: rabbitmq
+      SPRING.RABBITMQ.USERNAME: admin
+      SPRING.RABBITMQ.PASSWORD: admin
+      SPRING.DATASOURCE.URL: jdbc:mysql://rent-db:3309/rent_service?useSSL=false&serverTimezone=UTC&enabledTLSProtocols=TLSv1.2
+      SPRING.DATASOURCE.USERNAME: root
+      SPRING.DATASOURCE.PASSWORD: root
+    ports:
+      - 8085:8085
+    depends_on:
+      - discovery
+      - gateway
+      - rent-db
+      - rabbitmq
+    networks:
+      - imovato-network
+
+  ################################ DATA BASES ################################
+  crud-db:
+    image: mysql:5.7.22
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      TZ: America/Sao_Paulo
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: crud_service
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_TCP_PORT: 3308
+    ports:
+      - 3308:3308
+    expose:
+      - 3308
+    networks:
+      - imovato-network
+
+  rent-db:
+    image: mysql:5.7.22
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      TZ: America/Sao_Paulo
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: rent_service
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_TCP_PORT: 3309
+    ports:
+      - 3309:3309
+    expose:
+      - 3309
+    networks:
+      - imovato-network
+
+  ################################  RABBIT-MQ ################################
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ./rabbit_definitions.json:/etc/rabbitmq/rabbit_definitions.json
+      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - ./storage/rabbitmq1:/var/lib/rabbitmq
+    working_dir: /var/lib/rabbitmq
+    environment:
+      - RABBITMQ_ERLANG_COOKIE=secret_pass
+      #- RABBITMQ_DEFAULT_USER=admin
+      #- RABBITMQ_DEFAULT_PASS=admin
+      #- RABBITMQ_LOAD_DEFINITIONS=./rabbit_definitions.json
+    networks:
+      - imovato-network
+
+volumes:
+  #database:
+  rabbitmq:
+
+networks:
+  imovato-network:
+    driver: bridge
