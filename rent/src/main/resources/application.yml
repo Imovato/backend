@@ -1,0 +1,91 @@
+server:
+  port: 8085
+  servlet:
+    context-path: /rentService
+
+spring:
+  application:
+    name: rentService
+  datasource:
+    url: jdbc:mysql://localhost:3306/rent_db?useTimezone=true&serverTimezone=UTC
+    username: root
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+      dialect: org.hibernate.dialect.MySQL8Dialect
+  jmx:
+    enabled: false
+
+  rabbitmq:
+    host:  localhost
+    port: 5672
+    username: admin
+    password: admin
+
+  sleuth:
+    sampler:
+      probability: 1.0
+
+  jackson:
+    date-format: yyyy-MM-dd
+    time-zone: UTC
+
+crud:
+  rabbitmq:
+    exchange: crud.exchange
+    queue: crud.rent.property
+    queueUser: crud.rent.user
+
+eureka:
+  instance:
+    hostname: localhost
+  client: 
+    serviceUrl:
+      defaultZone: http://localhost:8087/discovery/eureka
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, health, metrics
+
+info:
+  app: Microsserviço de Aluguel
+  website: bla
+  github: https://github.com/imovato
+
+#resilience4j:
+#  retry:
+#    instances:
+#      default:
+#        max-attempts: 5
+#        wait-duration: 1s
+#        enable-exponential-backoff: true
+#      retrySave:
+#        max-attempts: 10
+#        wait-duration: 1s
+#        enable-exponential-backoff: true
+#  ratelimiter:
+#    instances:
+#      default:
+#        limit-for-period: 2
+#        limit-refresh-period: 10s
+#  bulkhead:
+#    instances:
+#      default:
+#        max-concurrent-calls: 10
+#
+#  circuitbreaker:
+#    instances:
+#      default:
+#        minimum-number-of-calls: 4
+#        sliding-window-size: 8
