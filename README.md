@@ -150,4 +150,5 @@ Tecnologia|Versão
   <img src="https://user-images.githubusercontent.com/94808306/218291681-08c6dca5-869f-4cb9-a032-cc68eb6779aa.png" width="5%" style="display: inline-block;">
 </p>
 
-## Front-End [GitHub](https://github.com/RP-IV-GP2/front-web)
+## Front-End
+- O front-end encontra-se em outro repositório.**[GitHub](https://github.com/RP-IV-GP2/front-web)**
