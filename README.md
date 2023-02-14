@@ -151,4 +151,4 @@ Tecnologia|Versão
 </p>
 
 ## Front-End
-- O front-end encontra-se em outro repositório.**[GitHub](https://github.com/RP-IV-GP2/front-web)**
+- O front-end encontra-se em outro repositório. **[GitHub](https://github.com/RP-IV-GP2/front-web)**
