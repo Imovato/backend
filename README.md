@@ -87,6 +87,19 @@ Cada microsserviço pode ser desenvolvido, testado e implementado de forma indep
       - URL: http://localhost:15672/ 
       - (padrão é usuário "admin" e senha "admin"), definido no arquivo [rabbitmq.config](https://github.com/Imovato/backend/blob/master/rabbitmq.config)
 
+## Dockerfile
+O Dockerfile é um arquivo de configuração que permite que você crie uma imagem personalizada do Docker para sua aplicação.
+- O [Dockerfile](https://github.com/Imovato/backend/blob/master/CrudService/Dockerfile) fornecido tem duas etapas (FROM) para criar uma imagem:
+	- A primeira etapa usa a imagem do Maven para compilar o código-fonte da aplicação. Ele copia o arquivo pom.xml e o diretório src para um diretório de trabalho no container, em seguida, executa o comando 'mvn package' para criar o arquivo jar.
+	- A segunda etapa usa a imagem do OpenJDK para criar um container que executará a aplicação. Ele copia o arquivo jar criado na primeira etapa para a imagem final e define a porta em que a aplicação estará em execução. Em seguida, define o comando de entrada para iniciar a aplicação no container, especificando o perfil 'docker-demo'.
+
+O Dockerfile permite criar uma imagem que encapsula todas as dependências necessárias e configurações para executar a aplicação, o que facilita a implantação e o gerenciamento da aplicação em diferentes ambientes.
+
+## Docker-compose
+- 1: O arquivo [docker-compose-dev.yml](https://github.com/Imovato/backend/blob/master/docker-compose-dev.yml) contém a definição dos serviços MySQL e RabbitMQ para o ambiente de desenvolvimento. Esses serviços são executados como contêineres do Docker e podem ser gerenciados por meio desse arquivo.
+- 2: O arquivo [docker-compose-sonar.yml](https://github.com/Imovato/backend/blob/master/docker-compose-sonar.yml) define a configuração do SonarQube e sua base de dados correspondente. O SonarQube é uma ferramenta de análise de código aberto que ajuda a detectar problemas de qualidade de código.
+- 3: O arquivo [docker-compose-deploy.yml](https://github.com/Imovato/backend/blob/master/docker-compose-deploy.yml) contém as definições para implantar as imagens dos microserviços e o banco de dados, juntamente com o RabbitMQ, em um ambiente de produção. Esse arquivo é usado para gerenciar a implantação de aplicativos em contêineres do Docker em um ambiente de produção.
+
 ## CI/CD Pipeline com Jenkins
 Este pipeline [Jenkinsfile](https://github.com/Imovato/backend/blob/master/Jenkinsfile) é definido em uma linguagem de script para a ferramenta Jenkins.
 Ele tem vários estágios para compilar, testar e implantar dois serviços diferentes: 
@@ -106,6 +119,18 @@ Os links estão disponíveis na documentação para auxiliar o desenvolvedor, po
 | Swagger      |  http://localhost:8081/crudService/swagger-ui.html# |
 | RabbitMQ      | http://localhost:15672/#/ |
 
+#### EndPoints dos microsserviços
+| Aplicação    | Porta | context-path        | EndPoint                                   |
+| ------------ | ----- | ------------------- | ----------------------------------------- |
+| discovery    | 8087  | /discovery         | http://localhost:8087/discovery/*         |
+| acquisition  | 8084  | /acquisitionService | http://localhost:8084/acquisitionService/* |
+| auth         | 8083  | /authService       | http://localhost:8083/authService/*       |
+| CrudService  | 8081  | /crudService       | http://localhost:8081/crudService/*       |
+| gateway      | 8080  | /gateway           | http://localhost:8080/gateway/*           |
+| payment      | 8082  | /paymentService    | http://localhost:8082/paymentService/*    |
+| rent         | 8085  | /rentService       | http://localhost:8085/rentService/*       |
+| scheduling   | 8086  | /schedulingService | http://localhost:8086/schedulingService/* |
+
 
 # ⚙Tecnologias Utilizadas
 
@@ -114,5 +139,15 @@ Tecnologia|Versão
 🐬MySQL|8.0.23
 🍃Spring Boot|2.4.2
 📺Netflix Eureka|1.10.11
+
+## Ferramentas
+<p align="left">
+  <img src="https://user-images.githubusercontent.com/94808306/218291199-b46da654-3be0-4bb1-b562-4b52a752e91e.png" width="5%" style="display: inline-block;">
+  <img src="https://user-images.githubusercontent.com/94808306/218291220-845eba8e-5445-4d24-ae67-8d84df147826.png" width="5%" style="display: inline-block;">
+  <img src="https://user-images.githubusercontent.com/94808306/218291409-2ff2da32-4ee9-4b44-9155-f611f9b6f714.png" width="5%" style="display: inline-block;">
+  <img src="https://user-images.githubusercontent.com/94808306/218291444-7c45a496-2cfa-4bf5-b534-1816ba1a6013.png" width="5%" style="display: inline-block;">
+  <img src="https://user-images.githubusercontent.com/94808306/218291546-ba11a3df-b998-4744-938e-fd08f8c73dba.png" width="8%" style="display: inline-block;">
+  <img src="https://user-images.githubusercontent.com/94808306/218291681-08c6dca5-869f-4cb9-a032-cc68eb6779aa.png" width="5%" style="display: inline-block;">
+</p>
 
 ## Front-End [GitHub](https://github.com/RP-IV-GP2/front-web)
