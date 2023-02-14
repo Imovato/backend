@@ -52,7 +52,7 @@ Cada microsserviço pode ser desenvolvido, testado e implementado de forma indep
     	- URL: http://localhost:15672/ 
     	- (padrão é usuário "guest" e senha "guest").
     
-###### - **Agora**, para criar as filas na aplicação de cada microsserviço, você pode seguir os seguintes passos:
+- **Agora**, para criar as filas na aplicação de cada microsserviço, você pode seguir os seguintes passos:
    - 1: Acesse a interface gráfica do RabbitMQ Management através do navegador.
    - 2: Faça login na plataforma, se necessário.
    - 3: Selecione a aba "Exchanges".
@@ -75,17 +75,17 @@ Cada microsserviço pode ser desenvolvido, testado e implementado de forma indep
 ###### 📺 Tutorial de cadastro de fila no RabbitMQ: [You Tube 1](https://youtu.be/SzcvuHjRJKE) ou [You Tube 2](https://youtube.com/playlist?list=PLZTjHbp2Y7809w3PLM0UE_LgQq6vk49q0)
 
 
-#### 4. **Alternativa**,  executar o [docker-compose-dev.yml](https://github.com/Imovato/backend/blob/master/docker-compose-dev.yml), onde que contém o serviço do rabbitmq
-    - 1: Inicie o Docker Desktop
-    - 2: Abra o PowerShell, navegue até o diretório onde se encontra o projeto, por exemplo: `C:user\documents\GitHuB\backend`
-    - 3: Execute o docker-compose, com o comando
-    - 4: 
-        ```
-        docker-compose -f docker-compose-dev.yml up
-	```
-    - 5: Acesse a interface web do RabbitMQ Management em seu navegador 
-        - URL: http://localhost:15672/ 
-        - (padrão é usuário "admin" e senha "admin"), definido no arquivo [rabbitmq.config](https://github.com/Imovato/backend/blob/master/rabbitmq.config)
+#### 4. **Alternativa** executar o [docker-compose-dev.yml](https://github.com/Imovato/backend/blob/master/docker-compose-dev.yml), onde que contém o serviço do rabbitmq
+   - 1: Inicie o Docker Desktop
+   - 2: Abra o PowerShell, navegue até o diretório onde se encontra o projeto, por exemplo: `C:user\documents\GitHuB\backend`
+   - 3: Execute o docker-compose, com o comando
+   - 4: 
+       ```
+       docker-compose -f docker-compose-dev.yml up
+       ```
+   - 5: Acesse a interface web do RabbitMQ Management em seu navegador 
+       - URL: http://localhost:15672/ 
+       - (padrão é usuário "admin" e senha "admin"), definido no arquivo [rabbitmq.config](https://github.com/Imovato/backend/blob/master/rabbitmq.config)
 
 # Dockerfile
 O Dockerfile é um arquivo de configuração que permite que você crie uma imagem personalizada do Docker para sua aplicação.
