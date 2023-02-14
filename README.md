@@ -39,7 +39,7 @@ Cada microsserviço pode ser desenvolvido, testado e implementado de forma indep
             - d: Port: a porta configurada para o serviço MySQL no arquivo docker-compose (padrão é 3306)
         - 3: Clique em "Open" para conectar ao banco de dados.
         
-### 3. Fazer os cadastros das filas dos microsserviços no Rabbitmq
+3. Fazer os cadastros das filas dos microsserviços no Rabbitmq
 - Para instalar o RabbitMQ no Windows, você precisa seguir os seguintes passos:
  1. Baixe e instale o Erlang para Windows na sua máquina: [Erlang](https://www.erlang.org/downloads)
  2. Baixe e instale o RabbitMQ para Windows na sua máquina: [RabbitMQ](https://www.rabbitmq.com/download.html)
