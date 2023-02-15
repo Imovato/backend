@@ -90,6 +90,7 @@ Cada microsserviço pode ser desenvolvido, testado e implementado de forma indep
    - 5: Acesse a interface web do RabbitMQ Management em seu navegador 
        - URL: http://localhost:15672/ 
        - (padrão é usuário "admin" e senha "admin"), definido no arquivo [rabbitmq.config](https://github.com/Imovato/backend/blob/master/rabbitmq.config)
+   - OBS: As Exchanges e Queues são criadas automáticas pelo arquivo de definições [RabbitMQ Definitions](https://github.com/Imovato/backend/blob/master/rabbit_definitions.json) 
 
 # <img src="https://user-images.githubusercontent.com/94808306/218842555-9f2cfa9b-66db-4129-9d03-ee7a112cff73.png" width="5%" style="display: inline-block;"> Dockerfile
 O Dockerfile é um arquivo de configuração que permite que você crie uma imagem personalizada do Docker para sua aplicação.
