@@ -1,7 +1,7 @@
-package com.unipampa.crud.implement.service.impl;
+package com.unipampa.crud.service.impl;
 
 import com.unipampa.crud.dto.PropertyDTO;
-import com.unipampa.crud.interfaces.service.StrategySaveProperty;
+import com.unipampa.crud.service.StrategySaveProperty;
 import com.unipampa.crud.model.Ground;
 import com.unipampa.crud.model.Property;
 

@@ -1,6 +1,6 @@
 package com.unipampa.crud.controller;
 
-import com.unipampa.crud.interfaces.service.IPropertyService;
+import com.unipampa.crud.service.IPropertyService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

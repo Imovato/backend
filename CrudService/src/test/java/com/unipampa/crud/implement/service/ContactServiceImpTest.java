@@ -2,6 +2,7 @@ package com.unipampa.crud.implement.service;
 
 import com.unipampa.crud.model.Contact;
 import com.unipampa.crud.repository.ContactRepository;
+import com.unipampa.crud.service.impl.ContactServiceImp;
 import com.unipampa.util.ContactCreator;
 import com.unipampa.util.ContactPut;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
 @Slf4j

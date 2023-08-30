@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.unipampa.crud.dto.UserDTO;
-import com.unipampa.crud.interfaces.service.IPropertyService;
-import com.unipampa.crud.interfaces.service.IUserService;
+import com.unipampa.crud.service.IPropertyService;
+import com.unipampa.crud.service.IUserService;
 import com.unipampa.crud.model.Customer;
 import com.unipampa.crud.model.Employee;
 import com.unipampa.crud.model.Owner;

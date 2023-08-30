@@ -1,4 +1,4 @@
-package com.unipampa.crud.implement.service;
+package com.unipampa.crud.service.impl;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.unipampa.crud.interfaces.service.IUserService;
+import com.unipampa.crud.service.IUserService;
 import com.unipampa.crud.model.Customer;
 import com.unipampa.crud.model.Employee;
 import com.unipampa.crud.model.Owner;

@@ -1,8 +1,7 @@
-package com.unipampa.crud.implement.service.impl;
+package com.unipampa.crud.service.impl;
 
-import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import com.unipampa.crud.dto.PropertyDTO;
-import com.unipampa.crud.interfaces.service.StrategySaveProperty;
+import com.unipampa.crud.service.StrategySaveProperty;
 import com.unipampa.crud.model.Apartment;
 import com.unipampa.crud.model.Property;
 

@@ -1,15 +1,11 @@
 server:
   port: 8761
-  servlet:
-    context-path: /discovery
-    
+
 spring:
   application:
     name: discovery
 
-  eureka:
-    client:
-      register-with-eureka: false
-      fetch-registry: false
-      service-url:
-        defaultZone: http://localhost://${server.port}
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false

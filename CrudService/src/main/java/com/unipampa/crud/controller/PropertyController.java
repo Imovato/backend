@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import com.unipampa.crud.dto.PropertyDTO;
-import com.unipampa.crud.interfaces.service.IPropertyService;
+import com.unipampa.crud.service.IPropertyService;
 import com.unipampa.crud.model.Apartment;
 import com.unipampa.crud.model.Ground;
 import com.unipampa.crud.model.House;

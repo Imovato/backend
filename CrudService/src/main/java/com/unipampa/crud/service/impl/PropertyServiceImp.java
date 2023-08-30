@@ -1,18 +1,14 @@
-package com.unipampa.crud.implement.service;
+package com.unipampa.crud.service.impl;
 
 import java.util.List;
 
 import com.unipampa.crud.dto.PropertyDTO;
-import com.unipampa.crud.implement.service.impl.ApartmentSave;
-import com.unipampa.crud.implement.service.impl.GroundSave;
-import com.unipampa.crud.implement.service.impl.HouseSave;
-import com.unipampa.crud.interfaces.service.StrategySaveProperty;
-import lombok.var;
+import com.unipampa.crud.service.StrategySaveProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.unipampa.crud.interfaces.service.IPropertyService;
+import com.unipampa.crud.service.IPropertyService;
 import com.unipampa.crud.model.Apartment;
 import com.unipampa.crud.model.Ground;
 import com.unipampa.crud.model.House;
