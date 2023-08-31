@@ -1,4 +1,4 @@
-package com.unipampa.crud.interfaces.service;
+package com.unipampa.crud.service;
 
 import java.util.List;
 

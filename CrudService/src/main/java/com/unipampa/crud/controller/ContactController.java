@@ -1,7 +1,7 @@
 package com.unipampa.crud.controller;
 
 import com.unipampa.crud.dto.ContactDTO;
-import com.unipampa.crud.interfaces.service.IContactService;
+import com.unipampa.crud.service.IContactService;
 import com.unipampa.crud.model.Contact;
 import java.util.List;
 import org.springframework.http.HttpStatus;

@@ -1,22 +1,18 @@
-package com.unipampa.crud.implement.service;
+package com.unipampa.crud.service.impl;
 
 import java.util.List;
 
 import com.unipampa.crud.dto.PropertyDTO;
-import com.unipampa.crud.implement.service.impl.ApartmentSave;
-import com.unipampa.crud.implement.service.impl.GroundSave;
-import com.unipampa.crud.implement.service.impl.HouseSave;
-import com.unipampa.crud.interfaces.service.StrategySaveProperty;
-import lombok.var;
+import com.unipampa.crud.service.StrategySaveProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.unipampa.crud.interfaces.service.IPropertyService;
+import com.unipampa.crud.service.IPropertyService;
 import com.unipampa.crud.model.Apartment;
 import com.unipampa.crud.model.Ground;
 import com.unipampa.crud.model.House;
-import com.unipampa.crud.model.Property;
+import com.unipampa.crud.model.Hosting;
 import com.unipampa.crud.repository.PropertyRepository;
 import com.unipampa.crud.sender.PropertySender;
 
@@ -36,9 +32,9 @@ public class PropertyServiceImp implements IPropertyService {
 
 	@Override
 	@Transactional
-	public void saveProperty(Property property) {
-		Property propertySaved = propertyRepository.save(property);
-		propertySender.sendMessage(propertySaved);
+	public void saveProperty(Hosting hosting) {
+		Hosting hostingSaved = propertyRepository.save(hosting);
+		propertySender.sendMessage(hostingSaved);
 	}
 
 	@Override
@@ -72,12 +68,12 @@ public class PropertyServiceImp implements IPropertyService {
 	}
 
 	@Override
-	public List<Property> findAllProperties() {
+	public List<Hosting> findAllProperties() {
 		return propertyRepository.findAll();
 	}
 
 	@Override
-	public List<Property> findAllByDtype(String dtype) {
+	public List<Hosting> findAllByDtype(String dtype) {
 		return propertyRepository.findAllByDtype(dtype);
 	}
 
@@ -88,27 +84,27 @@ public class PropertyServiceImp implements IPropertyService {
 	}
 
 	@Override
-	public Property getPropertyById(Long id) {
+	public Hosting getPropertyById(Long id) {
 		return propertyRepository.findPropertyById(id);
 	}
 
 	@Override
-	public Property updateProperty(Property property) {
-		return propertyRepository.save(property);
+	public Hosting updateProperty(Hosting hosting) {
+		return propertyRepository.save(hosting);
 	}
 
 	@Override
-	public Property strategySave(PropertyDTO propertyDTO){
+	public Hosting strategySave(PropertyDTO propertyDTO){
 
 		if(propertyDTO.getRooms() == null) {
 			strategySaveProperty = new GroundSave();
-			return (Property) strategySaveProperty;
+			return (Hosting) strategySaveProperty;
 		} else if (propertyDTO.getBlock() == null) {
 			strategySaveProperty = new HouseSave();
-			return (Property) strategySaveProperty;
+			return (Hosting) strategySaveProperty;
 		} else {
 			strategySaveProperty = new ApartmentSave();
-			return (Property) strategySaveProperty;
+			return (Hosting) strategySaveProperty;
 		}
 	}
 

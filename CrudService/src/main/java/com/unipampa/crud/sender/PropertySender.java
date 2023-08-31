@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.unipampa.crud.model.Property;
+import com.unipampa.crud.model.Hosting;
 
 @Component
 public class PropertySender {
@@ -23,8 +23,8 @@ public class PropertySender {
 		this.rabbitTemplate = rabbitTemplate;
 	}
 	
-	public void sendMessage(Property property) {
-		rabbitTemplate.convertAndSend(exchange, routingkey, property);
+	public void sendMessage(Hosting hosting) {
+		rabbitTemplate.convertAndSend(exchange, routingkey, hosting);
 	}
 	
 }

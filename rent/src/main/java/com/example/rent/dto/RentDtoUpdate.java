@@ -4,7 +4,10 @@ import lombok.*;
 
 import java.time.LocalDate;
 
-@Data @Builder @AllArgsConstructor @NoArgsConstructor
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class RentDtoUpdate {
 
     private Long id;

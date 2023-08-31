@@ -1,11 +1,9 @@
 package com.unipampa.crud.model;
 
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,34 +14,22 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tbl_user_registration")
-@Data @SuperBuilder
+@Table(name = "users")
+@Data
 public class User {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "id", nullable = false)
+    private UUID id;
 
-    @Column(name = "email")
+    @Column(name = "email", nullable = false, unique = true, length = 50)
     private String email;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, length = 150)
     private String name;
 
-    @Column(name = "password")
-    private String password;
-
     @OneToMany
-    private List<Property> properties;
+    private List<Hosting> properties;
 
-    public User(String email, String name, String password) {
-        this.email = email;
-        this.name = name;
-        this.password = password;
-    }
-
-    public User() {
-
-    }
 }

@@ -17,15 +17,21 @@ spring:
     enabled: false
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/crud-service?useTimezone=true&serverTimezone=UTC
+    url: jdbc:mysql://localhost:33060/crud-service?useTimezone=true&serverTimezone=UTC
     username: root
-    password: root
+    password: example
+
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: crud-service
 
   rabbitmq:
-    host: rabbitmq
+    host: localhost
     port: 5672
-    username: admin
-    password: admin
+    username: guest
+    password: guest
 
 crud:
   rabbitmq:
@@ -40,5 +46,5 @@ eureka:
     hostname: localhost
   client: 
     serviceUrl:
-      defaultZone: http://localhost:8087/discovery/eureka
+      defaultZone: http://localhost:8761/eureka
   
