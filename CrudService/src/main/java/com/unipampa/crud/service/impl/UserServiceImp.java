@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.unipampa.crud.service.IUserService;
-import com.unipampa.crud.model.Customer;
-import com.unipampa.crud.model.Employee;
+import com.unipampa.crud.model.Guest;
+import com.unipampa.crud.model.Host;
 import com.unipampa.crud.model.Owner;
 import com.unipampa.crud.model.User;
 import com.unipampa.crud.repository.UserRepository;
@@ -34,12 +34,12 @@ public class UserServiceImp implements IUserService {
 	}
 
 	@Override
-	public Employee findEmployeeById(Long id) {
+	public Host findEmployeeById(Long id) {
 		return userRepository.findEmployeeById(id);
 	}
 
 	@Override
-	public Customer findCustomerById(Long id) {
+	public Guest findCustomerById(Long id) {
 		return userRepository.findCustomerById(id);
 	}
 
@@ -64,12 +64,12 @@ public class UserServiceImp implements IUserService {
 	}
 
 	@Override
-	public Employee updateEmployee(Employee employee) {
+	public Host updateEmployee(Host employee) {
 		return userRepository.save(employee);
 	}
 
 	@Override
-	public Customer updateCustomer(Customer customer) {
+	public Guest updateCustomer(Guest customer) {
 		return userRepository.save(customer);
 	}
 
@@ -84,7 +84,7 @@ public class UserServiceImp implements IUserService {
 	}
 
 	@Override
-	public Customer findCustomerByEmail(String email) {
+	public Guest findCustomerByEmail(String email) {
 		return userRepository.findCustomerByEmail(email);
 	}
 

@@ -2,17 +2,17 @@ package com.unipampa.crud.service;
 
 import java.util.List;
 
-import com.unipampa.crud.model.Customer;
-import com.unipampa.crud.model.Employee;
+import com.unipampa.crud.model.Guest;
+import com.unipampa.crud.model.Host;
 import com.unipampa.crud.model.Owner;
 import com.unipampa.crud.model.User;
 
 public interface IUserService {
 	void saveUser(User user);
 
-	Employee findEmployeeById(Long id);
+	Host findEmployeeById(Long id);
 
-	Customer findCustomerById(Long id);
+	Guest findCustomerById(Long id);
 
 	Owner findOwnerById(Long id);
 
@@ -22,13 +22,13 @@ public interface IUserService {
 
 	void deleteUser(Long id);
 
-	Employee updateEmployee(Employee employee);
+	Host updateEmployee(Host employee);
 
-	Customer updateCustomer(Customer customer);
+	Guest updateCustomer(Guest customer);
 
 	Owner updateOwner(Owner owner);
 
 	Boolean existsByEmail(String email);
 
-	Customer findCustomerByEmail(String email);
+	Guest findCustomerByEmail(String email);
 }

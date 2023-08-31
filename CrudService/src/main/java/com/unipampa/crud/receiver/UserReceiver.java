@@ -1,7 +1,7 @@
 package com.unipampa.crud.receiver;
 
 import com.unipampa.crud.dto.CompleteUserDTO;
-import com.unipampa.crud.model.Customer;
+import com.unipampa.crud.model.Guest;
 import com.unipampa.crud.repository.UserRepository;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -21,7 +21,7 @@ public class UserReceiver {
 
   @RabbitListener(queues = "${crud.rabbitmq.signupQueue}")
   public void receive(@Payload CompleteUserDTO user) {
-    Customer cust = new Customer();
+    Guest cust = new Guest();
     cust.setAddress(user.getAddress());
     cust.setCpf(user.getCpf());
     cust.setName(user.getUsername());
