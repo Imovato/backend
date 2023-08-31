@@ -21,11 +21,17 @@ spring:
     username: root
     password: example
 
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: crud-service
+
   rabbitmq:
-    host: rabbitmq
+    host: localhost
     port: 5672
-    username: admin
-    password: admin
+    username: guest
+    password: guest
 
 crud:
   rabbitmq:

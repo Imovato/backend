@@ -1,9 +1,6 @@
 package com.unipampa.crud.model;
 
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
@@ -16,8 +13,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tbl_user_registration")
-@Data @SuperBuilder
+@Table(name = "users")
+@Data
 public class User {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,15 +32,6 @@ public class User {
     private String password;
 
     @OneToMany
-    private List<Property> properties;
+    private List<Hosting> properties;
 
-    public User(String email, String name, String password) {
-        this.email = email;
-        this.name = name;
-        this.password = password;
-    }
-
-    public User() {
-
-    }
 }

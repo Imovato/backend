@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 
 @Entity
 @SuperBuilder(toBuilder = true)
-public class House extends Property {
+public class House extends Hosting {
 	public House() {
 		super();
 	}

@@ -1,6 +1,5 @@
 package com.unipampa.crud.model;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
@@ -8,10 +7,10 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
-@Table(name = "tbl_property_registration")
+@Table(name = "hosting")
 @Data
 @SuperBuilder(toBuilder = true)
-public class Property {
+public class Hosting {
 
     @Column(insertable = false, updatable = false)
     private String dtype;
@@ -67,12 +66,12 @@ public class Property {
     @ManyToOne
     private User user;
 
-    public Property() {
+    public Hosting() {
 
     }
 
-    public Property(Long idProperty, String name, float area, String neighborhood, String codAddress, String city,
-                    String description, String adress, String state, double price, Long rooms) {
+    public Hosting(Long idProperty, String name, float area, String neighborhood, String codAddress, String city,
+                   String description, String adress, String state, double price, Long rooms) {
         this.id = idProperty;
         this.name = name;
         this.area = area;

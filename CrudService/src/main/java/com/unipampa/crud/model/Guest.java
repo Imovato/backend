@@ -6,7 +6,8 @@ import lombok.experimental.SuperBuilder;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-@Entity @Data @SuperBuilder
+@Entity
+@Data
 public class Guest extends User {
 
     @Column(name = "cpf")
@@ -18,15 +19,4 @@ public class Guest extends User {
     @Column(name = "address")
     private String address;
 
-    public Guest(String email, String name, String password, String cpf, String phone, String address) {
-        super(email, name, password);
-        this.cpf = cpf;
-        this.phone = phone;
-        this.address = address;
-    }
-
-
-    public Guest() {
-        super();
-    }
 }

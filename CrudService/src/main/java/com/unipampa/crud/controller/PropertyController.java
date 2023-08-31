@@ -24,7 +24,7 @@ import com.unipampa.crud.service.IPropertyService;
 import com.unipampa.crud.model.Apartment;
 import com.unipampa.crud.model.Ground;
 import com.unipampa.crud.model.House;
-import com.unipampa.crud.model.Property;
+import com.unipampa.crud.model.Hosting;
 import com.unipampa.crud.utils.FileUploadUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -101,16 +101,16 @@ public class PropertyController {
 	
 	@GetMapping("property/all")
 	@ApiOperation(value = "Retorna uma lista com todas as propriedades")
-	public ResponseEntity<List<Property>> getAllProperties() {
-		List<Property> properties = propertyService.findAllProperties();
+	public ResponseEntity<List<Hosting>> getAllProperties() {
+		List<Hosting> properties = propertyService.findAllProperties();
 		return ResponseEntity.status(HttpStatus.OK).body(properties);
 	}
 	
 	@GetMapping("property/find/{id}")
 	@ApiOperation(value = "Encontra uma propriedade através do id")
 	public ResponseEntity<?> getPropertyById(@PathVariable("id") Long id) {
-		Property property = propertyService.getPropertyById(id);
-		return new ResponseEntity<>(property, HttpStatus.OK);
+		Hosting hosting = propertyService.getPropertyById(id);
+		return new ResponseEntity<>(hosting, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/delete/{id}")
@@ -127,7 +127,7 @@ public class PropertyController {
 		@RequestParam("img1") MultipartFile img1,
 		@RequestParam("img2") Optional<MultipartFile> img2, 
 		@RequestParam("img3") Optional<MultipartFile> img3) throws IOException {
-		Property property = propertyService.getPropertyById(id);
+		Hosting hosting = propertyService.getPropertyById(id);
 		String uploadDir = "src/main/resources/static/images/property/" + id;
 		Files.createDirectories(Paths.get(uploadDir));
 
@@ -143,10 +143,10 @@ public class PropertyController {
 		files2.close();
 		files3.close();
 
-		property.setImageQuantity((int) Files.walk(Paths.get(uploadDir)).count() - 1);
-		propertyService.updateProperty(property);
+		hosting.setImageQuantity((int) Files.walk(Paths.get(uploadDir)).count() - 1);
+		propertyService.updateProperty(hosting);
 
-		return new ResponseEntity<>(property, HttpStatus.OK);
+		return new ResponseEntity<>(hosting, HttpStatus.OK);
 	}
 
 	// ----------------------------
@@ -176,8 +176,8 @@ public class PropertyController {
 	
 	@GetMapping("apartment/all")
 	@ApiOperation(value = "Retorna uma lista de apartamentos")
-	public ResponseEntity<List<Property>> getAllApartments() {
-		List<Property> properties = propertyService.findAllByDtype("Apartment");
+	public ResponseEntity<List<Hosting>> getAllApartments() {
+		List<Hosting> properties = propertyService.findAllByDtype("Apartment");
 		return new ResponseEntity<>(properties, HttpStatus.OK);
 	}
 	
@@ -224,7 +224,7 @@ public class PropertyController {
 	@GetMapping("house/all")
 	@ApiOperation(value = "Retorna uma lista de casas")
 	public ResponseEntity<?> getAllHouses() {
-		List<Property> properties = propertyService.findAllByDtype("House");
+		List<Hosting> properties = propertyService.findAllByDtype("House");
 		return new ResponseEntity<>(properties, HttpStatus.OK);
 	}
 	
@@ -270,7 +270,7 @@ public class PropertyController {
 	@GetMapping("ground/all")
 	@ApiOperation(value = "Retorna uma lista de terrenos")
 	public ResponseEntity<?> getAllGrounds() {
-		List<Property> properties = propertyService.findAllByDtype("Ground");
+		List<Hosting> properties = propertyService.findAllByDtype("Ground");
 		return new ResponseEntity<>(properties, HttpStatus.OK);
 	}
 

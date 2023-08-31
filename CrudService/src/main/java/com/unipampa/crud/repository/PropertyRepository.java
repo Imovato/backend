@@ -7,15 +7,15 @@ import java.util.List;
 import com.unipampa.crud.model.Apartment;
 import com.unipampa.crud.model.Ground;
 import com.unipampa.crud.model.House;
-import com.unipampa.crud.model.Property;
+import com.unipampa.crud.model.Hosting;
 
-public interface PropertyRepository extends JpaRepository<Property, Long>{
+public interface PropertyRepository extends JpaRepository<Hosting, Long>{
 	
 	House findHouseById(Long id);
 	Apartment findApartmentById(Long id);
 	Ground findGroundById(Long id);
 
-	Property findPropertyById(Long id);
-	public List<Property> findAllByDtype(String dtype);
+	Hosting findPropertyById(Long id);
+	public List<Hosting> findAllByDtype(String dtype);
 	
 }

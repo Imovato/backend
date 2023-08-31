@@ -2,6 +2,7 @@ package com.unipampa.crud.controller;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,9 +18,8 @@ import com.unipampa.crud.dto.UserDTO;
 import com.unipampa.crud.service.IPropertyService;
 import com.unipampa.crud.service.IUserService;
 import com.unipampa.crud.model.Guest;
-import com.unipampa.crud.model.Host;
 import com.unipampa.crud.model.Owner;
-import com.unipampa.crud.model.Property;
+import com.unipampa.crud.model.Hosting;
 import com.unipampa.crud.model.User;
 
 import io.swagger.annotations.Api;
@@ -51,18 +51,9 @@ public class UserController {
 	@PostMapping("/customer/add")
 	@ApiOperation(value = "Adiciona um usuario do tipo cliente")
 	public ResponseEntity<Void> saveCustomer(@RequestBody UserDTO userDto) {
-
-		Guest customer = Guest.builder()
-				.email(userDto.getEmail())
-				.email(userDto.getName())
-				.password(userDto.getPassword())
-				.id(userDto.getId())
-				.address(userDto.getAddress())
-				.phone(userDto.getPhone())
-				.cpf(userDto.getCpf())
-				.build();
-
-		userService.saveUser(customer);
+		var guest = new Guest();
+		BeanUtils.copyProperties(userDto, guest);
+		userService.saveUser(guest);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
@@ -87,21 +78,21 @@ public class UserController {
 		return new ResponseEntity<>(customer, HttpStatus.OK);
 	}
 
-	@PostMapping("/owner/add")
-	@ApiOperation(value = "Adiciona um usuario do tipo proprietario")
-	public void saveOwner(@RequestBody UserDTO userDto) {
-
-		Owner owner = Owner.builder()
-				.email(userDto.getEmail())
-				.name(userDto.getName())
-				.password(userDto.getPassword())
-				.id(userDto.getId())
-				.address(userDto.getAddress())
-				.phone(userDto.getPhone())
-				.cpf(userDto.getCpf())
-				.build();
-		userService.saveUser(owner);
-	}
+//	@PostMapping("/owner/add")
+//	@ApiOperation(value = "Adiciona um usuario do tipo proprietario")
+//	public void saveOwner(@RequestBody UserDTO userDto) {
+//
+//		Owner owner = Owner.builder()
+//				.email(userDto.getEmail())
+//				.name(userDto.getName())
+//				.password(userDto.getPassword())
+//				.id(userDto.getId())
+//				.address(userDto.getAddress())
+//				.phone(userDto.getPhone())
+//				.cpf(userDto.getCpf())
+//				.build();
+//		userService.saveUser(owner);
+//	}
 
 	@GetMapping("/owner/find/{id}")
 	@ApiOperation(value = "Retorna um usuario do tipo proprietario pelo id")
@@ -124,10 +115,10 @@ public class UserController {
 	}
 
 	@PostMapping("/relation/{id}")
-	public void rentToUser(@PathVariable("id") Long id, Property property) {
+	public void rentToUser(@PathVariable("id") Long id, Hosting hosting) {
 		User user = userService.findUserById(id);
-		property.setUser(user);
-		propertyService.saveProperty(property);
+		hosting.setUser(user);
+		propertyService.saveProperty(hosting);
 	}
 
 }
