@@ -3,6 +3,7 @@ package com.unipampa.crud.model;
 import lombok.Data;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,17 +20,14 @@ public class User {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "id", nullable = false)
+    private UUID id;
 
-    @Column(name = "email")
+    @Column(name = "email", nullable = false, unique = true, length = 50)
     private String email;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, length = 150)
     private String name;
-
-    @Column(name = "password")
-    private String password;
 
     @OneToMany
     private List<Hosting> properties;

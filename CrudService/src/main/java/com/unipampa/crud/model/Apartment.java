@@ -1,27 +1,22 @@
 package com.unipampa.crud.model;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
-import lombok.experimental.SuperBuilder;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import java.io.Serializable;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-@AllArgsConstructor
-@SuperBuilder(toBuilder = true)
-public class Apartment extends Hosting {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class Apartment extends Hosting implements Serializable {
+
+    private static final long serialVersionUID = -4618566071703581190L;
 
     @Column(name = "block")
     private String block;
 
-    public Apartment() {
-        super();
-    }
-
-    public Apartment(Long number, String block) {
-        super();
-        this.block = block;
-    }
 }

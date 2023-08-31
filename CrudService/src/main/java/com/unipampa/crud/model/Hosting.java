@@ -9,7 +9,6 @@ import javax.validation.constraints.NotEmpty;
 @Entity
 @Table(name = "hosting")
 @Data
-@SuperBuilder(toBuilder = true)
 public class Hosting {
 
     @Column(insertable = false, updatable = false)

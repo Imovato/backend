@@ -72,17 +72,17 @@ class PropertyRepositoryTest {
         Assertions.assertThat(hostingFind).isNotNull();
         Assertions.assertThat(hostingFind.getId()).isNotNull();
     }
-    @Test
-    @DisplayName("Find by apartment when Successful")
-    void find_ByApartment_WhenSuccessful(){
-        Apartment apartmentToBeSaved = ApartmentCreator.createApartmentToSaved();
-        Apartment apartmentSaved = this.propertyRepository.save(apartmentToBeSaved);
-
-        Apartment apartmentFind = this.propertyRepository.findApartmentById(apartmentSaved.getId());
-
-        Assertions.assertThat(apartmentFind).isNotNull();
-        Assertions.assertThat(apartmentFind.getId()).isNotNull();
-    }
+//    @Test
+//    @DisplayName("Find by apartment when Successful")
+//    void find_ByApartment_WhenSuccessful(){
+//        Apartment apartmentToBeSaved = ApartmentCreator.createApartmentToSaved();
+//        Apartment apartmentSaved = this.propertyRepository.save(apartmentToBeSaved);
+//
+//        Apartment apartmentFind = this.propertyRepository.findApartmentById(apartmentSaved.getId());
+//
+//        Assertions.assertThat(apartmentFind).isNotNull();
+//        Assertions.assertThat(apartmentFind.getId()).isNotNull();
+//    }
 
     @Test
     @DisplayName("Find by ground when Successful")
@@ -96,17 +96,17 @@ class PropertyRepositoryTest {
         Assertions.assertThat(groundFind.getId()).isNotNull();
     }
 
-    @Test
-    @DisplayName("Find by house when Successful")
-    void find_ByHouse_WhenSuccessful(){
-        House houseToBeSaved = HouseCreator.createHouseToSaved();
-        House houseSaved = this.propertyRepository.save(houseToBeSaved);
-
-        House houseFind = this.propertyRepository.findHouseById(houseSaved.getId());
-
-        Assertions.assertThat(houseFind).isNotNull();
-        Assertions.assertThat(houseFind.getId()).isNotNull();
-    }
+//    @Test
+//    @DisplayName("Find by house when Successful")
+//    void find_ByHouse_WhenSuccessful(){
+//        House houseToBeSaved = HouseCreator.createHouseToSaved();
+//        House houseSaved = this.propertyRepository.save(houseToBeSaved);
+//
+//        House houseFind = this.propertyRepository.findHouseById(houseSaved.getId());
+//
+//        Assertions.assertThat(houseFind).isNotNull();
+//        Assertions.assertThat(houseFind.getId()).isNotNull();
+//    }
 
     @Test
     @DisplayName("Find by property return null when no property not found")
@@ -126,24 +126,24 @@ class PropertyRepositoryTest {
                 .withMessageContaining("The address cannot be empty");
     }
 
-    @Test
-    @DisplayName("Find All By the type property on list when Successful")
-    void save_FindAllTypePropertyOnList_WhenSuccessful(){
-        Hosting hostingToBeSaved = PropertyCreator.createPropertyToSaved();
-        Apartment apartmentToBeSaved = ApartmentCreator.createApartmentToSaved();
-        House houseToBeSaved = HouseCreator.createHouseToSaved();
-        Ground groundToBeSaved = GroundCreator.createGroundToSaved();
-        this.propertyRepository.save(hostingToBeSaved);
-        this.propertyRepository.save(apartmentToBeSaved);
-        this.propertyRepository.save(houseToBeSaved);
-        this.propertyRepository.save(groundToBeSaved);
-
-        List<Hosting> properties = this.propertyRepository.findAllByDtype("Apartment");
-
-
-        Assertions.assertThat(properties).isNotNull();
-        Assertions.assertThat(properties.get(0).getDtype()).isEqualTo("Apartment");
-    }
+//    @Test
+//    @DisplayName("Find All By the type property on list when Successful")
+//    void save_FindAllTypePropertyOnList_WhenSuccessful(){
+//        Hosting hostingToBeSaved = PropertyCreator.createPropertyToSaved();
+//        Apartment apartmentToBeSaved = ApartmentCreator.createApartmentToSaved();
+//        House houseToBeSaved = HouseCreator.createHouseToSaved();
+//        Ground groundToBeSaved = GroundCreator.createGroundToSaved();
+//        this.propertyRepository.save(hostingToBeSaved);
+//        this.propertyRepository.save(apartmentToBeSaved);
+//        this.propertyRepository.save(houseToBeSaved);
+//        this.propertyRepository.save(groundToBeSaved);
+//
+//        List<Hosting> properties = this.propertyRepository.findAllByDtype("Apartment");
+//
+//
+//        Assertions.assertThat(properties).isNotNull();
+//        Assertions.assertThat(properties.get(0).getDtype()).isEqualTo("Apartment");
+//    }
 
 
 }

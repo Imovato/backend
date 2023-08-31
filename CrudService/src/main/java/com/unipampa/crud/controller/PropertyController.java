@@ -41,63 +41,63 @@ public class PropertyController {
 	}
 
 	
-	@PostMapping("/add")
-	@ApiOperation(value = "Salva uma propriedade definindo o seu tipo com base nas suas propriedades (e. g. se não houverem quartos será salvo como terreno)")
-	public ResponseEntity<Void> saveProperty(@RequestBody PropertyDTO propertyDTO) {
-		
-		if(propertyDTO.getRooms() == null) {
-			Ground ground = (Ground) Ground.builder()
-					.area(propertyDTO.getArea())
-					.name(propertyDTO.getName())
-					.neighborhood(propertyDTO.getNeighborhood())
-					.codAddress(propertyDTO.getCodAddress())
-					.city(propertyDTO.getCity())
-					.description(propertyDTO.getDescription())
-					.adress(propertyDTO.getAdress())
-					.state(propertyDTO.getState())
-					.price(propertyDTO.getPrice())
-					.number(propertyDTO.getNumber())
-					.amount(propertyDTO.getAmount()).build();
-		   // Property property = propertyService.strategySave(propertyDTO);
-			propertyService.saveProperty(ground);
-			return new ResponseEntity<>(HttpStatus.CREATED);
-			
-		} else if (propertyDTO.getBlock() == null) {
-			House house = House.builder()
-					.area(propertyDTO.getArea())
-					.name(propertyDTO.getName())
-					.neighborhood(propertyDTO.getNeighborhood())
-					.codAddress(propertyDTO.getCodAddress())
-					.city(propertyDTO.getCity())
-					.description(propertyDTO.getDescription())
-					.adress(propertyDTO.getAdress())
-					.state(propertyDTO.getState())
-					.price(propertyDTO.getPrice())
-					.number(propertyDTO.getNumber())
-					.rooms(propertyDTO.getRooms())
-					.amount(propertyDTO.getAmount()).build();
-			propertyService.saveProperty(house);
-			return new ResponseEntity<>(HttpStatus.CREATED);
-			
-		} else {
-			Apartment apartment = Apartment.builder()
-					.area(propertyDTO.getArea())
-					.name(propertyDTO.getName())
-					.neighborhood(propertyDTO.getNeighborhood())
-					.codAddress(propertyDTO.getCodAddress())
-					.city(propertyDTO.getCity())
-					.description(propertyDTO.getDescription())
-					.adress(propertyDTO.getAdress())
-					.state(propertyDTO.getState())
-					.price(propertyDTO.getPrice())
-					.number(propertyDTO.getNumber())
-					.block(propertyDTO.getBlock())
-					.rooms(propertyDTO.getRooms())
-					.amount(propertyDTO.getAmount()).build();
-			propertyService.saveProperty(apartment);
-			return new ResponseEntity<>(HttpStatus.CREATED);
-		}
-	}
+//	@PostMapping("/add")
+//	@ApiOperation(value = "Salva uma propriedade definindo o seu tipo com base nas suas propriedades (e. g. se não houverem quartos será salvo como terreno)")
+//	public ResponseEntity<Void> saveProperty(@RequestBody PropertyDTO propertyDTO) {
+//
+//		if(propertyDTO.getRooms() == null) {
+//			Ground ground = (Ground) Ground.builder()
+//					.area(propertyDTO.getArea())
+//					.name(propertyDTO.getName())
+//					.neighborhood(propertyDTO.getNeighborhood())
+//					.codAddress(propertyDTO.getCodAddress())
+//					.city(propertyDTO.getCity())
+//					.description(propertyDTO.getDescription())
+//					.adress(propertyDTO.getAdress())
+//					.state(propertyDTO.getState())
+//					.price(propertyDTO.getPrice())
+//					.number(propertyDTO.getNumber())
+//					.amount(propertyDTO.getAmount()).build();
+//		   // Property property = propertyService.strategySave(propertyDTO);
+//			propertyService.saveProperty(ground);
+//			return new ResponseEntity<>(HttpStatus.CREATED);
+//
+//		} else if (propertyDTO.getBlock() == null) {
+//			House house = House.builder()
+//					.area(propertyDTO.getArea())
+//					.name(propertyDTO.getName())
+//					.neighborhood(propertyDTO.getNeighborhood())
+//					.codAddress(propertyDTO.getCodAddress())
+//					.city(propertyDTO.getCity())
+//					.description(propertyDTO.getDescription())
+//					.adress(propertyDTO.getAdress())
+//					.state(propertyDTO.getState())
+//					.price(propertyDTO.getPrice())
+//					.number(propertyDTO.getNumber())
+//					.rooms(propertyDTO.getRooms())
+//					.amount(propertyDTO.getAmount()).build();
+//			propertyService.saveProperty(house);
+//			return new ResponseEntity<>(HttpStatus.CREATED);
+//
+//		} else {
+//			Apartment apartment = Apartment.builder()
+//					.area(propertyDTO.getArea())
+//					.name(propertyDTO.getName())
+//					.neighborhood(propertyDTO.getNeighborhood())
+//					.codAddress(propertyDTO.getCodAddress())
+//					.city(propertyDTO.getCity())
+//					.description(propertyDTO.getDescription())
+//					.adress(propertyDTO.getAdress())
+//					.state(propertyDTO.getState())
+//					.price(propertyDTO.getPrice())
+//					.number(propertyDTO.getNumber())
+//					.block(propertyDTO.getBlock())
+//					.rooms(propertyDTO.getRooms())
+//					.amount(propertyDTO.getAmount()).build();
+//			propertyService.saveProperty(apartment);
+//			return new ResponseEntity<>(HttpStatus.CREATED);
+//		}
+//	}
 	
 	@GetMapping("property/all")
 	@ApiOperation(value = "Retorna uma lista com todas as propriedades")
@@ -153,26 +153,26 @@ public class PropertyController {
 	// --- APARTMENTS ENDPOINTS ---
 	// ----------------------------
 	
-	@PostMapping("/apartment")
-	@ApiOperation(value = "Salva um apartamento")
-	public ResponseEntity<Void> saveApartment(@RequestBody PropertyDTO apartmentDto) {
-		Apartment apartment = Apartment.builder()
-				.area(apartmentDto.getArea())
-				.name(apartmentDto.getName())
-				.neighborhood(apartmentDto.getNeighborhood())
-				.codAddress(apartmentDto.getCodAddress())
-				.city(apartmentDto.getCity())
-				.description(apartmentDto.getDescription())
-				.adress(apartmentDto.getAdress())
-				.state(apartmentDto.getState())
-				.price(apartmentDto.getPrice())
-				.number(apartmentDto.getNumber())
-				.block(apartmentDto.getBlock())
-				.rooms(apartmentDto.getRooms())
-				.amount(apartmentDto.getAmount()).build();
-		propertyService.saveProperty(apartment);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}
+//	@PostMapping("/apartment")
+//	@ApiOperation(value = "Salva um apartamento")
+//	public ResponseEntity<Void> saveApartment(@RequestBody PropertyDTO apartmentDto) {
+//		Apartment apartment = Apartment.builder()
+//				.area(apartmentDto.getArea())
+//				.name(apartmentDto.getName())
+//				.neighborhood(apartmentDto.getNeighborhood())
+//				.codAddress(apartmentDto.getCodAddress())
+//				.city(apartmentDto.getCity())
+//				.description(apartmentDto.getDescription())
+//				.adress(apartmentDto.getAdress())
+//				.state(apartmentDto.getState())
+//				.price(apartmentDto.getPrice())
+//				.number(apartmentDto.getNumber())
+//				.block(apartmentDto.getBlock())
+//				.rooms(apartmentDto.getRooms())
+//				.amount(apartmentDto.getAmount()).build();
+//		propertyService.saveProperty(apartment);
+//		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//	}
 	
 	@GetMapping("apartment/all")
 	@ApiOperation(value = "Retorna uma lista de apartamentos")
@@ -199,27 +199,27 @@ public class PropertyController {
 	// --- HOUSES ENDPOINTS ---
 	// ------------------------
 	
-	@PostMapping("/house")
-	@ApiOperation(value = "Salva uma casa ")
-	public ResponseEntity<?> saveHouse(@RequestBody PropertyDTO houseDto) {
-
-		House house = House.builder()
-				.area(houseDto.getArea())
-				.name(houseDto.getName())
-				.neighborhood(houseDto.getNeighborhood())
-				.codAddress(houseDto.getCodAddress())
-				.city(houseDto.getCity())
-				.description(houseDto.getDescription())
-				.adress(houseDto.getAdress())
-				.state(houseDto.getState())
-				.price(houseDto.getPrice())
-				.number(houseDto.getNumber())
-				.rooms(houseDto.getRooms())
-				.amount(houseDto.getAmount())
-				.build();
-		propertyService.saveProperty(house);
-		return new ResponseEntity<>(house, HttpStatus.OK);
-	}
+//	@PostMapping("/house")
+//	@ApiOperation(value = "Salva uma casa ")
+//	public ResponseEntity<?> saveHouse(@RequestBody PropertyDTO houseDto) {
+//
+//		House house = House.builder()
+//				.area(houseDto.getArea())
+//				.name(houseDto.getName())
+//				.neighborhood(houseDto.getNeighborhood())
+//				.codAddress(houseDto.getCodAddress())
+//				.city(houseDto.getCity())
+//				.description(houseDto.getDescription())
+//				.adress(houseDto.getAdress())
+//				.state(houseDto.getState())
+//				.price(houseDto.getPrice())
+//				.number(houseDto.getNumber())
+//				.rooms(houseDto.getRooms())
+//				.amount(houseDto.getAmount())
+//				.build();
+//		propertyService.saveProperty(house);
+//		return new ResponseEntity<>(house, HttpStatus.OK);
+//	}
 
 	@GetMapping("house/all")
 	@ApiOperation(value = "Retorna uma lista de casas")
@@ -246,26 +246,26 @@ public class PropertyController {
 	// --- GROUNDS ENDPOINTS ---
 	// -------------------------
 	
-	@PostMapping("/ground")
-	@ApiOperation(value = "Salva um terreno")
-	public ResponseEntity<?> saveGround(@RequestBody PropertyDTO groundDto) {
-
-		Ground ground = (Ground) Ground.builder()
-				.area(groundDto.getArea())
-				.name(groundDto.getName())
-				.neighborhood(groundDto.getNeighborhood())
-				.codAddress(groundDto.getCodAddress())
-				.city(groundDto.getCity())
-				.description(groundDto.getDescription())
-				.adress(groundDto.getAdress())
-				.state(groundDto.getState())
-				.price(groundDto.getPrice())
-				.number(groundDto.getNumber())
-				.amount(groundDto.getAmount())
-				.build();
-		propertyService.saveProperty(ground);
-		return new ResponseEntity<>(ground, HttpStatus.OK);
-	}
+//	@PostMapping("/ground")
+//	@ApiOperation(value = "Salva um terreno")
+//	public ResponseEntity<?> saveGround(@RequestBody PropertyDTO groundDto) {
+//
+//		Ground ground = (Ground) Ground.builder()
+//				.area(groundDto.getArea())
+//				.name(groundDto.getName())
+//				.neighborhood(groundDto.getNeighborhood())
+//				.codAddress(groundDto.getCodAddress())
+//				.city(groundDto.getCity())
+//				.description(groundDto.getDescription())
+//				.adress(groundDto.getAdress())
+//				.state(groundDto.getState())
+//				.price(groundDto.getPrice())
+//				.number(groundDto.getNumber())
+//				.amount(groundDto.getAmount())
+//				.build();
+//		propertyService.saveProperty(ground);
+//		return new ResponseEntity<>(ground, HttpStatus.OK);
+//	}
 
 	@GetMapping("ground/all")
 	@ApiOperation(value = "Retorna uma lista de terrenos")

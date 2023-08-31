@@ -27,7 +27,6 @@ public class UserReceiver {
     cust.setName(user.getUsername());
     cust.setEmail(user.getEmail());
     cust.setPhone(user.getPhone());
-    cust.setPassword(user.getPassword());
     userRepository.save(cust);
   }
 

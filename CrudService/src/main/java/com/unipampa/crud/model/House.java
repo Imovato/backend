@@ -1,14 +1,12 @@
 package com.unipampa.crud.model;
 
+import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
 
 @Entity
-@SuperBuilder(toBuilder = true)
+@Data
 public class House extends Hosting {
-	public House() {
-		super();
-	}
 
 }

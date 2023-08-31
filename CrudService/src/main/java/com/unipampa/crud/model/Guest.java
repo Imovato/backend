@@ -10,13 +10,13 @@ import javax.persistence.Entity;
 @Data
 public class Guest extends User {
 
-    @Column(name = "cpf")
+    @Column(name = "cpf", nullable = false, length = 11)
     private String cpf;
 
-    @Column(name = "phone")
+    @Column(name = "phone", length = 10)
     private String phone;
 
-    @Column(name = "address")
+    @Column(name = "address", length = 200)
     private String address;
 
 }
