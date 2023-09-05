@@ -1,5 +1,8 @@
 package com.unipampa.crud.model;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.unipampa.crud.enums.UserType;
 import lombok.Data;
 
 import java.util.List;
@@ -13,6 +16,15 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
+        property = "type"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Host.class, name = "host"),
+        @JsonSubTypes.Type(value = Guest.class, name = "guest")
+})
 @Entity
 @Table(name = "users")
 @Data
@@ -21,7 +33,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
-    private UUID id;
+    private Long id;
+
+    @Column(name = "cpf", nullable = false, length = 11)
+    private String cpf;
 
     @Column(name = "email", nullable = false, unique = true, length = 50)
     private String email;
@@ -31,5 +46,7 @@ public class User {
 
     @OneToMany
     private List<Hosting> properties;
+
+    private UserType type;
 
 }

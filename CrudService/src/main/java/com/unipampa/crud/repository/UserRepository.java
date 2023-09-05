@@ -13,11 +13,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	Guest findCustomerById(Long id);
 
-	Owner findOwnerById(Long id);
-
-	User findUserById(Long id);
 
 	Boolean existsByEmail(String email);
 
-	Guest findCustomerByEmail(String email);
+	User findUserByEmail(String email);
 }

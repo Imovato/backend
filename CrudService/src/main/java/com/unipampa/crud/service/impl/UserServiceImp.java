@@ -1,6 +1,7 @@
 package com.unipampa.crud.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,16 +45,6 @@ public class UserServiceImp implements IUserService {
 	}
 
 	@Override
-	public Owner findOwnerById(Long id) {
-		return userRepository.findOwnerById(id);
-	}
-
-	@Override
-	public User findUserById(Long id) {
-		return userRepository.findUserById(id);
-	}
-
-	@Override
 	public List<User> findAllUsers() {
 		return userRepository.findAll();
 	}
@@ -84,8 +75,13 @@ public class UserServiceImp implements IUserService {
 	}
 
 	@Override
-	public Guest findCustomerByEmail(String email) {
-		return userRepository.findCustomerByEmail(email);
+	public Optional<User> findUserByEmail(String email) {
+		return Optional.ofNullable(userRepository.findUserByEmail(email));
+	}
+
+	@Override
+	public Optional<User> findById(Long id) {
+		return userRepository.findById(id);
 	}
 
 }

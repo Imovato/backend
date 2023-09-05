@@ -1,6 +1,7 @@
 package com.unipampa.crud.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.unipampa.crud.model.Guest;
 import com.unipampa.crud.model.Host;
@@ -14,10 +15,6 @@ public interface IUserService {
 
 	Guest findCustomerById(Long id);
 
-	Owner findOwnerById(Long id);
-
-	User findUserById(Long id);
-
 	List<User> findAllUsers();
 
 	void deleteUser(Long id);
@@ -30,5 +27,7 @@ public interface IUserService {
 
 	Boolean existsByEmail(String email);
 
-	Guest findCustomerByEmail(String email);
+	Optional<User> findUserByEmail(String email);
+
+	Optional<User> findById(Long id);
 }
