@@ -3,12 +3,13 @@ package com.unipampa.crud.service;
 import com.unipampa.crud.model.Accommodation;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AccommodationService {
 
 	void save(Accommodation hosting);
 
-	Accommodation findById(Long id);
+	Optional<Accommodation> findById(Long id);
 
 	List<Accommodation> findAll();
 

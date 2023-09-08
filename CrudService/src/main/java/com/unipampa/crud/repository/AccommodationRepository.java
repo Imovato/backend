@@ -6,6 +6,4 @@ import com.unipampa.crud.model.Accommodation;
 
 public interface AccommodationRepository extends JpaRepository<Accommodation, Long>{
 
-	Accommodation findAccommodationById(Long id);
-
 }

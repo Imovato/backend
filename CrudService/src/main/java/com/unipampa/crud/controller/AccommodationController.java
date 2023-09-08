@@ -1,6 +1,7 @@
 package com.unipampa.crud.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unipampa.crud.dto.AccommodationDTO;
@@ -14,46 +15,42 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("/api/property")
+@RequestMapping("/api/accommodations")
 @Api(value = "API Crud Property")
 public class AccommodationController {
 
-	private AccommodationService propertyService;
+	@Autowired
+	private AccommodationService accommodationService;
 
 	@Autowired
 	ObjectMapper mapper;
 
-	public AccommodationController(AccommodationService service) {
-		this.propertyService = service;
-	}
-
-	
 	@PostMapping("/add")
-	@ApiOperation(value = "Salva uma propriedade)")
-	public ResponseEntity<Object> saveAccommodation(@RequestBody AccommodationDTO accommodationDTO) {
+	@ApiOperation(value = "Salva uma acomodação)")
+	public ResponseEntity<Accommodation> save(@RequestBody AccommodationDTO accommodationDTO) {
 		var accommodation = mapper.convertValue(accommodationDTO, Accommodation.class);
-		propertyService.save(accommodation);
+		accommodationService.save(accommodation);
 		return ResponseEntity.status(HttpStatus.OK).body(accommodation);
 	}
 	
-	@GetMapping("property/all")
-	@ApiOperation(value = "Retorna uma lista com todas as propriedades")
-	public ResponseEntity<List<Accommodation>> getAllProperties() {
-		List<Accommodation> properties = propertyService.findAll();
-		return ResponseEntity.status(HttpStatus.OK).body(properties);
+	@GetMapping("/all")
+	@ApiOperation(value = "Retorna uma lista com todas as acomodações")
+	public ResponseEntity<List<Accommodation>> findAll() {
+		List<Accommodation> accommodations = accommodationService.findAll();
+		return ResponseEntity.status(HttpStatus.OK).body(accommodations);
 	}
 	
-	@GetMapping("property/find/{id}")
-	@ApiOperation(value = "Encontra uma propriedade através do id")
-	public ResponseEntity<?> getPropertyById(@PathVariable("id") Long id) {
-		Accommodation hosting = propertyService.findById(id);
-		return new ResponseEntity<>(hosting, HttpStatus.OK);
+	@GetMapping("/find/{id}")
+	@ApiOperation(value = "Encontra uma acomodação através do id")
+	public ResponseEntity<Accommodation> getById(@PathVariable("id") Long id) {
+		Optional<Accommodation> hosting = accommodationService.findById(id);
+		return new ResponseEntity<>(hosting.get(), HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	@ApiOperation(value = "Deleta uma propriedade através do id")
-	public ResponseEntity<Void> deleteProperty(@PathVariable("id") Long id) {
-		propertyService.delete(id);
+	@ApiOperation(value = "Deleta uma acomodação através do id")
+	public ResponseEntity<Void> deleteAccommodation(@PathVariable("id") Long id) {
+		accommodationService.delete(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
@@ -163,7 +160,5 @@ public class AccommodationController {
 //		propertyService.saveProperty(ground);
 //		return new ResponseEntity<>(ground, HttpStatus.OK);
 //	}
-
-
 
 }

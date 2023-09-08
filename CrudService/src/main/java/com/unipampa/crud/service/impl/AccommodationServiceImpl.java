@@ -1,6 +1,7 @@
 package com.unipampa.crud.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.unipampa.crud.service.StrategySaveProperty;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +47,8 @@ public class AccommodationServiceImpl implements AccommodationService {
 	}
 
 	@Override
-	public Accommodation findById(Long id) {
-		return propertyRepository.findAccommodationById(id);
+	public Optional<Accommodation> findById(Long id) {
+		return propertyRepository.findById(id);
 	}
 
 
