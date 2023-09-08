@@ -1,7 +1,5 @@
 package com.unipampa.util;
 
-import com.unipampa.crud.model.Apartment;
-
 public class ApartmentCreator {
 //    public static Apartment createApartmentToSaved() {
 //        return Apartment.builder()

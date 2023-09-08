@@ -1,6 +1,6 @@
 package com.unipampa.crud.controller;
 
-import com.unipampa.crud.service.IPropertyService;
+import com.unipampa.crud.service.AccommodationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -9,9 +9,9 @@ import org.mockito.Mock;
 class PropertyControllerTest {
 
     @InjectMocks
-    private PropertyController propertyController;
+    private AccommodationController propertyController;
     @Mock
-    private IPropertyService iPropertyService;
+    private AccommodationService iPropertyService;
 
     @BeforeEach
     void setUp(){

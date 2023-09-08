@@ -1,7 +1,5 @@
 package com.unipampa.util;
 
-import com.unipampa.crud.model.House;
-
 public class HouseCreator {
 //    public static House createHouseToSaved() {
 //        return House.builder()

@@ -6,7 +6,6 @@ import com.unipampa.crud.enums.UserType;
 import lombok.Data;
 
 import java.util.List;
-import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -45,7 +44,7 @@ public class User {
     private String name;
 
     @OneToMany
-    private List<Hosting> properties;
+    private List<Accommodation> properties;
 
     private UserType type;
 

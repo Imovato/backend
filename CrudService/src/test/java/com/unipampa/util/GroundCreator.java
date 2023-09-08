@@ -1,8 +1,5 @@
 package com.unipampa.util;
 
-import com.unipampa.crud.model.Apartment;
-import com.unipampa.crud.model.Ground;
-
 public class GroundCreator {
     public static Ground createGroundToSaved() {
         return Ground.builder()

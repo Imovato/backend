@@ -1,14 +1,14 @@
 package com.unipampa.util;
 
-import com.unipampa.crud.dto.PropertyDTO;
+import com.unipampa.crud.dto.AccommodationDTO;
 
 public class PropertyDTO1 {
-    public static PropertyDTO createPropertyPostRequestBody() {
-        return PropertyDTO.builder()
-                .idProperty(PropertyCreator.createValidProperty().getId())
-                .adress(PropertyCreator.createValidProperty().getAdress())
-                .name(PropertyCreator.createValidProperty().getName())
-                .city(PropertyCreator.createValidProperty().getCity())
-                .build();
-    }
+//    public static AccommodationDTO createPropertyPostRequestBody() {
+//        return AccommodationDTO.builder()
+//                .idProperty(PropertyCreator.createValidProperty().getId())
+//                .adress(PropertyCreator.createValidProperty().getAdress())
+//                .name(PropertyCreator.createValidProperty().getName())
+//                .city(PropertyCreator.createValidProperty().getCity())
+//                .build();
+//    }
 }

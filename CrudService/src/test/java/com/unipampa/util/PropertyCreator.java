@@ -1,10 +1,10 @@
 package com.unipampa.util;
 
-import com.unipampa.crud.model.Hosting;
+import com.unipampa.crud.model.Accommodation;
 
 public class PropertyCreator {
-    public static Hosting createPropertyToSaved() {
-        return Hosting.builder()
+    public static Accommodation createPropertyToSaved() {
+        return Accommodation.builder()
                 .name("Bla bla bla")
                 .dtype("Property")
                 .adress("Avenida São José")
@@ -15,8 +15,8 @@ public class PropertyCreator {
                 .description("Area grande, bom para familia")
                 .build();
     }
-    public static Hosting createValidProperty() {
-        return Hosting.builder()
+    public static Accommodation createValidProperty() {
+        return Accommodation.builder()
                 .id(1L)
                 .name("Bla bla bla")
                 .dtype("Property")
@@ -28,8 +28,8 @@ public class PropertyCreator {
                 .description("Area grande, bom para familia")
                 .build();
     }
-    public static Hosting createValidUpdateProperty() {
-        return Hosting.builder()
+    public static Accommodation createValidUpdateProperty() {
+        return Accommodation.builder()
                 .id(1L)
                 .name("Bla bla bla")
                 .dtype("Property")

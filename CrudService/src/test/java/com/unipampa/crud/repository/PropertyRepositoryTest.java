@@ -1,12 +1,7 @@
 package com.unipampa.crud.repository;
 
-import com.unipampa.crud.model.Apartment;
-import com.unipampa.crud.model.Ground;
-import com.unipampa.crud.model.House;
-import com.unipampa.crud.model.Hosting;
-import com.unipampa.util.ApartmentCreator;
+import com.unipampa.crud.model.Accommodation;
 import com.unipampa.util.GroundCreator;
-import com.unipampa.util.HouseCreator;
 import com.unipampa.util.PropertyCreator;
 import lombok.extern.log4j.Log4j2;
 import org.assertj.core.api.Assertions;
@@ -16,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import javax.validation.ConstraintViolationException;
-import java.util.List;
 import java.util.Optional;
 
 @DataJpaTest
@@ -24,13 +18,13 @@ import java.util.Optional;
 @Log4j2
 class PropertyRepositoryTest {
     @Autowired
-    private PropertyRepository propertyRepository;
+    private AccommodationRepository propertyRepository;
 
     @Test
     @DisplayName("Save creates property when Successful")
     void save_PersistProperty_WhenSuccessful(){
-        Hosting hostingToBeSaved = PropertyCreator.createPropertyToSaved();
-        Hosting hostingSaved = this.propertyRepository.save(hostingToBeSaved);
+        Accommodation hostingToBeSaved = PropertyCreator.createPropertyToSaved();
+        Accommodation hostingSaved = this.propertyRepository.save(hostingToBeSaved);
         Assertions.assertThat(hostingSaved).isNotNull();
         Assertions.assertThat(hostingSaved.getId()).isNotNull();
         Assertions.assertThat(hostingSaved.getName()).isEqualTo(hostingToBeSaved.getName());
@@ -39,11 +33,11 @@ class PropertyRepositoryTest {
     @Test
     @DisplayName("Save updates property when Successful")
     void save_UpdateProperty_WhenSuccessful(){
-        Hosting hostingToBeSaved = PropertyCreator.createPropertyToSaved();
-        Hosting hostingSaved = this.propertyRepository.save(hostingToBeSaved);
+        Accommodation hostingToBeSaved = PropertyCreator.createPropertyToSaved();
+        Accommodation hostingSaved = this.propertyRepository.save(hostingToBeSaved);
 
         hostingSaved.setNumber(529L);
-        Hosting hostingUpdated = this.propertyRepository.save(hostingSaved);
+        Accommodation hostingUpdated = this.propertyRepository.save(hostingSaved);
         log.info(hostingUpdated.getNumber());
         Assertions.assertThat(hostingSaved).isNotNull();
         Assertions.assertThat(hostingSaved.getId()).isNotNull();
@@ -52,11 +46,11 @@ class PropertyRepositoryTest {
     @Test
     @DisplayName("Deletes removes property when Successful")
     void delete_RemovesProperty_WhenSuccessful(){
-        Hosting hostingToBeSaved = PropertyCreator.createPropertyToSaved();
-        Hosting hostingSaved = this.propertyRepository.save(hostingToBeSaved);
+        Accommodation hostingToBeSaved = PropertyCreator.createPropertyToSaved();
+        Accommodation hostingSaved = this.propertyRepository.save(hostingToBeSaved);
 
         this.propertyRepository.delete(hostingSaved);
-        Optional<Hosting> propertyOptional = this.propertyRepository.findById(hostingSaved.getId());
+        Optional<Accommodation> propertyOptional = this.propertyRepository.findById(hostingSaved.getId());
         Assertions.assertThat(propertyOptional).isEmpty();
 
     }
@@ -64,10 +58,10 @@ class PropertyRepositoryTest {
     @Test
     @DisplayName("Find by property when Successful")
     void find_ByProperty_WhenSuccessful(){
-        Hosting hostingToBeSaved = PropertyCreator.createPropertyToSaved();
-        Hosting hostingSaved = this.propertyRepository.save(hostingToBeSaved);
+        Accommodation hostingToBeSaved = PropertyCreator.createPropertyToSaved();
+        Accommodation hostingSaved = this.propertyRepository.save(hostingToBeSaved);
 
-        Hosting hostingFind = this.propertyRepository.findPropertyById(hostingSaved.getId());
+        Accommodation hostingFind = this.propertyRepository.findAccommodationById(hostingSaved.getId());
 
         Assertions.assertThat(hostingFind).isNotNull();
         Assertions.assertThat(hostingFind.getId()).isNotNull();
@@ -111,7 +105,7 @@ class PropertyRepositoryTest {
     @Test
     @DisplayName("Find by property return null when no property not found")
     void findByProperty_ReturnsNull_WhenContactIsNotFound() {
-        Hosting hostingToBeSaved = PropertyCreator.createPropertyToSaved();
+        Accommodation hostingToBeSaved = PropertyCreator.createPropertyToSaved();
         Apartment apartmentFind = this.propertyRepository.findApartmentById(hostingToBeSaved.getId());
 
         Assertions.assertThat(apartmentFind).isNull();
@@ -120,7 +114,7 @@ class PropertyRepositoryTest {
     @Test
     @DisplayName("Save throw ConstraintViolidationException when address is empty")
     void save_ConstraintViolidationException_WhenAddressIsEmpty(){
-        Hosting hosting = new Hosting();
+        Accommodation hosting = new Accommodation();
         Assertions.assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> this.propertyRepository.save(hosting))
                 .withMessageContaining("The address cannot be empty");
