@@ -1,19 +1,20 @@
 package com.unipampa.crud.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-@Entity
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class Guest extends User {
 
-    @Column(name = "phone", length = 10)
+//    @Column(name = "phone", length = 10)
     private String phone;
 
-    @Column(name = "address", length = 200)
+//    @Column(name = "address", length = 200)
     private String address;
 
 }

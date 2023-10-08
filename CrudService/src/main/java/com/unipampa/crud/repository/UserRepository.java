@@ -4,17 +4,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.unipampa.crud.model.Guest;
 import com.unipampa.crud.model.Host;
-import com.unipampa.crud.model.Owner;
 import com.unipampa.crud.model.User;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface UserRepository extends JpaRepository<User, Long> {
-
-	Host findEmployeeById(Long id);
-
-	Guest findCustomerById(Long id);
-
-
-	Boolean existsByEmail(String email);
+public interface UserRepository extends MongoRepository<User, String> {
 
 	User findUserByEmail(String email);
 }

@@ -1,6 +1,5 @@
 package com.unipampa.crud.receiver;
 
-import com.unipampa.crud.dto.CompleteUserDTO;
 import com.unipampa.crud.model.Guest;
 import com.unipampa.crud.repository.UserRepository;
 
@@ -19,15 +18,15 @@ public class UserReceiver {
     this.userRepository = userRepository;
   }
 
-  @RabbitListener(queues = "${crud.rabbitmq.signupQueue}")
-  public void receive(@Payload CompleteUserDTO user) {
-    Guest cust = new Guest();
-    cust.setAddress(user.getAddress());
-    cust.setCpf(user.getCpf());
-    cust.setName(user.getUsername());
-    cust.setEmail(user.getEmail());
-    cust.setPhone(user.getPhone());
-    userRepository.save(cust);
-  }
+//  @RabbitListener(queues = "${crud.rabbitmq.signupQueue}")
+//  public void receive(@Payload CompleteUserDTO user) {
+//    Guest cust = new Guest();
+//    cust.setAddress(user.getAddress());
+//    cust.setCpf(user.getCpf());
+//    cust.setName(user.getUsername());
+//    cust.setEmail(user.getEmail());
+//    cust.setPhone(user.getPhone());
+//    userRepository.save(cust);
+//  }
 
 }

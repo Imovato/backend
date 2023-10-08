@@ -9,10 +9,10 @@ public interface AccommodationService {
 
 	void save(Accommodation hosting);
 
-	Optional<Accommodation> findById(Long id);
+	Optional<Accommodation> findById(String id);
 
 	List<Accommodation> findAll();
 
-	void delete(Long id);
+	void delete(String id);
 
 }

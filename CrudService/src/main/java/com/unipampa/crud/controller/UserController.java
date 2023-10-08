@@ -70,7 +70,7 @@ public class UserController {
 
 	@GetMapping("{id}")
 	@ApiOperation(value = "Retorna um usuario pelo id")
-	public ResponseEntity<Object> getUserById(@PathVariable("id") Long id) {
+	public ResponseEntity<Object> getUserById(@PathVariable("id") String id) {
 		Optional<User> user = userService.findById(id);
 		if (user.isEmpty()){
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
@@ -81,7 +81,7 @@ public class UserController {
 
 	@PutMapping("/update/{id}")
 	@ApiOperation(value = "Atualiza um usuario pelo id")
-	public ResponseEntity<Object> updateUser(@RequestBody @Valid UserDTO userDTO, @PathVariable("id")Long id) {
+	public ResponseEntity<Object> updateUser(@RequestBody @Valid UserDTO userDTO, @PathVariable("id")String id) {
 		Optional<User> user = userService.findById(id);
 		if(user.isEmpty()){
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("usuário não encontrado para esse id, portanto não pode ser atualizado!");
@@ -94,7 +94,7 @@ public class UserController {
 
 	@DeleteMapping("/delete/{id}")
 	@ApiOperation(value = "Remove um usuario pelo seu id")
-	public ResponseEntity<Object> deleteUser(@PathVariable("id") Long id) {
+	public ResponseEntity<Object> deleteUser(@PathVariable("id") String id) {
 		Optional<User> user = userService.findById(id);
 		if(user.isEmpty()){
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado para esse id, portanto não pode ser deletado!");

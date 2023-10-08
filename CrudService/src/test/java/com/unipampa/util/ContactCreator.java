@@ -1,8 +1,5 @@
 package com.unipampa.util;
 
-import com.unipampa.crud.model.Contact;
-import org.junit.jupiter.api.Test;
-
 public class ContactCreator {
     public static Contact createContactToSaved() {
         return Contact.builder()

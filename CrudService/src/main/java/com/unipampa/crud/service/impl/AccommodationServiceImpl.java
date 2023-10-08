@@ -41,13 +41,13 @@ public class AccommodationServiceImpl implements AccommodationService {
 
 
 	@Override
-	public void delete(Long id) {
+	public void delete(String id) {
 		propertyRepository.deleteById(id);
 
 	}
 
 	@Override
-	public Optional<Accommodation> findById(Long id) {
+	public Optional<Accommodation> findById(String id) {
 		return propertyRepository.findById(id);
 	}
 
