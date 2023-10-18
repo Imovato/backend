@@ -3,7 +3,9 @@ package com.unipampa.crud.model;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.unipampa.crud.enums.UserType;
+import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -16,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.EXISTING_PROPERTY,
@@ -27,7 +30,8 @@ import javax.persistence.Table;
 })
 @Document
 @Data
-public class User {
+@SuperBuilder
+public abstract class User {
 
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    @Column(name = "id", nullable = false)

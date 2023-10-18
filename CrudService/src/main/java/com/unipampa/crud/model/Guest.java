@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
+@SuperBuilder
 public class Guest extends User {
 
 //    @Column(name = "phone", length = 10)

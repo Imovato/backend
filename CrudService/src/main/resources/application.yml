@@ -1,3 +1,4 @@
+# SONAR LOCAL: mvn clean verify sonar:sonar -Dsonar.projectKey=Imovato -Dsonar.host.url=http://localhost:9000 -Dsonar.login=sqp_8065f01e13e240636a05812095cc3af86e62507c
 server:
   port: 8081
   servlet:

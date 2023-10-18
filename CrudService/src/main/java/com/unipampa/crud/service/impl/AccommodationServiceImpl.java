@@ -1,25 +1,21 @@
 package com.unipampa.crud.service.impl;
 
-import java.util.List;
-import java.util.Optional;
-
-import com.unipampa.crud.service.StrategySaveProperty;
+import com.unipampa.crud.model.Accommodation;
+import com.unipampa.crud.repository.AccommodationRepository;
+import com.unipampa.crud.sender.PropertySender;
+import com.unipampa.crud.service.AccommodationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.unipampa.crud.service.AccommodationService;
-import com.unipampa.crud.model.Accommodation;
-import com.unipampa.crud.repository.AccommodationRepository;
-import com.unipampa.crud.sender.PropertySender;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AccommodationServiceImpl implements AccommodationService {
 
 	private AccommodationRepository propertyRepository;
 	private PropertySender propertySender;
-
-	private StrategySaveProperty strategySaveProperty;
 
 	@Autowired
 	public AccommodationServiceImpl(AccommodationRepository repository, PropertySender sendMessage) {
@@ -50,7 +46,5 @@ public class AccommodationServiceImpl implements AccommodationService {
 	public Optional<Accommodation> findById(String id) {
 		return propertyRepository.findById(id);
 	}
-
-
 
 }

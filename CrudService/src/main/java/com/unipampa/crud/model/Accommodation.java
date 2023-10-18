@@ -1,12 +1,12 @@
 package com.unipampa.crud.model;
 
 import com.unipampa.crud.enums.AccommodationType;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-
+import javax.persistence.Id;
+@Builder
 @Document
 @Data
 public class Accommodation {
