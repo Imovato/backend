@@ -25,6 +25,9 @@ import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @Log4j2
 @RestController
 @RequestMapping("/users")
@@ -64,6 +67,12 @@ public class UserController {
 	public ResponseEntity<Page<User>> getAllUsers(
 			@PageableDefault(page = 0, size = 3, direction = Sort.Direction.ASC) Pageable pageable) {
 		Page<User> users = userService.findAll(pageable);
+		if(!users.isEmpty()){
+			users.stream().forEach(e -> e.add(
+					linkTo(methodOn(UserController.class).getUserById(e.getId())).withSelfRel())
+			);
+
+		}
 
 		return ResponseEntity.status(HttpStatus.OK).body(users);
 	}

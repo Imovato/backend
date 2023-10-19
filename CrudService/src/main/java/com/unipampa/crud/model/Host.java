@@ -2,14 +2,10 @@ package com.unipampa.crud.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.experimental.SuperBuilder;
-
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class Host extends User {
+public class Host extends User  {
 
+    private static final long serialVersionUID = -9218117739309813918L;
 }

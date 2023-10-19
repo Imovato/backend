@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.unipampa.crud.enums.UserType;
-import lombok.Builder;
 import lombok.Data;
-import lombok.experimental.SuperBuilder;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 
@@ -25,9 +25,10 @@ import java.time.LocalDateTime;
 })
 @Document
 @Data
-public class User {
+public class User extends RepresentationModel<User> implements Serializable {
 
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private static final long serialVersionUID = 4477471521765649872L;
+    //    @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    @Column(name = "id", nullable = false)
     @Id
     private String id;
