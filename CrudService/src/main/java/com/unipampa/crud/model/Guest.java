@@ -1,5 +1,6 @@
 package com.unipampa.crud.model;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
@@ -9,7 +10,6 @@ import javax.persistence.Entity;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@SuperBuilder
 public class Guest extends User {
 
 //    @Column(name = "phone", length = 10)

@@ -10,7 +10,6 @@ import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@SuperBuilder
 public class Host extends User {
 
 }

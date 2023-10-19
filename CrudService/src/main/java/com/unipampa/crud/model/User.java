@@ -1,5 +1,6 @@
 package com.unipampa.crud.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.unipampa.crud.enums.UserType;
@@ -8,15 +9,9 @@ import lombok.Data;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
-
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 
 @JsonTypeInfo(
@@ -30,13 +25,15 @@ import javax.persistence.Table;
 })
 @Document
 @Data
-@SuperBuilder
-public abstract class User {
+public class User {
 
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    @Column(name = "id", nullable = false)
     @Id
     private String id;
+
+//    @Column(name = "cpf", nullable = false, length = 20)
+    private String userName;
 
 //    @Column(name = "cpf", nullable = false, length = 11)
     private String cpf;
@@ -48,8 +45,16 @@ public abstract class User {
     private String name;
 
 //    @OneToMany
-//    private List<Accommodation> properties;
+////    private List<Accommodation> properties;
 
     private UserType type;
+
+    @Column(nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+    private LocalDateTime creationDate;
+
+    @Column(nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+    private LocalDateTime lastUpdateDate;
 
 }
