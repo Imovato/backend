@@ -37,14 +37,13 @@ class UserServiceImplTest {
 
     @Test
     void shouldSaveUserTypeHost() {
-        Host user = Host.builder()
-                .id("123")
-                .cpf("8387738287348")
-                .email("samuelmodesto@email.com")
-                .name("Samuel Modesto")
-                .type(UserType.HOST)
-                .build();
-
+        Host user = new Host();
+        user.setId("123");
+        user.setCpf("8387738287348");
+        user.setEmail("samuelmodesto@email.com");
+        user.setName("Samuel Modesto");
+        user.setType(UserType.HOST);
+        user.setUserName("samuka");
         service.save(user);
         when(userRepository.save(user)).thenReturn(user);
         Host userReturn = userRepository.save(user);
@@ -54,13 +53,13 @@ class UserServiceImplTest {
 
     @Test
     void shouldSaveUserTypeGuest() {
-        Guest user = Guest.builder()
-                .id("123")
-                .cpf("8387738287348")
-                .email("samuelmodesto@email.com")
-                .name("Samuel Modesto")
-                .type(UserType.GUEST)
-                .build();
+        Guest user = new Guest();
+        user.setId("123");
+        user.setCpf("8387738287348");
+        user.setEmail("samuelmodesto@email.com");
+        user.setName("Samuel Modesto");
+        user.setType(UserType.GUEST);
+        user.setUserName("samuka");
 
         service.save(user);
         when(userRepository.save(user)).thenReturn(user);

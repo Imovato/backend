@@ -15,6 +15,9 @@ public class UserDTO {
 	private String name;
 
 	@NotBlank
+	private String userName;
+
+	@NotBlank
 	private String cpf;
 
 	@NotBlank

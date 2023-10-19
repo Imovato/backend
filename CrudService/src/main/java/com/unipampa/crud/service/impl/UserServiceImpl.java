@@ -5,6 +5,8 @@ import com.unipampa.crud.repository.UserRepository;
 import com.unipampa.crud.sender.UserSender;
 import com.unipampa.crud.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,6 +50,21 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Optional<User> findById(String id) {
 		return userRepository.findById(id);
+	}
+
+	@Override
+	public boolean existsByUserName(String username) {
+		return userRepository.existsByUserName(username);
+	}
+
+	@Override
+	public boolean existsByEmail(String email) {
+		return userRepository.existsByEmail(email);
+	}
+
+	@Override
+	public Page<User> findAll(Pageable pageable) {
+		return userRepository.findAll(pageable);
 	}
 
 }

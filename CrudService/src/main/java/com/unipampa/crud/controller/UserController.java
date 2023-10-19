@@ -1,34 +1,33 @@
 package com.unipampa.crud.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.unipampa.crud.dto.UserDTO;
+import com.unipampa.crud.model.User;
+import com.unipampa.crud.service.AccommodationService;
+import com.unipampa.crud.service.UserService;
+import com.unipampa.crud.validations.ValidationsSignup;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.unipampa.crud.dto.UserDTO;
-import com.unipampa.crud.service.AccommodationService;
-import com.unipampa.crud.service.UserService;
-import com.unipampa.crud.model.User;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-
-import javax.validation.Valid;
-
+@Log4j2
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/users")
 @Api(value = "API Crud Users")
 public class UserController {
 
@@ -43,18 +42,29 @@ public class UserController {
 	@Autowired
 	private ObjectMapper mapper;
 
-	@PostMapping("/customer/add")
+	@Autowired
+	List<ValidationsSignup> validations;
+
+	@PostMapping("/signup")
 	@ApiOperation(value = "Salva um usuario")
 	public ResponseEntity<Object> saveUser(@RequestBody @Valid UserDTO userDto) {
+
+		this.validations.forEach(e -> e.validate(userDto));
+
 		var user = mapper.convertValue(userDto, User.class);
+		user.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
+		user.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
 		userService.save(user);
+		log.info("User saved successfully username: {}", user.getUserName());
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
 	@GetMapping("/all")
 	@ApiOperation(value = "Retorna todos os usuários cadastrados")
-	public ResponseEntity<List<User>> getAllUsers() {
-		List<User> users = userService.findAll();
+	public ResponseEntity<Page<User>> getAllUsers(
+			@PageableDefault(page = 0, size = 3, direction = Sort.Direction.ASC) Pageable pageable) {
+		Page<User> users = userService.findAll(pageable);
+
 		return ResponseEntity.status(HttpStatus.OK).body(users);
 	}
 
