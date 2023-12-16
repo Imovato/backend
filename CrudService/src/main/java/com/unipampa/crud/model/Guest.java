@@ -1,22 +1,17 @@
 package com.unipampa.crud.model;
 
 import lombok.Data;
-import lombok.experimental.SuperBuilder;
+import lombok.EqualsAndHashCode;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-
-@Entity
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class Guest extends User {
+public class Guest extends User  {
 
-    @Column(name = "cpf", nullable = false, length = 11)
-    private String cpf;
-
-    @Column(name = "phone", length = 10)
+    private static final long serialVersionUID = 8684635612451680954L;
+    //    @Column(name = "phone", length = 10)
     private String phone;
 
-    @Column(name = "address", length = 200)
+//    @Column(name = "address", length = 200)
     private String address;
 
 }

@@ -1,9 +1,9 @@
 package com.unipampa.crud.service;
 
-import com.unipampa.crud.dto.PropertyDTO;
-import com.unipampa.crud.model.Hosting;
+import com.unipampa.crud.dto.AccommodationDTO;
+import com.unipampa.crud.model.Accommodation;
 
 public interface StrategySaveProperty {
 
-    Hosting save(PropertyDTO propertyDTO);
+    Accommodation save(AccommodationDTO propertyDTO);
 }

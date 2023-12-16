@@ -1,124 +1,132 @@
 package com.unipampa.crud.controller;
 
-import java.util.List;
-
-import org.springframework.beans.BeanUtils;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unipampa.crud.dto.UserDTO;
-import com.unipampa.crud.service.IPropertyService;
-import com.unipampa.crud.service.IUserService;
-import com.unipampa.crud.model.Guest;
-import com.unipampa.crud.model.Owner;
-import com.unipampa.crud.model.Hosting;
 import com.unipampa.crud.model.User;
-
+import com.unipampa.crud.service.AccommodationService;
+import com.unipampa.crud.service.UserService;
+import com.unipampa.crud.validations.ValidationsSignup;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.List;
+import java.util.Optional;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
+@Log4j2
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/users")
 @Api(value = "API Crud Users")
 public class UserController {
 
-	private IUserService userService;
+	private UserService userService;
 
-	private IPropertyService propertyService;
+	private AccommodationService propertyService;
 
-	public UserController(IUserService userService) {
+	public UserController(UserService userService) {
 		this.userService = userService;
+	}
+
+	@Autowired
+	private ObjectMapper mapper;
+
+	@Autowired
+	List<ValidationsSignup> validations;
+
+	@PostMapping("/signup")
+	@ApiOperation(value = "Salva um usuario")
+	public ResponseEntity<Object> saveUser(@RequestBody @Valid UserDTO userDto) {
+
+		this.validations.forEach(e -> e.validate(userDto));
+
+		var user = mapper.convertValue(userDto, User.class);
+		user.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
+		user.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
+		userService.save(user);
+		log.info("User saved successfully username: {}", user.getUserName());
+		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
 	@GetMapping("/all")
 	@ApiOperation(value = "Retorna todos os usuários cadastrados")
-	public ResponseEntity<List<User>> getAllUsers() {
-		List<User> users = userService.findAllUsers();
+	public ResponseEntity<Page<User>> getAllUsers(
+			@PageableDefault(page = 0, size = 3, direction = Sort.Direction.ASC) Pageable pageable) {
+		Page<User> users = userService.findAll(pageable);
+		if(!users.isEmpty()){
+			users.stream().forEach(e -> e.add(
+					linkTo(methodOn(UserController.class).getUserById(e.getId())).withSelfRel())
+			);
+
+		}
+
 		return ResponseEntity.status(HttpStatus.OK).body(users);
 	}
-/*não existe employee(funcionários) existe apenas guest(hóspedes) e hosts(anfitriao)*/
 
-
-
-	@PostMapping("/customer/add")
-	@ApiOperation(value = "Adiciona um usuario do tipo cliente")
-	public ResponseEntity<Void> saveCustomer(@RequestBody UserDTO userDto) {
-		var guest = new Guest();
-		BeanUtils.copyProperties(userDto, guest);
-		userService.saveUser(guest);
-		return new ResponseEntity<>(HttpStatus.CREATED);
+	@GetMapping("/find/{email}")
+	@ApiOperation(value = "Retorna um usuario pelo email")
+	public ResponseEntity<Object> getUserByEmail(@PathVariable("email") String email) {
+		Optional<User> user = userService.findByEmail(email);
+		if (user.isEmpty()){
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado para esse email!");
+		}
+		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
-	@GetMapping("/customer/find/{email}")
-	@ApiOperation(value = "Retorna um usuario do tipo cliente pelo email")
-	public ResponseEntity<?> getCustomerById(@PathVariable("email") String email) {
-		Guest customer = userService.findCustomerByEmail(email);
-		return new ResponseEntity<>(customer, HttpStatus.OK);
+	@GetMapping("{id}")
+	@ApiOperation(value = "Retorna um usuario pelo id")
+	public ResponseEntity<Object> getUserById(@PathVariable("id") String id) {
+		Optional<User> user = userService.findById(id);
+		if (user.isEmpty()){
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
+		}
+		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
-	@PostMapping("/checkEmail")
-	@ApiOperation(value = "Retorna true se o email existe no banco de dados")
-	public ResponseEntity<?> getCustomerEmail(@RequestBody UserDTO userDTO) {
-		Boolean result = userService.existsByEmail(userDTO.getEmail());
-		return new ResponseEntity<>(result, HttpStatus.OK);
-	}
 
-	@PutMapping("/customer/update")
-	@ApiOperation(value = "Atualiza um usuario do tipo cliente pelo id")
-	public ResponseEntity<?> updateCustomer(@RequestBody Guest customer) {
-		userService.saveUser(customer);
-		return new ResponseEntity<>(customer, HttpStatus.OK);
-	}
-
-//	@PostMapping("/owner/add")
-//	@ApiOperation(value = "Adiciona um usuario do tipo proprietario")
-//	public void saveOwner(@RequestBody UserDTO userDto) {
-//
-//		Owner owner = Owner.builder()
-//				.email(userDto.getEmail())
-//				.name(userDto.getName())
-//				.password(userDto.getPassword())
-//				.id(userDto.getId())
-//				.address(userDto.getAddress())
-//				.phone(userDto.getPhone())
-//				.cpf(userDto.getCpf())
-//				.build();
-//		userService.saveUser(owner);
-//	}
-
-	@GetMapping("/owner/find/{id}")
-	@ApiOperation(value = "Retorna um usuario do tipo proprietario pelo id")
-	public ResponseEntity<?> getOwnerById(@PathVariable("id") Long id) {
-		Owner owner = userService.findOwnerById(id);
-		return new ResponseEntity<>(owner, HttpStatus.OK);
-	}
-
-	@PutMapping("/owner/update")
-	@ApiOperation(value = "Atualiza um usuario do tipo proprietario")
-	public ResponseEntity<?> updateOwner(@RequestBody Owner owner) {
-		Owner updateOwner = userService.updateOwner(owner);
-		return new ResponseEntity<>(updateOwner, HttpStatus.OK);
+	@PutMapping("/update/{id}")
+	@ApiOperation(value = "Atualiza um usuario pelo id")
+	public ResponseEntity<Object> updateUser(@RequestBody @Valid UserDTO userDTO, @PathVariable("id")String id) {
+		Optional<User> user = userService.findById(id);
+		if(user.isEmpty()){
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("usuário não encontrado para esse id, portanto não pode ser atualizado!");
+		}
+		var userModel = user.get();
+		BeanUtils.copyProperties(userDTO, userModel);
+		userService.save(userModel);
+		return new ResponseEntity<>(userModel, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/delete/{id}")
 	@ApiOperation(value = "Remove um usuario pelo seu id")
-	public void deleteUser(@PathVariable("id") Long id) {
-		userService.deleteUser(id);
+	public ResponseEntity<Object> deleteUser(@PathVariable("id") String id) {
+		Optional<User> user = userService.findById(id);
+		if(user.isEmpty()){
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado para esse id, portanto não pode ser deletado!");
+		}
+		userService.delete(id);
+		return ResponseEntity.status(HttpStatus.OK).body("Usuário deletado!");
 	}
 
-	@PostMapping("/relation/{id}")
-	public void rentToUser(@PathVariable("id") Long id, Hosting hosting) {
-		User user = userService.findUserById(id);
-		hosting.setUser(user);
-		propertyService.saveProperty(hosting);
-	}
+//	@PostMapping("/relation/{id}")
+//	public void rentToUser(@PathVariable("id") Long id, Hosting hosting) {
+//		Optional<User> user = userService.findById(id);
+//		hosting.setUser(user.get());
+//		propertyService.saveProperty(hosting);
+//	}
 
 }

@@ -1,13 +1,12 @@
 package com.unipampa.crud.service.impl;
 
-import com.unipampa.crud.dto.PropertyDTO;
+import com.unipampa.crud.dto.AccommodationDTO;
 import com.unipampa.crud.service.StrategySaveProperty;
-import com.unipampa.crud.model.House;
-import com.unipampa.crud.model.Hosting;
+import com.unipampa.crud.model.Accommodation;
 
 public class HouseSave implements StrategySaveProperty {
     @Override
-    public Hosting save(PropertyDTO propertyDTO) {
+    public Accommodation save(AccommodationDTO propertyDTO) {
 //        House house = House.builder()
 //                .area(propertyDTO.getArea())
 //                .name(propertyDTO.getName())

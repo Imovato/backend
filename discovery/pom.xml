@@ -13,10 +13,12 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>discovery</name>
 	<description>Application Discovery</description>
-	<properties>
-		<java.version>17</java.version>
-		<spring-cloud.version>2022.0.4</spring-cloud.version>
-	</properties>
+    <properties>
+        <java.version>11</java.version>
+        <spring-cloud.version>2022.0.4</spring-cloud.version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+    </properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
