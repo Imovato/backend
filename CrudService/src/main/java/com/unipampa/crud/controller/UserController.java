@@ -3,7 +3,6 @@ package com.unipampa.crud.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unipampa.crud.dto.UserDTO;
 import com.unipampa.crud.model.User;
-import com.unipampa.crud.service.AccommodationService;
 import com.unipampa.crud.service.UserService;
 import com.unipampa.crud.validations.ValidationsSignup;
 import io.swagger.annotations.Api;
@@ -34,19 +33,18 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Api(value = "API Crud Users")
 public class UserController {
 
+	@Autowired
 	private UserService userService;
-
-	private AccommodationService propertyService;
-
-	public UserController(UserService userService) {
-		this.userService = userService;
-	}
 
 	@Autowired
 	private ObjectMapper mapper;
 
 	@Autowired
 	List<ValidationsSignup> validations;
+
+	public UserController(UserService userService) {
+		this.userService = userService;
+	}
 
 	@PostMapping("/signup")
 	@ApiOperation(value = "Salva um usuario")
@@ -55,6 +53,7 @@ public class UserController {
 		this.validations.forEach(e -> e.validate(userDto));
 
 		var user = mapper.convertValue(userDto, User.class);
+		user.setType(userDto.getType());
 		user.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
 		user.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
 		userService.save(user);
@@ -67,13 +66,11 @@ public class UserController {
 	public ResponseEntity<Page<User>> getAllUsers(
 			@PageableDefault(page = 0, size = 3, direction = Sort.Direction.ASC) Pageable pageable) {
 		Page<User> users = userService.findAll(pageable);
-		if(!users.isEmpty()){
+		if (!users.isEmpty()) {
 			users.stream().forEach(e -> e.add(
 					linkTo(methodOn(UserController.class).getUserById(e.getId())).withSelfRel())
 			);
-
 		}
-
 		return ResponseEntity.status(HttpStatus.OK).body(users);
 	}
 
@@ -81,7 +78,7 @@ public class UserController {
 	@ApiOperation(value = "Retorna um usuario pelo email")
 	public ResponseEntity<Object> getUserByEmail(@PathVariable("email") String email) {
 		Optional<User> user = userService.findByEmail(email);
-		if (user.isEmpty()){
+		if (user.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado para esse email!");
 		}
 		return new ResponseEntity<>(user, HttpStatus.OK);
@@ -91,7 +88,7 @@ public class UserController {
 	@ApiOperation(value = "Retorna um usuario pelo id")
 	public ResponseEntity<Object> getUserById(@PathVariable("id") String id) {
 		Optional<User> user = userService.findById(id);
-		if (user.isEmpty()){
+		if (user.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
 		}
 		return new ResponseEntity<>(user, HttpStatus.OK);
