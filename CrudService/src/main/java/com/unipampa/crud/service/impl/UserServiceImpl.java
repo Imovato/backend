@@ -63,6 +63,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public boolean existsByCpf(String cpf) {
+		return userRepository.existsByCpf(cpf);
+	}
+
+	@Override
 	public Page<User> findAll(Pageable pageable) {
 		return userRepository.findAll(pageable);
 	}
