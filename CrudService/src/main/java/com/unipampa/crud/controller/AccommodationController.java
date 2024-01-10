@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unipampa.crud.dto.AccommodationDTO;
 import com.unipampa.crud.model.Accommodation;
 import com.unipampa.crud.service.AccommodationService;
+import com.unipampa.crud.validations.ValidationsRegisterAccommodation;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -27,12 +28,18 @@ public class AccommodationController {
 	@Autowired
 	ObjectMapper mapper;
 
+	@Autowired
+	List<ValidationsRegisterAccommodation> validations;
+
 	@PostMapping("/add")
 	@ApiOperation(value = "Salva uma acomodação)")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Recurso salvo com sucesso!" )
 	})
 	public ResponseEntity<Accommodation> save(@RequestBody AccommodationDTO accommodationDTO) {
+
+		validations.forEach(e -> e.validate(accommodationDTO));
+
 		var accommodation = mapper.convertValue(accommodationDTO, Accommodation.class);
 		accommodationService.save(accommodation);
 		return ResponseEntity.status(HttpStatus.OK).body(accommodation);

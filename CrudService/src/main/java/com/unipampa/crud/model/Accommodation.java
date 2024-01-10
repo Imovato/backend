@@ -6,6 +6,8 @@ import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;
+import java.math.BigDecimal;
+
 @Builder
 @Document
 @Data
@@ -40,10 +42,10 @@ public class Accommodation {
     private String state;
 
 //    @Column(name = "price", nullable = false)
-    private double price;
+    private BigDecimal price;
 
 //    @Column(name = "number")
-    private Long number;
+    private int number;
 
 //    @Column(name = "imageQuantity", nullable = false)
     private int imageQuantity;

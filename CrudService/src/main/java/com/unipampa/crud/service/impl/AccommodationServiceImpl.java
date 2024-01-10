@@ -43,6 +43,11 @@ public class AccommodationServiceImpl implements AccommodationService {
 	}
 
 	@Override
+	public boolean existsByCodAddressAndNumber(String codeAddress, int number) {
+		return propertyRepository.existsByCodAddressAndNumber(codeAddress, number);
+	}
+
+	@Override
 	public Optional<Accommodation> findById(String id) {
 		return propertyRepository.findById(id);
 	}

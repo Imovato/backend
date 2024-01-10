@@ -15,4 +15,6 @@ public interface AccommodationService {
 
 	void delete(String id);
 
+	boolean existsByCodAddressAndNumber(String codeAddress, int number);
+
 }
