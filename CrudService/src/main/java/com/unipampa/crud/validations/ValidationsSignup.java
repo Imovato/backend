@@ -4,6 +4,6 @@ import com.unipampa.crud.dto.UserDTO;
 
 public interface ValidationsSignup {
 
-    void validate(UserDTO userDto);
+    void validate(UserDTO userDTO);
 
 }

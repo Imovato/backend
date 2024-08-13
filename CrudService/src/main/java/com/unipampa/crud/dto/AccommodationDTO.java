@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 @Data
 public class AccommodationDTO {
@@ -28,9 +29,9 @@ public class AccommodationDTO {
 	private String state;
 
 	@NotBlank
-	private double price;
+	private BigDecimal price;
 
-	private Long number;
+	private int number;
 
 	@NotNull
 	private int imageQuantity;

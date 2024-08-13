@@ -1,9 +1,9 @@
 package com.unipampa.crud.exceptions;
 
-public class ValidateSignupException extends RuntimeException{
+public class ValidateRegisterException extends RuntimeException{
     private static final long serialVersionUID = -1380883678454941587L;
 
-    public ValidateSignupException(String message) {
+    public ValidateRegisterException(String message) {
         super(message);
     }
 }

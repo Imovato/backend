@@ -22,5 +22,7 @@ public interface UserService {
 
 	boolean existsByEmail(String email);
 
+	boolean existsByCpf(String cpf);
+
 	Page<User> findAll(Pageable pageable);
 }
