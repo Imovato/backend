@@ -43,9 +43,16 @@ crud:
     authExchange: auth.exchange
     signupQueue: auth.signup
 
+#eureka:
+#  instance:
+#    hostname: localhost
+#  client:
+#    serviceUrl:
+#      defaultZone: http://localhost:8761/eureka
+
 eureka:
   instance:
-    hostname: localhost
-  client: 
+    hostname: discovery-prod-df66734906f8.herokuapp.com
+  client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: https://discovery-prod-df66734906f8.herokuapp.com/eureka/
