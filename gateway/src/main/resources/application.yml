@@ -1,34 +1,29 @@
 server:
-  port: 8089
-  servlet:
-    context-path: /gateway
+  port: 8765
 
 spring:
   application:
     name: gateway
 
-#eureka:
-#  instance:
-#    hostname: localhost
-#  client:
-#    serviceUrl:
-#      defaultZone: http://localhost:8761/eureka
-
 eureka:
   instance:
-    hostname: discovery-prod-df66734906f8.herokuapp.com
+    hostname: localhost
   client:
     serviceUrl:
-      defaultZone: https://discovery-prod-df66734906f8.herokuapp.com/eureka/
+      defaultZone: http://localhost:8761/eureka
+
+#eureka:
+#  instance:
+#    hostname: discovery-prod-df66734906f8.herokuapp.com
+#  client:
+#    serviceUrl:
+#      defaultZone: https://discovery-prod-df66734906f8.herokuapp.com/eureka/
 
 zuul:
-  prefix: /api
-  ignored-services: "*"
+#  prefix: /api
+#  ignored-services: "*"
   
   routes: 
     CrudService:
-      path: /CrudService/**
-      service-id: crud
-      strip-prefix: false
-      custom-sensitive-headers: true
-    
+      service-id: CrudService
+      path: /crudservice/**
