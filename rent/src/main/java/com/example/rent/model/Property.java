@@ -20,7 +20,7 @@ public class Property implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_property")
-    private Long id;
+    private String id;
 
     private String salesman;
     private Double price;
