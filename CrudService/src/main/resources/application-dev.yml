@@ -1,6 +1,6 @@
 # SONAR LOCAL: mvn clean verify sonar:sonar -Dsonar.projectKey=Imovato -Dsonar.host.url=http://localhost:9000 -Dsonar.login=sqp_8065f01e13e240636a05812095cc3af86e62507c
 server:
-  port: 8081
+  port: ${PORT:0}
   servlet:
     context-path:
 
@@ -34,11 +34,8 @@ spring:
 
 crud:
   rabbitmq:
-    exchange: crud.exchange
-    routingkeyProperty: crud.property.routingkey
-    routingkeyUser: crud.user.routingkey
-    authExchange: auth.exchange
-    signupQueue: auth.signup
+    exchange: crud.fanout.register-properties
+    crudQueue: crud.register-properties.queue
 
 eureka:
   instance:

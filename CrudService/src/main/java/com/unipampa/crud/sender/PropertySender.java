@@ -12,10 +12,7 @@ public class PropertySender {
 	
 	@Value("${crud.rabbitmq.exchange}")
 	String exchange;
-	
-	@Value("${crud.rabbitmq.routingkeyProperty}")
-	String routingkey;
-	
+
 	public RabbitTemplate rabbitTemplate;
 
 	@Autowired
@@ -23,8 +20,8 @@ public class PropertySender {
 		this.rabbitTemplate = rabbitTemplate;
 	}
 	
-	public void sendMessage(Accommodation hosting) {
-		rabbitTemplate.convertAndSend(exchange, routingkey, hosting);
+	public void sendMessage(Accommodation accommodation) {
+		rabbitTemplate.convertAndSend(exchange, "", accommodation);
 	}
 	
 }
