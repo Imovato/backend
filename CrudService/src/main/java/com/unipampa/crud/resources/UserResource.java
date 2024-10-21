@@ -1,4 +1,4 @@
-package com.unipampa.crud.controller;
+package com.unipampa.crud.resources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unipampa.crud.dto.UserDTO;
@@ -31,7 +31,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
 @RequestMapping("/users")
 @Api(value = "API Crud Users")
-public class UserController {
+public class UserResource {
 
 	@Autowired
 	private UserService userService;
@@ -42,11 +42,11 @@ public class UserController {
 	@Autowired
 	List<ValidationsSignup> validations;
 
-	public UserController(UserService userService) {
+	public UserResource(UserService userService) {
 		this.userService = userService;
 	}
 
-	@PostMapping("/signup")
+	@PostMapping
 	@ApiOperation(value = "Salva um usuario")
 	public ResponseEntity<Object> saveUser(@RequestBody @Valid UserDTO userDto) {
 
@@ -61,20 +61,20 @@ public class UserController {
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
-	@GetMapping("/all")
+	@GetMapping
 	@ApiOperation(value = "Retorna todos os usuários cadastrados")
 	public ResponseEntity<Page<User>> getAllUsers(
 			@PageableDefault(page = 0, size = 3, direction = Sort.Direction.ASC) Pageable pageable) {
 		Page<User> users = userService.findAll(pageable);
-		if (!users.isEmpty()) {
-			users.stream().forEach(e -> e.add(
-					linkTo(methodOn(UserController.class).getUserById(e.getId())).withSelfRel())
-			);
-		}
+//		if (!users.isEmpty()) {
+//			users.stream().forEach(e -> e.add(
+//					linkTo(methodOn(UserResource.class).getUserById(e.getId())).withSelfRel())
+//			);
+//		}
 		return ResponseEntity.status(HttpStatus.OK).body(users);
 	}
 
-	@GetMapping("/find/{email}")
+	@GetMapping("email/{email}")
 	@ApiOperation(value = "Retorna um usuario pelo email")
 	public ResponseEntity<Object> getUserByEmail(@PathVariable("email") String email) {
 		Optional<User> user = userService.findByEmail(email);
@@ -95,7 +95,7 @@ public class UserController {
 	}
 
 
-	@PutMapping("/update/{id}")
+	@PutMapping("{id}")
 	@ApiOperation(value = "Atualiza um usuario pelo id")
 	public ResponseEntity<Object> updateUser(@RequestBody @Valid UserDTO userDTO, @PathVariable("id")String id) {
 		Optional<User> user = userService.findById(id);
@@ -108,7 +108,7 @@ public class UserController {
 		return new ResponseEntity<>(userModel, HttpStatus.OK);
 	}
 
-	@DeleteMapping("/delete/{id}")
+	@DeleteMapping("{id}")
 	@ApiOperation(value = "Remove um usuario pelo seu id")
 	public ResponseEntity<Object> deleteUser(@PathVariable("id") String id) {
 		Optional<User> user = userService.findById(id);

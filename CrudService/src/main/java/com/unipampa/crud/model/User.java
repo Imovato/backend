@@ -1,6 +1,7 @@
 package com.unipampa.crud.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.unipampa.crud.enums.UserType;
@@ -15,7 +16,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 
-@EqualsAndHashCode(callSuper = true)
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.EXISTING_PROPERTY,
@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
 })
 @Document
 @Data
-public class User extends RepresentationModel<User> implements Serializable {
+public class User implements Serializable {
 
     private static final long serialVersionUID = 4477471521765649872L;
     //    @GeneratedValue(strategy = GenerationType.IDENTITY)
