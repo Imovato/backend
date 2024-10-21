@@ -105,7 +105,6 @@
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
 
-
     </dependencies>
 
     <dependencyManagement>

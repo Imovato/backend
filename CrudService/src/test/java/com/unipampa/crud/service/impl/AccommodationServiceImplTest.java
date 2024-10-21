@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,8 +51,8 @@ class AccommodationServiceImplTest {
                 .city("Santos")
                 .adress("avenia beira-mar 1200")
                 .state("SP")
-                .price(500.00)
-                .number(12L)
+                .price(new BigDecimal("500.00"))
+                .number(12)
                 .imageQuantity(10)
                 .accommodationType(AccommodationType.HOUSE)
                 .build();

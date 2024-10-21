@@ -10,11 +10,11 @@ import com.unipampa.crud.model.User;
 @Component
 public class UserSender {
 
-	@Value("${crud.rabbitmq.exchange}")
+//	@Value("${crud.rabbitmq.exchange}")
 	String exchange;
 
-	@Value("${crud.rabbitmq.routingkeyUser}")
-	String routingkey;
+//	@Value("${crud.rabbitmq.routingkeyUser}")
+//	String routingkey;
 
 	public RabbitTemplate rabbitTemplate;
 
@@ -24,7 +24,7 @@ public class UserSender {
 	}
 
 	public void sendMessage(User user) {
-		rabbitTemplate.convertAndSend(exchange, routingkey, user);
+		rabbitTemplate.convertAndSend(exchange, "", user);
 	}
 
 }
