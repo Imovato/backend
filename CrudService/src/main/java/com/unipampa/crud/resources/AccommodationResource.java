@@ -1,4 +1,4 @@
-package com.unipampa.crud.controller;
+package com.unipampa.crud.resources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unipampa.crud.dto.AccommodationDTO;
@@ -20,7 +20,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/accommodations")
 @Api(value = "API Crud Property")
-public class AccommodationController {
+public class AccommodationResource {
 
 	@Autowired
 	private AccommodationService accommodationService;
@@ -31,7 +31,7 @@ public class AccommodationController {
 	@Autowired
 	List<ValidationsRegisterAccommodation> validations;
 
-	@PostMapping("/add")
+	@PostMapping
 	@ApiOperation(value = "Salva uma acomodação)")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Recurso salvo com sucesso!" )
@@ -45,14 +45,14 @@ public class AccommodationController {
 		return ResponseEntity.status(HttpStatus.OK).body(accommodation);
 	}
 	
-	@GetMapping("/all")
+	@GetMapping
 	@ApiOperation(value = "Retorna uma lista com todas as acomodações")
 	public ResponseEntity<List<Accommodation>> findAll() {
 		List<Accommodation> accommodations = accommodationService.findAll();
 		return ResponseEntity.status(HttpStatus.OK).body(accommodations);
 	}
 
-	@GetMapping("/find/{id}")
+	@GetMapping("{id}")
 	@ApiOperation(value = "Encontra uma acomodação através do id")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Recurso encontrado com sucesso"),
@@ -64,7 +64,7 @@ public class AccommodationController {
 				.orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("Acomodação não encontrada para esse id"));
 	}
 	
-	@DeleteMapping("/delete/{id}")
+	@DeleteMapping("{id}")
 	@ApiOperation(value = "Deleta uma acomodação através do id")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Recurso deletado com sucesso"),
@@ -77,5 +77,38 @@ public class AccommodationController {
 		}
 		accommodationService.delete(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+
+	@PutMapping("{id}")
+	@ApiOperation(value = "Atualiza uma acomodação através do id")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Acomodação atualizada com sucesso"),
+			@ApiResponse(code = 404, message = "Acomodação não encontrada"),
+			@ApiResponse(code = 400, message = "Dados de acomodação inválidos")
+	})
+	public ResponseEntity<Object> updateAccommodation(
+			@PathVariable("id") String id,
+			@RequestBody AccommodationDTO accommodationDTO) {
+
+		Optional<Accommodation> existingAccommodation = accommodationService.findById(id);
+		if (existingAccommodation.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Acomodação não encontrada para esse id, portanto não pode ser atualizada!");
+		}
+
+		try {
+			validations.forEach(e -> e.validate(accommodationDTO));
+
+			Accommodation accommodation = existingAccommodation.get();
+
+			accommodation.setTitle(accommodationDTO.getTitle());
+			accommodation.setAdress(accommodationDTO.getAdress());
+			accommodation.setPrice(accommodationDTO.getPrice());
+
+			accommodationService.save(accommodation);
+
+			return ResponseEntity.ok(accommodation);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao atualizar a acomodação. Verifique os dados fornecidos.");
+		}
 	}
 }
