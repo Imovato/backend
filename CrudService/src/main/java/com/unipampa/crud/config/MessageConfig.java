@@ -16,18 +16,10 @@ public class MessageConfig {
 	@Value("${crud.rabbitmq.exchange}")
 	private String exchange;
 
-//	@Value("${crud.rabbitmq.authExchange}")
-//	private String authExchange;
-
 	@Bean
 	public Exchange declareExchange() {
 		return ExchangeBuilder.fanoutExchange(exchange).durable(true).build();
 	}
-
-//	@Bean
-//	public Exchange declareExchangeAuth() {
-//		return ExchangeBuilder.directExchange(authExchange).durable(true).build();
-//	}
 
 	@Bean
 	public Queue queueOne() {
