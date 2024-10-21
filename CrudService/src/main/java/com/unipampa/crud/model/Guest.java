@@ -8,10 +8,8 @@ import lombok.EqualsAndHashCode;
 public class Guest extends User  {
 
     private static final long serialVersionUID = 8684635612451680954L;
-    //    @Column(name = "phone", length = 10)
-    private String phone;
 
-//    @Column(name = "address", length = 200)
+    private String phone;
     private String address;
 
 }

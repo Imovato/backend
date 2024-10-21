@@ -24,9 +24,6 @@ import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 @Log4j2
 @RestController
 @RequestMapping("/users")
@@ -118,12 +115,5 @@ public class UserResource {
 		userService.delete(id);
 		return ResponseEntity.status(HttpStatus.OK).body("Usuário deletado!");
 	}
-
-//	@PostMapping("/relation/{id}")
-//	public void rentToUser(@PathVariable("id") Long id, Hosting hosting) {
-//		Optional<User> user = userService.findById(id);
-//		hosting.setUser(user.get());
-//		propertyService.saveProperty(hosting);
-//	}
 
 }
