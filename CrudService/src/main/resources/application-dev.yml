@@ -34,8 +34,12 @@ spring:
 
 crud:
   rabbitmq:
-    exchange: crud.fanout.register-properties
-    crudQueue: crud.register-properties.queue
+    exchanges:
+      exchangeAccommodations: crud.fanout.register-accommodations
+      exchangeUsers: crud.fanout.register-users
+    queues:
+      accommodationQueue: crud.register-accommodations.queue
+      userQueue: crud.register-users.queue
 
 eureka:
   instance:

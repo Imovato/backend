@@ -2,7 +2,7 @@ package com.unipampa.crud.service.impl;
 
 import com.unipampa.crud.model.Accommodation;
 import com.unipampa.crud.repository.AccommodationRepository;
-import com.unipampa.crud.sender.PropertySender;
+import com.unipampa.crud.sender.AccommodationSender;
 import com.unipampa.crud.service.AccommodationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,19 +15,19 @@ import java.util.Optional;
 public class AccommodationServiceImpl implements AccommodationService {
 
 	private AccommodationRepository propertyRepository;
-	private PropertySender propertySender;
+	private AccommodationSender accommodationSender;
 
 	@Autowired
-	public AccommodationServiceImpl(AccommodationRepository repository, PropertySender sendMessage) {
+	public AccommodationServiceImpl(AccommodationRepository repository, AccommodationSender sendMessage) {
 		this.propertyRepository = repository;
-		this.propertySender = sendMessage;
+		this.accommodationSender = sendMessage;
 	}
 
 	@Override
 	@Transactional
 	public void save(Accommodation hosting) {
 		Accommodation hostingSaved = propertyRepository.save(hosting);
-		propertySender.sendMessage(hostingSaved);
+		accommodationSender.sendMessage(hostingSaved);
 	}
 
 	@Override

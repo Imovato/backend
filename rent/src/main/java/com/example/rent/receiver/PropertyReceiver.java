@@ -19,7 +19,7 @@ public class PropertyReceiver {
 		this.propertyRepository = propertyRepository;
 	}
 	
-	@RabbitListener(queues = {"${crud.rabbitmq.queue}"})
+	@RabbitListener(queues = {"${crud.rabbitmq.queues.accommodationQueue}"})
 	public void receive(@Payload Property property) {
 		propertyRepository.save(property);
 	}

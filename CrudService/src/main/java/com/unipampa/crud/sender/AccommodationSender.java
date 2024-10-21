@@ -8,15 +8,15 @@ import org.springframework.stereotype.Component;
 import com.unipampa.crud.model.Accommodation;
 
 @Component
-public class PropertySender {
+public class AccommodationSender {
 	
-	@Value("${crud.rabbitmq.exchange}")
+	@Value("${crud.rabbitmq.exchanges.exchangeAccommodations}")
 	String exchange;
 
 	public RabbitTemplate rabbitTemplate;
 
 	@Autowired
-	public PropertySender(RabbitTemplate rabbitTemplate) {
+	public AccommodationSender(RabbitTemplate rabbitTemplate) {
 		this.rabbitTemplate = rabbitTemplate;
 	}
 	
