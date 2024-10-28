@@ -1,7 +1,7 @@
-package com.example.rent.model;
+package com.example.rent.entities;
 
-import com.example.rent.model.composite.Address;
-import com.example.rent.model.composite.PersonalInformation;
+import com.example.rent.entities.composite.Address;
+import com.example.rent.entities.composite.PersonalInformation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

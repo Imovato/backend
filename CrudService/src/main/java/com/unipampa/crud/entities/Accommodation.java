@@ -1,4 +1,4 @@
-package com.unipampa.crud.model;
+package com.unipampa.crud.entities;
 
 import com.unipampa.crud.enums.AccommodationType;
 import lombok.Builder;
@@ -17,14 +17,21 @@ public class Accommodation {
     private String id;
     private String title;
     private String description;
-    private String neighborhood;
-    private String codAddress;
-    private String city;
-    private String adress;
-    private String state;
     private BigDecimal price;
-    private int number;
-    private int imageQuantity;
+    private String imagesUrl;
+    private int numberRoooms;
+    private int numberBathrooms;
+    private boolean acceptsAnimals;
+    private boolean acceptsChildren;
+    private boolean sharedHosting;
+    private boolean authorizedAnnouncement;
     private AccommodationType accommodationType;
+    private String city;
+    private String neighborhood;
+    private int number;
+    private String zipCode;
+    private String address;
+    private String state;
+    private int imageQuantity;
 
 }

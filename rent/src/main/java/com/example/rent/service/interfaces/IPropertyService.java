@@ -1,6 +1,6 @@
 package com.example.rent.service.interfaces;
 
-import com.example.rent.model.Property;
+import com.example.rent.entities.Property;
 
 public interface IPropertyService {
     Property save(Property property);

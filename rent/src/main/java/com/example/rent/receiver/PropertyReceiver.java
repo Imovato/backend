@@ -5,7 +5,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
-import com.example.rent.model.Property;
+import com.example.rent.entities.Property;
 import com.example.rent.repository.PropertyRepository;
 
 

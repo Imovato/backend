@@ -1,6 +1,6 @@
 package com.unipampa.crud.repository;
 
-import com.unipampa.crud.model.User;
+import com.unipampa.crud.entities.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;

@@ -2,8 +2,8 @@ package com.example.rent.service.validate;
 
 import com.example.rent.enums.Status;
 import com.example.rent.exceptions.ValidationException;
-import com.example.rent.model.Customer;
-import com.example.rent.model.Property;
+import com.example.rent.entities.Customer;
+import com.example.rent.entities.Property;
 import com.example.rent.service.interfaces.IValidationService;
 
 public class ValidateAvailableServiceImp implements IValidationService {

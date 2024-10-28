@@ -1,4 +1,4 @@
-package com.example.rent.model;
+package com.example.rent.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;

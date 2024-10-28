@@ -1,7 +1,7 @@
 package com.example.rent.util;
 
 import com.example.rent.enums.Status;
-import com.example.rent.model.Property;
+import com.example.rent.entities.Property;
 
 public class PropertyCreator {
     public static Property createProperty() {

@@ -1,4 +1,4 @@
-package com.example.rent.model;
+package com.example.rent.entities;
 
 import com.example.rent.enums.Status;
 import lombok.AllArgsConstructor;

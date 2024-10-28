@@ -2,10 +2,9 @@ package com.example.rent.util;
 
 import com.example.rent.dto.RentDto;
 import com.example.rent.enums.Status;
-import com.example.rent.model.Customer;
-import com.example.rent.model.Property;
-import com.example.rent.model.Rent;
-import com.example.rent.model.composite.PersonalInformation;
+import com.example.rent.entities.Customer;
+import com.example.rent.entities.Property;
+import com.example.rent.entities.composite.PersonalInformation;
 
 import java.time.LocalDate;
 

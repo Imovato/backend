@@ -1,7 +1,7 @@
 package com.example.rent.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.example.rent.model.Customer;
+import com.example.rent.entities.Customer;
 import org.springframework.stereotype.Repository;
 
 @Repository

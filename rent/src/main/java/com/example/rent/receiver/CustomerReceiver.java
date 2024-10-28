@@ -1,10 +1,7 @@
 package com.example.rent.receiver;
 
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
-import com.example.rent.model.Customer;
 import com.example.rent.repository.CustomerRepository;
 
 @Component

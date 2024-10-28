@@ -1,6 +1,6 @@
 package com.example.rent.repository;
 
-import com.example.rent.model.Rent;
+import com.example.rent.entities.Rent;
 import com.example.rent.util.RentCreator;
 import lombok.extern.log4j.Log4j2;
 import org.assertj.core.api.Assertions;

@@ -1,7 +1,7 @@
 package com.example.rent.service.interfaces;
 
-import com.example.rent.model.Customer;
-import com.example.rent.model.Property;
+import com.example.rent.entities.Customer;
+import com.example.rent.entities.Property;
 
 public interface ICustomerService {
     Customer save(Customer customer);

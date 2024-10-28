@@ -2,7 +2,7 @@ package com.example.rent.service.interfaces;
 
 import com.example.rent.dto.RentDto;
 import com.example.rent.dto.RentDtoUpdate;
-import com.example.rent.model.Rent;
+import com.example.rent.entities.Rent;
 
 import java.util.List;
 

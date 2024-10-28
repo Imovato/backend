@@ -1,6 +1,6 @@
 package com.example.rent.service.impl;
 
-import com.example.rent.model.Property;
+import com.example.rent.entities.Property;
 import com.example.rent.repository.PropertyRepository;
 import com.example.rent.service.interfaces.IPropertyService;
 import lombok.RequiredArgsConstructor;

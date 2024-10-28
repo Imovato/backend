@@ -1,8 +1,8 @@
-package com.example.rent.controller;
+package com.example.rent.resources;
 
 import com.example.rent.dto.RentDto;
 import com.example.rent.dto.RentDtoUpdate;
-import com.example.rent.model.Rent;
+import com.example.rent.entities.Rent;
 import com.example.rent.service.impl.RentServiceImp;
 import com.example.rent.util.RentCreator;
 import com.example.rent.util.RentDtoCreator;

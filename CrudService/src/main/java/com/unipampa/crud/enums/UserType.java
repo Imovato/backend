@@ -8,5 +8,8 @@ public enum UserType {
     HOST,
 
     @JsonProperty("guest")
-    GUEST
+    GUEST,
+
+    @JsonProperty("administrator")
+    ADMINITSTRATOR
 }

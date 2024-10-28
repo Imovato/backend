@@ -2,7 +2,7 @@ package com.unipampa.crud.resources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unipampa.crud.dto.UserDTO;
-import com.unipampa.crud.model.User;
+import com.unipampa.crud.entities.User;
 import com.unipampa.crud.service.UserService;
 import com.unipampa.crud.validations.ValidationsSignup;
 import io.swagger.annotations.Api;

@@ -1,4 +1,4 @@
-package com.example.rent.model.composite;
+package com.example.rent.entities.composite;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

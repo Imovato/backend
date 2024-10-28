@@ -2,9 +2,9 @@ package com.example.rent.service.impl;
 
 import com.example.rent.enums.Status;
 import com.example.rent.exceptions.BadRequestException;
-import com.example.rent.model.Customer;
-import com.example.rent.model.Property;
-import com.example.rent.model.Rent;
+import com.example.rent.entities.Customer;
+import com.example.rent.entities.Property;
+import com.example.rent.entities.Rent;
 import com.example.rent.repository.CustomerRepository;
 import com.example.rent.repository.PropertyRepository;
 import com.example.rent.repository.RentRepository;
@@ -20,7 +20,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import javax.validation.ConstraintViolationException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
