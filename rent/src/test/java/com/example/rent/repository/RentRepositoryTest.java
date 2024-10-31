@@ -67,25 +67,25 @@ class RentRepositoryTest {
         Assertions.assertThat(rentFind.getId()).isNotNull();
     }
 
-    @Test
-    @DisplayName("Find by id customer returns list of rent when Successful")
-    void findById_ReturnsListOfRent_WhenSuccessful() {
-        Rent rentToBeSaved = RentCreator.createRentToSaved();
-        Rent rentSaved = this.rentRepository.save(rentToBeSaved);
-        List<Rent> rents = this.rentRepository.findByCustomerId(rentSaved.getCustomer().getId());
-
-        Assertions.assertThat(rents)
-                .isNotEmpty()
-                .contains(rentSaved);
-    }
-
-    @Test
-    @DisplayName("Find by id customer returns empty list when no rent is found")
-    void findByIdCustomer_ReturnsEmptyList_WhenRentIsNotFound() {
-        List<Rent> rents = this.rentRepository.findByCustomerId(50L);
-
-        Assertions.assertThat(rents).isEmpty();
-    }
+//    @Test
+//    @DisplayName("Find by id customer returns list of rent when Successful")
+//    void findById_ReturnsListOfRent_WhenSuccessful() {
+//        Rent rentToBeSaved = RentCreator.createRentToSaved();
+//        Rent rentSaved = this.rentRepository.save(rentToBeSaved);
+//        List<Rent> rents = this.rentRepository.findByCustomerId(rentSaved.getCustomer().getId());
+//
+//        Assertions.assertThat(rents)
+//                .isNotEmpty()
+//                .contains(rentSaved);
+//    }
+//
+//    @Test
+//    @DisplayName("Find by id customer returns empty list when no rent is found")
+//    void findByIdCustomer_ReturnsEmptyList_WhenRentIsNotFound() {
+//        List<Rent> rents = this.rentRepository.findByCustomerId(50L);
+//
+//        Assertions.assertThat(rents).isEmpty();
+//    }
 
     @Test
     @DisplayName("Save throw ConstraintViolationException when value is empty")

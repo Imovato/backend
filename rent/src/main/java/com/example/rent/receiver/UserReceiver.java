@@ -1,17 +1,17 @@
 package com.example.rent.receiver;
 
+import com.example.rent.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.example.rent.repository.CustomerRepository;
 
 @Component
-public class CustomerReceiver {
+public class UserReceiver {
 
-	private CustomerRepository customerRepository;
+	private UserRepository userRepository;
 	
 	@Autowired
-	public CustomerReceiver(CustomerRepository customerRepository) {
-		this.customerRepository = customerRepository;
+	public UserReceiver(UserRepository userRepository) {
+		this.userRepository = userRepository;
 	}
 	
 //	@RabbitListener(queues = {"${crud.rabbitmq.queueUser}"})

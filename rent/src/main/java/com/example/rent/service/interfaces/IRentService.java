@@ -13,5 +13,5 @@ public interface IRentService {
 	void delete(Long id);
 	Rent findById(Long id);
 	List<Rent> listAll();
-	List<Rent> findRentsByCustomer_Id(Long id);
+//	List<Rent> findRentsByCustomer_Id(Long id);
 }

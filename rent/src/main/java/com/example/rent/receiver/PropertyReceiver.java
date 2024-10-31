@@ -5,22 +5,22 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
-import com.example.rent.entities.Property;
-import com.example.rent.repository.PropertyRepository;
+import com.example.rent.entities.Accommodation;
+import com.example.rent.repository.AccommodationRepository;
 
 
 @Component
 public class PropertyReceiver {
 	
-	private PropertyRepository propertyRepository;
+	private AccommodationRepository accommodationRepository;
 	
 	@Autowired
-	public PropertyReceiver(PropertyRepository propertyRepository) {
-		this.propertyRepository = propertyRepository;
+	public PropertyReceiver(AccommodationRepository accommodationRepository) {
+		this.accommodationRepository = accommodationRepository;
 	}
 	
 	@RabbitListener(queues = {"${crud.rabbitmq.queues.accommodationQueue}"})
-	public void receive(@Payload Property property) {
-		propertyRepository.save(property);
+	public void receive(@Payload Accommodation property) {
+		accommodationRepository.save(property);
 	}
 }

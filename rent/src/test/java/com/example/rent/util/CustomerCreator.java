@@ -1,8 +1,5 @@
 package com.example.rent.util;
 
-import com.example.rent.entities.Customer;
-import com.example.rent.entities.composite.PersonalInformation;
-
 public class CustomerCreator {
     public static Customer createCustomer() {
         return Customer.builder()

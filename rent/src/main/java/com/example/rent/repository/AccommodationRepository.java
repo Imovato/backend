@@ -1,10 +1,13 @@
 package com.example.rent.repository;
 
+
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.example.rent.entities.Customer;
 import org.springframework.stereotype.Repository;
+import com.example.rent.entities.Accommodation;
+
+import java.util.Optional;
 
 @Repository
-public interface CustomerRepository extends JpaRepository<Customer, Long> {
-    Customer findCustomerById(Long id);
+public interface AccommodationRepository extends JpaRepository<Accommodation, Long> {
+
 }

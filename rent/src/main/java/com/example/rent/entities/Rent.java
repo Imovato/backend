@@ -24,13 +24,14 @@ public class Rent implements Serializable {
     @Column(name = "id_rent")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_customer")
-    private Customer customer;
-
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_property")
-    private Property property;
+    @JoinColumn(name = "id")
+    private Accommodation accommodation;
+
+    private User user;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dateRent;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDateRent;
@@ -38,16 +39,27 @@ public class Rent implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDateRent;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "date_Adjustment_IGPM")
-    private LocalDate dateAdjustmentIGPM;
-    private Double iptu;
-    private Double water;
-    private Double energy;
-    private Double condominium;
     @NotNull(message = "The value of rent cannot be empty")
-    private Double value;
-    @Column(columnDefinition = "TEXT")
-    private String description;
+    private Double price;
+
+    private int numberAdults;
+
+    private int numberChild;
+
+    private int numberBaby;
+
+    private int numberPets;
+
+    private boolean userCancel;
+
+    private LocalDate dateCancel;
+
+    private String reasonCancellation;
+
+    private Double cancellationFee;
+
+    private boolean refund;
+
+    private Double refundValue;
 
 }

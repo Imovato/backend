@@ -57,9 +57,9 @@ public class RentController {
     }
 
    // @Retry(name = "default")
-    @GetMapping("/rents/customer/{idCustomer}")
-    @ApiOperation(value = "Busca aluguéis através do id de um cliente")
-    public ResponseEntity<List<Rent>> findRentsByCustomerId(@PathVariable Long idCustomer) {
-        return ResponseEntity.ok(rentService.findRentsByCustomer_Id(idCustomer));
-    }
+//    @GetMapping("/rents/customer/{idCustomer}")
+//    @ApiOperation(value = "Busca aluguéis através do id de um cliente")
+//    public ResponseEntity<List<Rent>> findRentsByCustomerId(@PathVariable Long idCustomer) {
+//        return ResponseEntity.ok(rentService.findRentsByCustomer_Id(idCustomer));
+//    }
 }
