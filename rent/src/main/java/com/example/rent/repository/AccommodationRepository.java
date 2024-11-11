@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.example.rent.entities.Accommodation;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface AccommodationRepository extends JpaRepository<Accommodation, Long> {

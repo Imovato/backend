@@ -29,37 +29,45 @@ public class RentController {
         return new ResponseEntity<>(rentService.save(rentDto), HttpStatus.CREATED);
     }
 
+
+    //A FUNÇÃO DE ATUALIZAR ALUGUEL SERÁ REPENSADA
     //@Retry(name = "default")
-    @PutMapping("/update")
-    @ApiOperation(value = "Atualiza um arrendamento/aluguel")
-    public ResponseEntity<Void> update(@RequestBody RentDtoUpdate rentDtoUpdate) {
-        rentService.update(rentDtoUpdate);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+//    @PutMapping("/update")
+//    @ApiOperation(value = "Atualiza um arrendamento/aluguel")
+//    public ResponseEntity<Void> update(@RequestBody RentDtoUpdate rentDtoUpdate) {
+//        rentService.update(rentDtoUpdate);
+//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//    }
 
-    @DeleteMapping( "/delete/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        rentService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+    //NÃO EXISTE DELETAR ALUGUEL, EXISTE APENAS FLUXO DE CANCELAMENTO
+//    @DeleteMapping( "/delete/{id}")
+//    public ResponseEntity<Void> delete(@PathVariable Long id) {
+//        rentService.delete(id);
+//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//    }
 
+    //NAO FAZ SENTIDO BUSCAR UM ALUGUEL POR ID TALVEZ PARA O ADMINISTRADOR
    // @Retry(name = "default")
-    @GetMapping("/find/{id}")
-    @ApiOperation(value = "Pega um arrendamento/aluguel pelo id")
-    public ResponseEntity<Rent> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(rentService.findById(id));
-    }
+//    @GetMapping("/find/{id}")
+//    @ApiOperation(value = "Pega um arrendamento/aluguel pelo id")
+//    public ResponseEntity<Rent> findById(@PathVariable Long id) {
+//        return ResponseEntity.ok(rentService.findById(id));
+//    }
 
-    @GetMapping("/all")
-    @ApiOperation(value = "Lista todos os alugueis cadastrados")
-    public ResponseEntity<List<Rent>> listAll() {
-        return ResponseEntity.ok(rentService.listAll());
-    }
+    //NAO FAZ SENTIDO LISTAR TODOS OS ALUGUEIS TALVEZ PARA O ADMINISTRADOR
+//    @GetMapping("/all")
+//    @ApiOperation(value = "Lista todos os alugueis cadastrados")
+//    public ResponseEntity<List<Rent>> listAll() {
+//        return ResponseEntity.ok(rentService.listAll());
+//    }
 
-   // @Retry(name = "default")
+
+    //ESSE FAZ SENTIDO
+//    @Retry(name = "default")
 //    @GetMapping("/rents/customer/{idCustomer}")
 //    @ApiOperation(value = "Busca aluguéis através do id de um cliente")
 //    public ResponseEntity<List<Rent>> findRentsByCustomerId(@PathVariable Long idCustomer) {
 //        return ResponseEntity.ok(rentService.findRentsByCustomer_Id(idCustomer));
 //    }
+
 }

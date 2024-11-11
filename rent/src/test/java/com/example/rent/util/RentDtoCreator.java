@@ -11,8 +11,8 @@ public class RentDtoCreator {
     public static RentDto createRentDto() {
         return RentDto.builder()
                 .startDateRent(LocalDate.now())
-                .id_customer(createCustomer().getId())
-                .id_property(createProperty().getId())
+                .idUser(createCustomer().getId())
+                .idAccommodation(createProperty().getId())
                 .value(RentCreator.createRentToSaved().getValue())
                 .build();
     }

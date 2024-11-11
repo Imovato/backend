@@ -1,15 +1,18 @@
 package com.unipampa.crud.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public enum UserType {
 
-    @JsonProperty("host")
     HOST,
 
-    @JsonProperty("guest")
     GUEST,
 
-    @JsonProperty("administrator")
-    ADMINITSTRATOR
+    ADMINITSTRATOR;
+
+    @JsonCreator
+    public static UserType fromString(String value) {
+        return UserType.valueOf(value.toUpperCase());
+    }
 }

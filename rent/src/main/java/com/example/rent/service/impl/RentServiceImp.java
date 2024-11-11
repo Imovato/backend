@@ -24,27 +24,28 @@ import java.util.Optional;
 public class RentServiceImp implements IRentService {
 
     private final RentRepository rentRepository;
-    private final AccommodationService propertyService;
+    private final AccommodationService accommodationService;
     private final UserService userService;
 
     @Override
     @Transactional
     public Rent save(RentDto rentDto) {
-        Optional<Accommodation> accommodation = Optional.ofNullable(propertyService.findAccommodationById(rentDto.getId_property()))
-                .orElseThrow(() -> new IllegalArgumentException("Accommodation not found"));
+        Optional<Accommodation> accommodation = Optional.ofNullable(accommodationService.findAccommodationById(rentDto.getIdAccommodation()))
+                .orElseThrow(() -> new IllegalArgumentException("Acomodação não encontrada"));
 
-        Optional<User> user = Optional.ofNullable(userService.findById(rentDto.getId_customer()))
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        Optional<User> user = Optional.ofNullable(userService.findById(rentDto.getIdUser()))
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
 
         Rent rent = Rent.builder()
                 .accommodation(accommodation.get())
                 .user(user.get())
+                .price(accommodation.get().getPrice())
                 .build();
 
         BeanUtils.copyProperties(rentDto, rent);
 
         accommodation.get().setStatus(Status.RENTED);
-        propertyService.updateProperty(accommodation.get());
+        accommodationService.updateProperty(accommodation.get());
 
         return rentRepository.save(rent);
     }

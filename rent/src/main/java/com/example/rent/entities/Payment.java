@@ -1,8 +1,24 @@
 package com.example.rent.entities;
 
-import java.time.LocalDate;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.time.LocalDate;
+import java.util.UUID;
+
+@Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Payment {
+
+    @Id
+    private UUID id;
 
     private boolean authorized;
 

@@ -37,7 +37,7 @@ crud:
   rabbitmq:
     queues:
       accommodationQueue: crud.register-accommodations.queue
-#      userQueue: crud.register-users.queue
+      userQueue: crud.register-users.queue
 
 eureka:
   instance:

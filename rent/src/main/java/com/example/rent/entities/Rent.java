@@ -12,7 +12,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "tbl_rent")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,13 +20,12 @@ public class Rent implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_rent")
     private Long id;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id")
+    @ManyToOne
     private Accommodation accommodation;
 
+    @ManyToOne
     private User user;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
