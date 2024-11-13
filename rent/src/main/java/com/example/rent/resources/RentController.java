@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/rent")
+@RequestMapping("/rents")
 @Api(value = "Microserviço aluguel")
 @RequiredArgsConstructor
 public class RentController {
@@ -21,7 +21,7 @@ public class RentController {
     private final IRentService rentService;
 
     //@Retry(name = "retrySave")
-    @PostMapping("/save")
+    @PostMapping
     @ApiOperation(value = "Salva um arrendamento/aluguel")
     public ResponseEntity<Rent> save(@RequestBody @Valid RentDto rentDto) {
         return new ResponseEntity<>(rentService.createNewRent(rentDto), HttpStatus.CREATED);
