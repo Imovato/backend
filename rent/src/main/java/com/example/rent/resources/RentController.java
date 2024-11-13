@@ -1,7 +1,6 @@
 package com.example.rent.resources;
 
 import com.example.rent.dto.RentDto;
-import com.example.rent.dto.RentDtoUpdate;
 import com.example.rent.entities.Rent;
 import com.example.rent.service.interfaces.IRentService;
 import io.swagger.annotations.Api;
@@ -12,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/rent")
@@ -26,9 +24,16 @@ public class RentController {
     @PostMapping("/save")
     @ApiOperation(value = "Salva um arrendamento/aluguel")
     public ResponseEntity<Rent> save(@RequestBody @Valid RentDto rentDto) {
-        return new ResponseEntity<>(rentService.save(rentDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(rentService.createNewRent(rentDto), HttpStatus.CREATED);
     }
 
+    //ESSE FAZ SENTIDO
+//    @Retry(name = "default")
+//    @GetMapping("/rents/customer/{idCustomer}")
+//    @ApiOperation(value = "Busca aluguéis através do id de um cliente")
+//    public ResponseEntity<List<Rent>> findRentsByCustomerId(@PathVariable Long idCustomer) {
+//        return ResponseEntity.ok(rentService.findRentsByCustomer_Id(idCustomer));
+//    }
 
     //A FUNÇÃO DE ATUALIZAR ALUGUEL SERÁ REPENSADA
     //@Retry(name = "default")
@@ -62,12 +67,6 @@ public class RentController {
 //    }
 
 
-    //ESSE FAZ SENTIDO
-//    @Retry(name = "default")
-//    @GetMapping("/rents/customer/{idCustomer}")
-//    @ApiOperation(value = "Busca aluguéis através do id de um cliente")
-//    public ResponseEntity<List<Rent>> findRentsByCustomerId(@PathVariable Long idCustomer) {
-//        return ResponseEntity.ok(rentService.findRentsByCustomer_Id(idCustomer));
-//    }
+
 
 }

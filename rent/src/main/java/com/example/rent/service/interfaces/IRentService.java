@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IRentService {
 	
-	Rent save(RentDto rentDto);
+	Rent createNewRent(RentDto rentDto);
 	void update(RentDtoUpdate rentDtoUpdate);
 	void delete(Long id);
 	Rent findById(Long id);

@@ -26,6 +26,11 @@ public class AccommodationServiceImpl implements AccommodationService {
     }
 
     @Override
+    public void changeStatusForRented(Accommodation accommodation) {
+        accommodationRepository.save(accommodation);
+    }
+
+    @Override
     public Accommodation save(Accommodation property){
         return accommodationRepository.save(property);
     }
