@@ -6,19 +6,12 @@ server:
 
 spring:
   jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-      dialect: org.hibernate.dialect.MySQL57Dialect
+    generate-ddl: false
+    
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
   jmx:
     enabled: false
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:33060/crud-service?useTimezone=true&serverTimezone=UTC
-    username: root
-    password: example
 
   data:
     mongodb:
@@ -34,8 +27,12 @@ spring:
 
 crud:
   rabbitmq:
-    exchange: crud.fanout.register-properties
-    crudQueue: crud.register-properties.queue
+    exchanges:
+      exchangeAccommodations: crud.fanout.register-accommodations
+      exchangeUsers: crud.fanout.register-users
+    queues:
+      accommodationQueue: crud.register-accommodations.queue
+      userQueue: crud.register-users.queue
 
 eureka:
   instance:

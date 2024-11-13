@@ -1,8 +1,5 @@
 package com.example.rent.util;
 
-import com.example.rent.model.Customer;
-import com.example.rent.model.composite.PersonalInformation;
-
 public class CustomerCreator {
     public static Customer createCustomer() {
         return Customer.builder()

@@ -1,7 +1,7 @@
 server:
-  port: 8085
+  port: ${PORT:0}
   servlet:
-    context-path: /rentService
+    context-path:
 
 spring:
   application:
@@ -35,9 +35,9 @@ spring:
 
 crud:
   rabbitmq:
-    exchange: crud.fanout.register-properties
-    queue: crud.register-properties.queue
-#    queueUser: crud.rent.user
+    queues:
+      accommodationQueue: crud.register-accommodations.queue
+      userQueue: crud.register-users.queue
 
 eureka:
   instance:

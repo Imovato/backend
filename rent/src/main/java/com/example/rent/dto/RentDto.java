@@ -11,9 +11,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -21,8 +21,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class RentDto {
 
-    private Long id_property;
-    private Long id_customer;
+    private Long idAccommodation;
+    private Long idUser;
 
     @ApiModelProperty(example = "2023-01-17")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
@@ -47,9 +47,6 @@ public class RentDto {
     private Double water;
     private Double energy;
     private Double condominium;
-
-    @NotNull(message = "The value of rent cannot be empty")
-    private Double value;
 
     private String description;
 }

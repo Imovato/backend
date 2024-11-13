@@ -1,11 +1,11 @@
 package com.example.rent.util;
 
 import com.example.rent.enums.Status;
-import com.example.rent.model.Property;
+import com.example.rent.entities.Accommodation;
 
 public class PropertyCreator {
-    public static Property createProperty() {
-        return Property.builder()
+    public static Accommodation createProperty() {
+        return Accommodation.builder()
                 .id(1L)
                 .salesman("Júlia")
                 .status(Status.AVAILABLE)

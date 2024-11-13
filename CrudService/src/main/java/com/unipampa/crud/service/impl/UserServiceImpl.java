@@ -1,6 +1,6 @@
 package com.unipampa.crud.service.impl;
 
-import com.unipampa.crud.model.User;
+import com.unipampa.crud.entities.User;
 import com.unipampa.crud.repository.UserRepository;
 import com.unipampa.crud.sender.UserSender;
 import com.unipampa.crud.service.UserService;

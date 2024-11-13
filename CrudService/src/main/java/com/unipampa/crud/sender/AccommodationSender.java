@@ -5,23 +5,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.unipampa.crud.entities.User;
+import com.unipampa.crud.entities.Accommodation;
 
 @Component
-public class UserSender {
-
-	@Value("${crud.rabbitmq.exchanges.exchangeUsers}")
+public class AccommodationSender {
+	
+	@Value("${crud.rabbitmq.exchanges.exchangeAccommodations}")
 	String exchange;
 
 	public RabbitTemplate rabbitTemplate;
 
 	@Autowired
-	public UserSender(RabbitTemplate rabbitTemplate) {
+	public AccommodationSender(RabbitTemplate rabbitTemplate) {
 		this.rabbitTemplate = rabbitTemplate;
 	}
-
-	public void sendMessage(User user) {
-		rabbitTemplate.convertAndSend(exchange, "", user);
+	
+	public void sendMessage(Accommodation accommodation) {
+		rabbitTemplate.convertAndSend(exchange, "", accommodation);
 	}
-
+	
 }

@@ -30,3 +30,7 @@ zuul:
     CrudService:
       service-id: CrudService
       path: /crudservice/**
+    RentService:
+      service-id: RentService
+      path: /rentservice/**
+
