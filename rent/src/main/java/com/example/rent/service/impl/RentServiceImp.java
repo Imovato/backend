@@ -66,6 +66,7 @@ public class RentServiceImp implements IRentService {
         BeanUtils.copyProperties(dto, rent);
 
         accommodation.setStatus(Status.RENTED);
+        rent.setDateRent(dto.getStartDateRent());
 
         return rent;
     }
