@@ -1,10 +1,12 @@
 package com.example.rent.repository;
 
+import com.example.rent.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.example.rent.model.Customer;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 @Repository
-public interface CustomerRepository extends JpaRepository<Customer, Long> {
-    Customer findCustomerById(Long id);
+public interface UserRepository extends JpaRepository<User, Long> {
+
 }

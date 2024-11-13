@@ -1,24 +1,31 @@
-package com.example.rent.model.composite;
+package com.example.rent.entities;
 
+import com.example.rent.enums.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.UUID;
 
 @Entity
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "tbl_personal_info")
-public class PersonalInformation {
+@Builder
+public class User implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_personal")
     private Long id;
+
     private String name;
-    private String cpf;
+
+    private String email;
+
+    @Enumerated(EnumType.STRING)
+    private UserType userType;
 
 }

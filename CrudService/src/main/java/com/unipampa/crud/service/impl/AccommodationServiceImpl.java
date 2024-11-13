@@ -1,6 +1,6 @@
 package com.unipampa.crud.service.impl;
 
-import com.unipampa.crud.model.Accommodation;
+import com.unipampa.crud.entities.Accommodation;
 import com.unipampa.crud.repository.AccommodationRepository;
 import com.unipampa.crud.sender.AccommodationSender;
 import com.unipampa.crud.service.AccommodationService;
@@ -44,7 +44,7 @@ public class AccommodationServiceImpl implements AccommodationService {
 
 	@Override
 	public boolean existsByCodAddressAndNumber(String codeAddress, int number) {
-		return propertyRepository.existsByCodAddressAndNumber(codeAddress, number);
+		return propertyRepository.existsByZipCodeAndNumber(codeAddress, number);
 	}
 
 	@Override

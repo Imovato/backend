@@ -1,6 +1,6 @@
 package com.unipampa.crud.service;
 
-import com.unipampa.crud.model.Accommodation;
+import com.unipampa.crud.entities.Accommodation;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package com.unipampa.crud.model;
+package com.unipampa.crud.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -13,15 +13,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "type"
-)
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = Host.class, name = "host"),
-        @JsonSubTypes.Type(value = Guest.class, name = "guest")
-})
 @Document
 @Data
 public class User implements Serializable {
@@ -31,6 +22,7 @@ public class User implements Serializable {
     @Id
     private String id;
     private String userName;
+    private String password;
     private String cpf;
     private String email;
     private String name;

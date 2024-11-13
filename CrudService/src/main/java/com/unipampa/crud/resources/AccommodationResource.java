@@ -2,7 +2,7 @@ package com.unipampa.crud.resources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unipampa.crud.dto.AccommodationDTO;
-import com.unipampa.crud.model.Accommodation;
+import com.unipampa.crud.entities.Accommodation;
 import com.unipampa.crud.service.AccommodationService;
 import com.unipampa.crud.validations.ValidationsRegisterAccommodation;
 import io.swagger.annotations.Api;
@@ -101,7 +101,7 @@ public class AccommodationResource {
 			Accommodation accommodation = existingAccommodation.get();
 
 			accommodation.setTitle(accommodationDTO.getTitle());
-			accommodation.setAdress(accommodationDTO.getAdress());
+			accommodation.setAddress(accommodationDTO.getAdress());
 			accommodation.setPrice(accommodationDTO.getPrice());
 
 			accommodationService.save(accommodation);

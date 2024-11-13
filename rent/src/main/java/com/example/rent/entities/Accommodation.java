@@ -1,6 +1,7 @@
-package com.example.rent.model;
+package com.example.rent.entities;
 
 import com.example.rent.enums.Status;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,24 +9,23 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.UUID;
 
 @Entity
-@Table(name = "tbl_property")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Property implements Serializable {
+public class Accommodation implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_property")
-    private String id;
+    private Long id;
 
-    private String salesman;
     private Double price;
 
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    //PRECISA TER UMA FLAG DIZENDO SE A HOSPEDAGEM É COMPARTILHADA OU NÃO
 }

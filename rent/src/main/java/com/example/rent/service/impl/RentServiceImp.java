@@ -2,40 +2,73 @@ package com.example.rent.service.impl;
 
 import com.example.rent.dto.RentDto;
 import com.example.rent.dto.RentDtoUpdate;
+import com.example.rent.entities.User;
 import com.example.rent.enums.Status;
 import com.example.rent.exceptions.BadRequestException;
-import com.example.rent.model.Property;
-import com.example.rent.model.Rent;
+import com.example.rent.entities.Accommodation;
+import com.example.rent.entities.Rent;
 import com.example.rent.repository.RentRepository;
-import com.example.rent.service.interfaces.ICustomerService;
-import com.example.rent.service.interfaces.IPropertyService;
+import com.example.rent.service.interfaces.UserService;
+import com.example.rent.service.interfaces.AccommodationService;
 import com.example.rent.service.interfaces.IRentService;
+import com.example.rent.validations.DateValidations;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class RentServiceImp implements IRentService {
 
     private final RentRepository rentRepository;
-    private final IPropertyService propertyService;
-    private final ICustomerService customerService;
+    private final AccommodationService accommodationService;
+    private final UserService userService;
+
+    @Autowired
+    List<DateValidations> dateValidations;
 
     @Override
     @Transactional
-    public Rent save(RentDto rentDto) {
-        Rent rent = Rent.builder()
-                .property(propertyService.findPropertyById(rentDto.getId_property()))
-                .customer(customerService.findCustomerById(rentDto.getId_customer())).build();
-        BeanUtils.copyProperties(rentDto, rent);
-        Property property = propertyService.findPropertyById(rentDto.getId_property());
-        property.setStatus(Status.RENTED);
-        propertyService.updateProperty(property);
+    public Rent createNewRent(RentDto dto) {
+        var accommodation = searchAccommodationForRent(dto);
+        var user = searchUserForRent(dto);
+        var rent = buildRent(accommodation, user, dto);
+        dateValidations.forEach(e -> e.validate(dto));
+        accommodationService.changeStatusForRented(accommodation);
+
         return rentRepository.save(rent);
+    }
+
+    private Accommodation searchAccommodationForRent(RentDto dto){
+        return Optional.ofNullable(accommodationService.findAccommodationById(dto.getIdAccommodation()))
+                .orElseThrow(() -> new IllegalArgumentException("Acomodação não encontrada"))
+                .filter(accommodation -> accommodation.getStatus().equals(Status.AVAILABLE))
+                .orElseThrow(() -> new IllegalStateException("Acomodação não está disponível para aluguel"));
+    }
+
+    private User searchUserForRent(RentDto dto) {
+        return userService.findById(dto.getIdUser())
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+    }
+
+    private Rent buildRent(Accommodation accommodation, User user, RentDto dto){
+        var rent = Rent.builder()
+                .accommodation(accommodation)
+                .user(user)
+                .price(accommodation.getPrice())
+                .build();
+
+        BeanUtils.copyProperties(dto, rent);
+
+        accommodation.setStatus(Status.RENTED);
+        rent.setDateRent(dto.getStartDateRent());
+
+        return rent;
     }
 
     @Override
@@ -61,8 +94,8 @@ public class RentServiceImp implements IRentService {
         return rentRepository.findAll();
     }
 
-    @Override
-    public List<Rent> findRentsByCustomer_Id(Long id) {
-        return rentRepository.findByCustomerId(id);
-    }
+//    @Override
+//    public List<Rent> findRentsByCustomer_Id(Long id) {
+//        return rentRepository.findByCustomerId(id);
+//    }
 }

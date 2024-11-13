@@ -1,8 +1,8 @@
 package com.example.rent.service.interfaces;
 
-import com.example.rent.model.Customer;
-import com.example.rent.model.Property;
+import com.example.rent.entities.Accommodation;
+import com.example.rent.entities.User;
 
 public interface IValidationService {
-    void validate(Customer customer, Property property);
+    void validate(User user, Accommodation accommodation);
 }
