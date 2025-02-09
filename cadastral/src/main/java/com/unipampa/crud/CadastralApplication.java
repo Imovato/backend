@@ -6,10 +6,10 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-public class ImobiliariaApplication {
+public class CadastralApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ImobiliariaApplication.class, args);
+		SpringApplication.run(CadastralApplication.class, args);
 	}
 
 }

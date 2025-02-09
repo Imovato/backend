@@ -5,8 +5,7 @@ import com.unipampa.crud.dto.UserDTO;
 import com.unipampa.crud.entities.User;
 import com.unipampa.crud.service.UserService;
 import com.unipampa.crud.validations.ValidationsSignup;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
@@ -27,7 +25,6 @@ import java.util.Optional;
 @Log4j2
 @RestController
 @RequestMapping("/users")
-@Api(value = "API Crud Users")
 public class UserResource {
 
 	@Autowired
@@ -44,8 +41,8 @@ public class UserResource {
 	}
 
 	@PostMapping
-	@ApiOperation(value = "Salva um usuario")
-	public ResponseEntity<Object> saveUser(@RequestBody @Valid UserDTO userDto) {
+	@Operation(summary = "Salva um usuario")
+	public ResponseEntity<Object> saveUser(@RequestBody UserDTO userDto) {
 
 		this.validations.forEach(e -> e.validate(userDto));
 
@@ -59,7 +56,7 @@ public class UserResource {
 	}
 
 	@GetMapping
-	@ApiOperation(value = "Retorna todos os usuários cadastrados")
+	@Operation(summary = "Retorna todos os usuários cadastrados")
 	public ResponseEntity<Page<User>> getAllUsers(
 			@PageableDefault(page = 0, size = 3, direction = Sort.Direction.ASC) Pageable pageable) {
 		Page<User> users = userService.findAll(pageable);
@@ -72,7 +69,7 @@ public class UserResource {
 	}
 
 	@GetMapping("email/{email}")
-	@ApiOperation(value = "Retorna um usuario pelo email")
+	@Operation(summary = "Retorna um usuario pelo email")
 	public ResponseEntity<Object> getUserByEmail(@PathVariable("email") String email) {
 		Optional<User> user = userService.findByEmail(email);
 		if (user.isEmpty()) {
@@ -82,7 +79,7 @@ public class UserResource {
 	}
 
 	@GetMapping("{id}")
-	@ApiOperation(value = "Retorna um usuario pelo id")
+	@Operation(summary = "Retorna um usuario pelo id")
 	public ResponseEntity<Object> getUserById(@PathVariable("id") String id) {
 		Optional<User> user = userService.findById(id);
 		if (user.isEmpty()) {
@@ -93,8 +90,8 @@ public class UserResource {
 
 
 	@PutMapping("{id}")
-	@ApiOperation(value = "Atualiza um usuario pelo id")
-	public ResponseEntity<Object> updateUser(@RequestBody @Valid UserDTO userDTO, @PathVariable("id")String id) {
+	@Operation(summary = "Atualiza um usuario pelo id")
+	public ResponseEntity<Object> updateUser(@RequestBody  UserDTO userDTO, @PathVariable("id")String id) {
 		Optional<User> user = userService.findById(id);
 		if(user.isEmpty()){
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("usuário não encontrado para esse id, portanto não pode ser atualizado!");
@@ -106,7 +103,7 @@ public class UserResource {
 	}
 
 	@DeleteMapping("{id}")
-	@ApiOperation(value = "Remove um usuario pelo seu id")
+	@Operation(summary = "Remove um usuario pelo seu id")
 	public ResponseEntity<Object> deleteUser(@PathVariable("id") String id) {
 		Optional<User> user = userService.findById(id);
 		if(user.isEmpty()){

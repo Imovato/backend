@@ -5,10 +5,9 @@ import com.unipampa.crud.dto.AccommodationDTO;
 import com.unipampa.crud.entities.Accommodation;
 import com.unipampa.crud.service.AccommodationService;
 import com.unipampa.crud.validations.ValidationsRegisterAccommodation;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +18,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/accommodations")
-@Api(value = "API Crud Property")
 public class AccommodationResource {
 
 	@Autowired
@@ -32,9 +30,9 @@ public class AccommodationResource {
 	List<ValidationsRegisterAccommodation> validations;
 
 	@PostMapping
-	@ApiOperation(value = "Salva uma acomodação)")
+	@Operation(summary = "Salva uma acomodação)")
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Recurso salvo com sucesso!" )
+			@ApiResponse(responseCode = "200", description = "Recurso salvo com sucesso!" )
 	})
 	public ResponseEntity<Accommodation> save(@RequestBody AccommodationDTO accommodationDTO) {
 
@@ -46,17 +44,17 @@ public class AccommodationResource {
 	}
 	
 	@GetMapping
-	@ApiOperation(value = "Retorna uma lista com todas as acomodações")
+	@Operation(summary = "Retorna uma lista com todas as acomodações")
 	public ResponseEntity<List<Accommodation>> findAll() {
 		List<Accommodation> accommodations = accommodationService.findAll();
 		return ResponseEntity.status(HttpStatus.OK).body(accommodations);
 	}
 
 	@GetMapping("{id}")
-	@ApiOperation(value = "Encontra uma acomodação através do id")
+	@Operation(summary = "Encontra uma acomodação através do id")
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Recurso encontrado com sucesso"),
-			@ApiResponse(code = 404, message = "Recurso não encontrado")
+			@ApiResponse(responseCode = "200", description = "Recurso encontrado com sucesso"),
+			@ApiResponse(responseCode = "404", description = "Recurso não encontrado")
 	})
 	public ResponseEntity<Object> getById(@PathVariable("id") String id) {
 		Optional<Accommodation> accomodation = accommodationService.findById(id);
@@ -65,10 +63,10 @@ public class AccommodationResource {
 	}
 	
 	@DeleteMapping("{id}")
-	@ApiOperation(value = "Deleta uma acomodação através do id")
+	@Operation(summary = "Deleta uma acomodação através do id")
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Recurso deletado com sucesso"),
-			@ApiResponse(code = 404, message = "Recurso não encontrado")
+			@ApiResponse(responseCode = "200", description = "Recurso deletado com sucesso"),
+			@ApiResponse(responseCode = "404", description = "Recurso não encontrado")
 	})
 	public ResponseEntity<Object> deleteAccommodation(@PathVariable("id") String id) {
 		Optional<Accommodation> accommodation = accommodationService.findById(id);
@@ -80,11 +78,11 @@ public class AccommodationResource {
 	}
 
 	@PutMapping("{id}")
-	@ApiOperation(value = "Atualiza uma acomodação através do id")
+	@Operation(summary = "Atualiza uma acomodação através do id")
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Acomodação atualizada com sucesso"),
-			@ApiResponse(code = 404, message = "Acomodação não encontrada"),
-			@ApiResponse(code = 400, message = "Dados de acomodação inválidos")
+			@ApiResponse(responseCode = "200", description = "Acomodação atualizada com sucesso"),
+			@ApiResponse(responseCode = "404", description = "Acomodação não encontrada"),
+			@ApiResponse(responseCode = "400", description = "Dados de acomodação inválidos")
 	})
 	public ResponseEntity<Object> updateAccommodation(
 			@PathVariable("id") String id,
