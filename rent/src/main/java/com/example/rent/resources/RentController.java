@@ -3,18 +3,19 @@ package com.example.rent.resources;
 import com.example.rent.dto.RentDto;
 import com.example.rent.entities.Rent;
 import com.example.rent.service.interfaces.IRentService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/rents")
-@Api(value = "Microserviço aluguel")
 @RequiredArgsConstructor
 public class RentController {
 
@@ -22,7 +23,7 @@ public class RentController {
 
     //@Retry(name = "retrySave")
     @PostMapping
-    @ApiOperation(value = "Salva um arrendamento/aluguel")
+    @Operation(summary = "Salva um arrendamento/aluguel")
     public ResponseEntity<Rent> save(@RequestBody @Valid RentDto rentDto) {
         return new ResponseEntity<>(rentService.createNewRent(rentDto), HttpStatus.CREATED);
     }

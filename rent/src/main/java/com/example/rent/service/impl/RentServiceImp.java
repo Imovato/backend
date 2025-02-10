@@ -12,12 +12,12 @@ import com.example.rent.service.interfaces.UserService;
 import com.example.rent.service.interfaces.AccommodationService;
 import com.example.rent.service.interfaces.IRentService;
 import com.example.rent.validations.DateValidations;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
