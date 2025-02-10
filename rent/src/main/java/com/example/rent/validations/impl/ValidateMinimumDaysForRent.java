@@ -13,7 +13,7 @@ public class ValidateMinimumDaysForRent implements DateValidations {
 
     @Override
     public void validate(RentDto dto) {
-        long daysBetween = ChronoUnit.DAYS.between(dto.getStartDateRent(), dto.getEndDateRent());
+        long daysBetween = ChronoUnit.DAYS.between(dto.startDateRent(), dto.endDateRent());
         if(daysBetween < MIN_DAYS) {
             System.out.println("o período contratado não pode ser menor do que 30 dias.");
         }

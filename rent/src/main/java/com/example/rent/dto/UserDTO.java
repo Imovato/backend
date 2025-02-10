@@ -4,13 +4,8 @@ import com.example.rent.enums.UserType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 
-@Getter
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserDTO {
+public record UserDTO(String name, String email, UserType type) {}
 
-    private String name;
-
-    private String email;
-
-    private UserType type;
-}

@@ -17,8 +17,8 @@ public class ValidateEmail implements ValidationsSignup {
 
     @Override
     public void validate(UserDTO userDto) {
-        if (userService.existsByEmail(userDto.getEmail())) {
-            log.warn("Email {} is already registered!", userDto.getEmail());
+        if (userService.existsByEmail(userDto.email())) {
+            log.warn("Email {} is already registered!", userDto.email());
             throw new ValidateRegisterException("Email is already registered!");
         }
     }

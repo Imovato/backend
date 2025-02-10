@@ -17,8 +17,8 @@ public class ValidateUserName implements ValidationsSignup {
 
     @Override
     public void validate(UserDTO userDto) {
-        if (userService.existsByUserName(userDto.getUserName())) {
-            log.error("Username {} is already taken!", userDto.getUserName());
+        if (userService.existsByUserName(userDto.userName())) {
+            log.error("Username {} is already taken!", userDto.userName());
             throw new ValidateRegisterException("Username is already taken!");
         }
     }

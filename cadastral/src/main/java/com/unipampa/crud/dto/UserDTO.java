@@ -5,27 +5,12 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
-@Data
-public class UserDTO {
-
-	@NotBlank
-	private String email;
-
-	@NotBlank
-	private String name;
-
-	@NotBlank
-	private String userName;
-
-	@NotBlank
-	private String cpf;
-
-	@NotBlank
-	private String phone;
-
-	@NotBlank
-	private String address;
-
-	private UserType type;
-
-}
+public record UserDTO(
+		@NotBlank String email,
+		@NotBlank String name,
+		@NotBlank String userName,
+		@NotBlank String cpf,
+		@NotBlank String phone,
+		@NotBlank String address,
+		UserType type
+) {}

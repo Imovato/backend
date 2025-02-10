@@ -7,36 +7,16 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
-@Data
-public class AccommodationDTO {
-
-	@NotBlank
-	private String title;
-
-	private String neighborhood;
-
-	private String codAddress;
-
-	@NotNull
-	private String city;
-
-	@NotBlank
-	private String description;
-
-	private String adress;
-
-	@NotBlank
-	private String state;
-
-	@NotBlank
-	private BigDecimal price;
-
-	private int number;
-
-	@NotNull
-	private int imageQuantity;
-
-	@NotNull
-	private AccommodationType accommodationType;
-
-}
+public record AccommodationDTO(
+		@NotBlank String title,
+		String neighborhood,
+		String codAddress,
+		@NotNull String city,
+		@NotBlank String description,
+		String adress,
+		@NotBlank String state,
+		@NotBlank BigDecimal price,
+		int number,
+		@NotNull int imageQuantity,
+		@NotNull AccommodationType accommodationType
+) {}

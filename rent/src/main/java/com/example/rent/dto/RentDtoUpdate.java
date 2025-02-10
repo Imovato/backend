@@ -1,21 +1,15 @@
 package com.example.rent.dto;
 
-import lombok.*;
 
-import java.time.LocalDate;
+import java.io.Serializable;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class RentDtoUpdate {
+public record RentDtoUpdate(
+        Long id,
+        Double iptu,
+        Double water,
+        Double energy,
+        Double condominium,
+        Double value,
+        String description
+) implements Serializable {}
 
-    private Long id;
-    private Double iptu;
-    private Double water;
-    private Double energy;
-    private Double condominium;
-    private Double value;
-    private String description;
-
-}

@@ -16,8 +16,8 @@ public class ValidateCpf implements ValidationsSignup {
     private UserService userService;
     @Override
     public void validate(UserDTO userDto) {
-        if(userService.existsByCpf(userDto.getCpf())){
-            log.error("CPF {} is already registered!", userDto.getCpf());
+        if(userService.existsByCpf(userDto.cpf())){
+            log.error("CPF {} is already registered!", userDto.cpf());
             throw new ValidateRegisterException("CPF is already registered!");
         }
     }

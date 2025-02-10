@@ -98,9 +98,9 @@ public class AccommodationResource {
 
 			Accommodation accommodation = existingAccommodation.get();
 
-			accommodation.setTitle(accommodationDTO.getTitle());
-			accommodation.setAddress(accommodationDTO.getAdress());
-			accommodation.setPrice(accommodationDTO.getPrice());
+			accommodation.setTitle(accommodationDTO.title());
+			accommodation.setAddress(accommodationDTO.adress());
+			accommodation.setPrice(accommodationDTO.price());
 
 			accommodationService.save(accommodation);
 

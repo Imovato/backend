@@ -45,14 +45,14 @@ public class RentServiceImp implements IRentService {
     }
 
     private Accommodation searchAccommodationForRent(RentDto dto){
-        return Optional.ofNullable(accommodationService.findAccommodationById(dto.getIdAccommodation()))
+        return Optional.ofNullable(accommodationService.findAccommodationById(dto.idAccommodation()))
                 .orElseThrow(() -> new IllegalArgumentException("Acomodação não encontrada"))
                 .filter(accommodation -> accommodation.getStatus().equals(Status.AVAILABLE))
                 .orElseThrow(() -> new IllegalStateException("Acomodação não está disponível para aluguel"));
     }
 
     private User searchUserForRent(RentDto dto) {
-        return userService.findById(dto.getIdUser())
+        return userService.findById(dto.idUser())
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
     }
 
@@ -66,14 +66,14 @@ public class RentServiceImp implements IRentService {
         BeanUtils.copyProperties(dto, rent);
 
         accommodation.setStatus(Status.RENTED);
-        rent.setDateRent(dto.getStartDateRent());
+        rent.setDateRent(dto.startDateRent());
 
         return rent;
     }
 
     @Override
     public void update(RentDtoUpdate rentDtoUpdate) {
-        Rent savedRent = findById(rentDtoUpdate.getId());
+        Rent savedRent = findById(rentDtoUpdate.id());
         BeanUtils.copyProperties(rentDtoUpdate, savedRent);
         rentRepository.save(savedRent);
     }

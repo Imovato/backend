@@ -47,7 +47,7 @@ public class UserResource {
 		this.validations.forEach(e -> e.validate(userDto));
 
 		var user = mapper.convertValue(userDto, User.class);
-		user.setType(userDto.getType());
+		user.setType(userDto.type());
 		user.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
 		user.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
 		userService.save(user);

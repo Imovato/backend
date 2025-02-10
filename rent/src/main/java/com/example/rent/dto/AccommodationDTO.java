@@ -3,10 +3,9 @@ package com.example.rent.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 
-@Getter
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AccommodationDTO {
-
-    private Double price;
-
+public record AccommodationDTO(Double price) {
 }
+

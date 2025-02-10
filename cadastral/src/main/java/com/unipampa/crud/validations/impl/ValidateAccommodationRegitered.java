@@ -18,9 +18,9 @@ public class ValidateAccommodationRegitered implements ValidationsRegisterAccomm
 
     @Override
     public void validate(AccommodationDTO entity) {
-        if (entity.getAccommodationType().equals(AccommodationType.HOUSE)
-                && service.existsByCodAddressAndNumber(entity.getCodAddress(), entity.getNumber())) {
-            log.error("HOUSE {} is already registered!", entity.getDescription());
+        if (entity.accommodationType().equals(AccommodationType.HOUSE)
+                && service.existsByCodAddressAndNumber(entity.codAddress(), entity.number())) {
+            log.error("HOUSE {} is already registered!", entity.description());
             throw new ValidateRegisterException("HOUSE is already registered!");
         }
 
