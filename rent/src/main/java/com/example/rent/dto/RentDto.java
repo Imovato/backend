@@ -1,5 +1,7 @@
 package com.example.rent.dto;
 
+import com.example.rent.entities.Accommodation;
+import com.example.rent.entities.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -23,8 +25,8 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import java.time.LocalDate;
 
 public record RentDto(
-        Long idAccommodation,
-        Long idUser,
+        Accommodation accommodation,
+        User user,
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
         @JsonSerialize(using = LocalDateSerializer.class)
@@ -34,16 +36,6 @@ public record RentDto(
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
         @JsonSerialize(using = LocalDateSerializer.class)
         @JsonDeserialize(using = LocalDateDeserializer.class)
-        LocalDate endDateRent,
+        LocalDate endDateRent
 
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-        @JsonSerialize(using = LocalDateSerializer.class)
-        @JsonDeserialize(using = LocalDateDeserializer.class)
-        LocalDate dateAdjustmentIGPM,
-
-        Double iptu,
-        Double water,
-        Double energy,
-        Double condominium,
-        String description
 ) {}

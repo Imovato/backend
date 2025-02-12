@@ -1,16 +1,16 @@
 package com.example.rent.service.impl;
 
 import com.example.rent.dto.RentDto;
-import com.example.rent.dto.RentDtoUpdate;
-import com.example.rent.entities.User;
-import com.example.rent.enums.Status;
-import com.example.rent.exceptions.BadRequestException;
 import com.example.rent.entities.Accommodation;
 import com.example.rent.entities.Rent;
+import com.example.rent.entities.User;
+import com.example.rent.enums.Status;
 import com.example.rent.repository.RentRepository;
-import com.example.rent.service.interfaces.UserService;
+import com.example.rent.response.RentResponse;
 import com.example.rent.service.interfaces.AccommodationService;
 import com.example.rent.service.interfaces.IRentService;
+import com.example.rent.service.interfaces.UserService;
+import com.example.rent.utils.ConverterResponse;
 import com.example.rent.validations.DateValidations;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +32,15 @@ public class RentServiceImp implements IRentService {
     @Autowired
     List<DateValidations> dateValidations;
 
+    @Autowired
+    private ConverterResponse converterResponse;
+
+    @Override
+    public List<RentResponse> findByUserId(Long id) {
+        List<RentDto> rents = rentRepository.findByUserId(id);
+        return converterResponse.convertToRentResponse(rents);
+    }
+
     @Override
     @Transactional
     public Rent createNewRent(RentDto dto) {
@@ -45,18 +54,18 @@ public class RentServiceImp implements IRentService {
     }
 
     private Accommodation searchAccommodationForRent(RentDto dto){
-        return Optional.ofNullable(accommodationService.findAccommodationById(dto.idAccommodation()))
+        return Optional.ofNullable(accommodationService.findAccommodationById(dto.accommodation().getId()))
                 .orElseThrow(() -> new IllegalArgumentException("Acomodação não encontrada"))
                 .filter(accommodation -> accommodation.getStatus().equals(Status.AVAILABLE))
                 .orElseThrow(() -> new IllegalStateException("Acomodação não está disponível para aluguel"));
     }
 
     private User searchUserForRent(RentDto dto) {
-        return userService.findById(dto.idUser())
+        return userService.findById(dto.user().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
     }
 
-    private Rent buildRent(Accommodation accommodation, User user, RentDto dto){
+    private Rent buildRent(Accommodation accommodation, User user, RentDto dto) {
         var rent = Rent.builder()
                 .accommodation(accommodation)
                 .user(user)
@@ -70,32 +79,4 @@ public class RentServiceImp implements IRentService {
 
         return rent;
     }
-
-    @Override
-    public void update(RentDtoUpdate rentDtoUpdate) {
-        Rent savedRent = findById(rentDtoUpdate.id());
-        BeanUtils.copyProperties(rentDtoUpdate, savedRent);
-        rentRepository.save(savedRent);
-    }
-
-    @Override
-    public void delete(Long id) {
-        rentRepository.delete(findById(id));
-    }
-
-    @Override
-    public Rent findById(Long id) {
-        return rentRepository.findById(id)
-                .orElseThrow(() -> new BadRequestException("Rent not found"));
-    }
-
-    @Override
-    public List<Rent> listAll(){
-        return rentRepository.findAll();
-    }
-
-//    @Override
-//    public List<Rent> findRentsByCustomer_Id(Long id) {
-//        return rentRepository.findByCustomerId(id);
-//    }
 }
