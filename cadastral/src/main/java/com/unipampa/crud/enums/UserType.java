@@ -11,8 +11,8 @@ public enum UserType {
 
     ADMINITSTRATOR;
 
-    @JsonCreator
-    public static UserType fromString(String value) {
-        return UserType.valueOf(value.toUpperCase());
-    }
+//    @JsonCreator
+//    public static UserType fromString(String value) {
+//        return UserType.valueOf(value.toUpperCase());
+//    }
 }

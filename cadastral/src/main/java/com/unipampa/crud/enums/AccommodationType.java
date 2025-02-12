@@ -9,8 +9,8 @@ public enum AccommodationType {
 
     HOUSE;
 
-    @JsonCreator
-    public static AccommodationType fromString(String value) {
-        return AccommodationType.valueOf(value.toUpperCase());
-    }
+//    @JsonCreator
+//    public static AccommodationType fromString(String value) {
+//        return AccommodationType.valueOf(value.toUpperCase());
+//    }
 }

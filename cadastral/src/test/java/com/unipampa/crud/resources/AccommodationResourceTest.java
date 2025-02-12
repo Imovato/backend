@@ -173,7 +173,7 @@ class AccommodationResourceTest {
     }
 
     @Test
-    void testUpdateAccommodationInvalidData() {
+    void shouldUpdateAccommodationInvalidData() {
         when(accommodationService.findById(accommodation.getId())).thenReturn(Optional.of(accommodation));
         doThrow(new RuntimeException("Erro")).when(validations).forEach(any());
 
@@ -183,5 +183,25 @@ class AccommodationResourceTest {
         verify(accommodationService, never()).save(any());
     }
 
+    @Test
+    void shouldGetByIdSuccess() {
+                when(accommodationService.findById(accommodation.getId())).thenReturn(Optional.of(accommodation));
+
+        ResponseEntity<Object> response = accommodationResource.getById(accommodation.getId());
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertTrue(response.getBody() instanceof Accommodation);
+    }
+
+    @Test
+    void shouldGetByIdNotFound() {
+        when(accommodationService.findById(accommodation.getId())).thenReturn(Optional.empty());
+
+        ResponseEntity<Object> response = accommodationResource.getById(accommodation.getId());
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("Acomodação não encontrada para esse id", response.getBody());
+    }
 
 }

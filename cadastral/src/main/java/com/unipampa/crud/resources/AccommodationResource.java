@@ -24,10 +24,10 @@ public class AccommodationResource {
 	private AccommodationService accommodationService;
 
 	@Autowired
-	ObjectMapper mapper;
+	private ObjectMapper mapper;
 
 	@Autowired
-	List<ValidationsRegisterAccommodation> validations;
+	private List<ValidationsRegisterAccommodation> validations;
 
 	@PostMapping
 	@Operation(summary = "Salva uma acomodação)")

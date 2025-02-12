@@ -31,7 +31,7 @@ public class UserResource {
 	private UserService userService;
 
 	@Autowired
-	private ObjectMapper mapper;
+	ObjectMapper mapper;
 
 	@Autowired
 	List<ValidationsSignup> validations;
@@ -60,11 +60,7 @@ public class UserResource {
 	public ResponseEntity<Page<User>> getAllUsers(
 			@PageableDefault(page = 0, size = 3, direction = Sort.Direction.ASC) Pageable pageable) {
 		Page<User> users = userService.findAll(pageable);
-//		if (!users.isEmpty()) {
-//			users.stream().forEach(e -> e.add(
-//					linkTo(methodOn(UserResource.class).getUserById(e.getId())).withSelfRel())
-//			);
-//		}
+
 		return ResponseEntity.status(HttpStatus.OK).body(users);
 	}
 
@@ -112,5 +108,4 @@ public class UserResource {
 		userService.delete(id);
 		return ResponseEntity.status(HttpStatus.OK).body("Usuário deletado!");
 	}
-
 }

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class ValidateAccommodationRegitered implements ValidationsRegisterAccommodation {
+public class ValidateAccommodationRegistered implements ValidationsRegisterAccommodation {
 
     @Autowired
     private AccommodationService service;

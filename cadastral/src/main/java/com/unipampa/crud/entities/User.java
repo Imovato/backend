@@ -2,6 +2,7 @@ package com.unipampa.crud.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.unipampa.crud.enums.UserType;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -10,7 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-
+@Builder
 @Document
 @Data
 public class User implements Serializable {
