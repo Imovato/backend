@@ -1,9 +1,8 @@
 package com.example.rent.resources;
 
 import com.example.rent.dto.RentDto;
-import com.example.rent.entities.Rent;
 import com.example.rent.response.RentResponse;
-import com.example.rent.service.interfaces.IRentService;
+import com.example.rent.service.RentService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,11 +17,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RentController {
 
-    private final IRentService rentService;
+    private final RentService rentService;
 
     @PostMapping
     @Operation(summary = "Registra um aluguel")
-    public ResponseEntity<Rent> save(@RequestBody @Valid RentDto rentDto) {
+    public ResponseEntity<RentResponse> save(@RequestBody @Valid RentDto rentDto) {
         return new ResponseEntity<>(rentService.createNewRent(rentDto), HttpStatus.CREATED);
     }
 

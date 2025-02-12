@@ -7,9 +7,9 @@ import com.example.rent.entities.User;
 import com.example.rent.enums.Status;
 import com.example.rent.repository.RentRepository;
 import com.example.rent.response.RentResponse;
-import com.example.rent.service.interfaces.AccommodationService;
-import com.example.rent.service.interfaces.IRentService;
-import com.example.rent.service.interfaces.UserService;
+import com.example.rent.service.AccommodationService;
+import com.example.rent.service.RentService;
+import com.example.rent.service.UserService;
 import com.example.rent.utils.ConverterResponse;
 import com.example.rent.validations.DateValidations;
 import jakarta.transaction.Transactional;
@@ -23,7 +23,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class RentServiceImp implements IRentService {
+public class RentServiceImpl implements RentService {
 
     private final RentRepository rentRepository;
     private final AccommodationService accommodationService;
@@ -38,19 +38,19 @@ public class RentServiceImp implements IRentService {
     @Override
     public List<RentResponse> findByUserId(Long id) {
         List<RentDto> rents = rentRepository.findByUserId(id);
-        return converterResponse.convertToRentResponse(rents);
+        return converterResponse.convertToRentResponseList(rents);
     }
 
     @Override
     @Transactional
-    public Rent createNewRent(RentDto dto) {
+    public RentResponse createNewRent(RentDto dto) {
         var accommodation = searchAccommodationForRent(dto);
         var user = searchUserForRent(dto);
         var rent = buildRent(accommodation, user, dto);
         dateValidations.forEach(e -> e.validate(dto));
         accommodationService.changeStatusForRented(accommodation);
+        return converterResponse.convertToRentResponse(rentRepository.save(rent));
 
-        return rentRepository.save(rent);
     }
 
     private Accommodation searchAccommodationForRent(RentDto dto){
