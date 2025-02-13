@@ -9,7 +9,7 @@ public class ValidateStartDate implements DateValidations {
     @Override
     public void validate(RentDto dto) {
         if(dto.startDateRent().isAfter(dto.endDateRent())){
-            System.out.println("a data de início deve ser anterior a data do fim.");
+            throw new IllegalArgumentException("A data de início deve ser anterior à data do fim.");
         }
     }
 }
