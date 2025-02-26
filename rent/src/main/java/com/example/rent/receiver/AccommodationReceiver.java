@@ -1,7 +1,7 @@
 package com.example.rent.receiver;
 
 
-import com.example.rent.dto.AccommodationDTO;
+import com.example.rent.dto.AccommodationDto;
 import com.example.rent.enums.Status;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class AccommodationReceiver {
 	}
 	
 	@RabbitListener(queues = {"${crud.rabbitmq.queues.accommodationQueue}"})
-	public void receive(@Payload AccommodationDTO dto) {
+	public void receive(@Payload AccommodationDto dto) {
 		Accommodation accommodation = new Accommodation();
 		accommodation.setPrice(dto.price());
 		accommodation.setStatus(Status.AVAILABLE);

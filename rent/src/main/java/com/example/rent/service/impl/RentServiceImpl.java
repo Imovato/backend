@@ -5,6 +5,7 @@ import com.example.rent.entities.Accommodation;
 import com.example.rent.entities.Rent;
 import com.example.rent.entities.User;
 import com.example.rent.enums.Status;
+import com.example.rent.enums.UserType;
 import com.example.rent.repository.RentRepository;
 import com.example.rent.response.RentResponse;
 import com.example.rent.service.AccommodationService;
@@ -15,7 +16,6 @@ import com.example.rent.validations.DateValidations;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,12 +28,8 @@ public class RentServiceImpl implements RentService {
     private final RentRepository rentRepository;
     private final AccommodationService accommodationService;
     private final UserService userService;
-
-    @Autowired
-    List<DateValidations> dateValidations;
-
-    @Autowired
-    private ConverterResponse converterResponse;
+    private final List<DateValidations> dateValidations;
+    private final ConverterResponse converterResponse;
 
     @Override
     public List<RentResponse> findByUserId(Long id) {
@@ -53,26 +49,26 @@ public class RentServiceImpl implements RentService {
 
     }
 
-    private Accommodation searchAccommodationForRent(RentDto dto){
+    protected Accommodation searchAccommodationForRent(RentDto dto){
         return Optional.ofNullable(accommodationService.findAccommodationById(dto.accommodation().getId()))
                 .orElseThrow(() -> new IllegalArgumentException("Acomodação não encontrada"))
                 .filter(accommodation -> accommodation.getStatus().equals(Status.AVAILABLE))
                 .orElseThrow(() -> new IllegalStateException("Acomodação não está disponível para aluguel"));
     }
 
-    private User searchUserForRent(RentDto dto) {
+    protected User searchUserForRent(RentDto dto) {
         return userService.findById(dto.user().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
     }
 
-    private Rent buildRent(Accommodation accommodation, User user, RentDto dto) {
+    protected Rent buildRent(Accommodation accommodation, User user, RentDto dto) {
         var rent = Rent.builder()
                 .accommodation(accommodation)
                 .user(user)
                 .price(accommodation.getPrice())
                 .build();
 
-        BeanUtils.copyProperties(dto, rent);
+        BeanUtils.copyProperties(rent, dto);
 
         accommodation.setStatus(Status.RENTED);
         rent.setDateRent(dto.startDateRent());

@@ -1,6 +1,5 @@
 package com.example.rent.receiver;
 
-import com.example.rent.dto.UserDTO;
 import com.example.rent.entities.User;
 import com.example.rent.repository.UserRepository;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
