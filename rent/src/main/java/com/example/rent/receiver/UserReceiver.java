@@ -17,13 +17,13 @@ public class UserReceiver {
 		this.userRepository = userRepository;
 	}
 	
-	@RabbitListener(queues = {"${crud.rabbitmq.queues.userQueue}"})
-	public void receive(@Payload UserDTO dto) {
-		User user = new User();
-		user.setName(dto.name());
-		user.setEmail(dto.email());
-		user.setUserType(dto.type());
-		userRepository.save(user);
-	}
+//	@RabbitListener(queues = {"${crud.rabbitmq.queues.userQueue}"})
+//	public void receive(@Payload UserDTO dto) {
+//		User user = new User();
+//		user.setName(dto.name());
+//		user.setEmail(dto.email());
+//		user.setUserType(dto.type());
+//		userRepository.save(user);
+//	}
 	
 }
