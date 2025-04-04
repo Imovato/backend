@@ -4,8 +4,7 @@ import com.example.rent.dto.RentDto;
 import com.example.rent.entities.Accommodation;
 import com.example.rent.entities.Rent;
 import com.example.rent.entities.User;
-import com.example.rent.enums.Status;
-import com.example.rent.enums.UserType;
+import com.example.rent.enums.StatusAccommodation;
 import com.example.rent.repository.RentRepository;
 import com.example.rent.response.RentResponse;
 import com.example.rent.service.AccommodationService;
@@ -52,7 +51,7 @@ public class RentServiceImpl implements RentService {
     protected Accommodation searchAccommodationForRent(RentDto dto){
         return Optional.ofNullable(accommodationService.findAccommodationById(dto.accommodation().getId()))
                 .orElseThrow(() -> new IllegalArgumentException("Acomodação não encontrada"))
-                .filter(accommodation -> accommodation.getStatus().equals(Status.AVAILABLE))
+                .filter(accommodation -> accommodation.getStatus().equals(StatusAccommodation.AVAILABLE))
                 .orElseThrow(() -> new IllegalStateException("Acomodação não está disponível para aluguel"));
     }
 
@@ -70,7 +69,7 @@ public class RentServiceImpl implements RentService {
 
         BeanUtils.copyProperties(rent, dto);
 
-        accommodation.setStatus(Status.RENTED);
+        accommodation.setStatus(StatusAccommodation.RENTED);
         rent.setDateRent(dto.startDateRent());
 
         return rent;

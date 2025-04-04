@@ -4,7 +4,7 @@ import com.example.rent.dto.RentDto;
 import com.example.rent.entities.Accommodation;
 import com.example.rent.entities.Rent;
 import com.example.rent.entities.User;
-import com.example.rent.enums.Status;
+import com.example.rent.enums.StatusAccommodation;
 import com.example.rent.repository.RentRepository;
 import com.example.rent.response.RentResponse;
 import com.example.rent.service.UserService;
@@ -49,7 +49,7 @@ class RentServiceImplTest {
         accommodation = new Accommodation();
         accommodation.setId(10L);
         accommodation.setPrice(100.0);
-        accommodation.setStatus(Status.AVAILABLE);
+        accommodation.setStatus(StatusAccommodation.AVAILABLE);
         user = new User();
         user.setId(1L);
 
@@ -129,7 +129,7 @@ class RentServiceImplTest {
         assertEquals(accommodation, rent.getAccommodation());
         assertEquals(user, rent.getUser());
         assertEquals(100.0, rent.getPrice());
-        assertEquals(Status.RENTED, accommodation.getStatus());
+        assertEquals(StatusAccommodation.RENTED, accommodation.getStatus());
         assertEquals(LocalDate.now(), rent.getDateRent());
     }
 

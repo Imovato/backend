@@ -27,7 +27,7 @@ class RentControllerTest {
     private RentService rentService;
 
     @InjectMocks
-    private RentController rentController;
+    private RentResource rentController;
 
     private RentDto validRentDto;
     private RentResponse rentResponse;

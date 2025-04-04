@@ -1,7 +1,7 @@
 package com.example.rent.service.impl;
 
 import com.example.rent.entities.Accommodation;
-import com.example.rent.enums.Status;
+import com.example.rent.enums.StatusAccommodation;
 import com.example.rent.repository.AccommodationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,7 +58,7 @@ class AccommodationServiceImplTest {
 
     @Test
     void testChangeStatusForRentedSuccess() {
-        mockAccommodation.setStatus(Status.RENTED);
+        mockAccommodation.setStatus(StatusAccommodation.RENTED);
 
         accommodationService.changeStatusForRented(mockAccommodation);
 
