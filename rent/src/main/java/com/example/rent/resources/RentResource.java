@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/rents")
 @RequiredArgsConstructor
-public class RentController {
+public class RentResource {
 
     private final RentService rentService;
 
