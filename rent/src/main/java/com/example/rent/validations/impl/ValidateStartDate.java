@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 public class ValidateStartDate implements DateValidations {
     @Override
     public void validate(RentDto dto) {
-        if(dto.getStartDateRent().isAfter(dto.getEndDateRent())){
-            System.out.println("a data de início deve ser anterior a data do fim.");
+        if(dto.startDateRent().isAfter(dto.endDateRent())){
+            throw new IllegalArgumentException("A data de início deve ser anterior à data do fim.");
         }
     }
 }

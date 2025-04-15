@@ -1,14 +1,14 @@
 package com.example.rent.entities;
 
 import com.example.rent.enums.UserType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.io.Serializable;
-import java.util.UUID;
+import java.util.List;
 
 @Entity
 @Data

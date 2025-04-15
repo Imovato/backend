@@ -1,11 +1,13 @@
 package com.example.rent.dto;
 
+import com.example.rent.entities.Accommodation;
+import com.example.rent.entities.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,38 +17,27 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class RentDto {
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
-    private Long idAccommodation;
-    private Long idUser;
+import java.time.LocalDate;
 
-    @ApiModelProperty(example = "2023-01-17")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    private LocalDate startDateRent;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public record RentDto(
+        Accommodation accommodation,
+        User user,
 
-    @ApiModelProperty(example = "2023-01-17")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    private LocalDate endDateRent;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+        @JsonSerialize(using = LocalDateSerializer.class)
+        @JsonDeserialize(using = LocalDateDeserializer.class)
+        LocalDate startDateRent,
 
-   // @NotEmpty(message = "The start date rent cannot be empty")
-    @ApiModelProperty(example = "2023-01-17")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    private LocalDate dateAdjustmentIGPM;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+        @JsonSerialize(using = LocalDateSerializer.class)
+        @JsonDeserialize(using = LocalDateDeserializer.class)
+        LocalDate endDateRent
 
-    private Double iptu;
-    private Double water;
-    private Double energy;
-    private Double condominium;
-
-    private String description;
-}
+) {}

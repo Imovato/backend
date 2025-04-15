@@ -1,6 +1,5 @@
 package com.example.rent.receiver;
 
-import com.example.rent.dto.UserDTO;
 import com.example.rent.entities.User;
 import com.example.rent.repository.UserRepository;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -18,13 +17,13 @@ public class UserReceiver {
 		this.userRepository = userRepository;
 	}
 	
-	@RabbitListener(queues = {"${crud.rabbitmq.queues.userQueue}"})
-	public void receive(@Payload UserDTO dto) {
-		User user = new User();
-		user.setName(dto.getName());
-		user.setEmail(dto.getEmail());
-		user.setUserType(dto.getType());
-		userRepository.save(user);
-	}
+//	@RabbitListener(queues = {"${crud.rabbitmq.queues.userQueue}"})
+//	public void receive(@Payload UserDTO dto) {
+//		User user = new User();
+//		user.setName(dto.name());
+//		user.setEmail(dto.email());
+//		user.setUserType(dto.type());
+//		userRepository.save(user);
+//	}
 	
 }

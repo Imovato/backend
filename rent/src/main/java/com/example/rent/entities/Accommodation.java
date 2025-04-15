@@ -1,15 +1,14 @@
 package com.example.rent.entities;
 
-import com.example.rent.enums.Status;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.example.rent.enums.StatusAccommodation;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+
 import java.io.Serializable;
-import java.util.UUID;
 
 @Entity
 @Data
@@ -25,7 +24,7 @@ public class Accommodation implements Serializable {
     private Double price;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private StatusAccommodation status;
 
     //PRECISA TER UMA FLAG DIZENDO SE A HOSPEDAGEM É COMPARTILHADA OU NÃO
 }
