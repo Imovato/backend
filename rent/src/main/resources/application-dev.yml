@@ -1,7 +1,5 @@
 server:
   port: ${PORT:0}
-  servlet:
-    context-path:
 
 spring:
   application:
