@@ -1,24 +1,28 @@
 package com.example.rent.entities;
 
-import com.example.rent.enums.StatusAccommodation;
 import com.example.rent.enums.StatusReservation;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Reservation {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     private Accommodation accommodation;
 
-    @OneToMany
+    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<ParticipanteReserva> guests;
 
     @Enumerated(EnumType.STRING)

@@ -5,6 +5,7 @@ import com.example.rent.entities.Accommodation;
 import com.example.rent.entities.ParticipanteReserva;
 import com.example.rent.entities.Reservation;
 import com.example.rent.entities.User;
+import com.example.rent.enums.StatusAccommodation;
 import com.example.rent.enums.StatusReservation;
 import com.example.rent.repository.AccommodationRepository;
 import com.example.rent.repository.ReservationRepository;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -51,6 +51,9 @@ public class ReservationServiceImpl implements ReservationService {
             guestReservation.setGuest(guest);
             guestReservation.setReservation(reservation);
             guestReservation.setPaid(false);
+
+            accommodation.setStatus(StatusAccommodation.BOOKING);
+            
             return guestReservation;
         }).toList();
 
