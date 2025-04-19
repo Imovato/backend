@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,9 +31,11 @@ public class AccommodationResource {
 	private List<ValidationsRegisterAccommodation> validations;
 
 	@PostMapping
-	@Operation(summary = "Salva uma acomodação)")
+	@Operation(summary = "Cria uma nova acomodação",
+			description = "Valida e salva uma nova acomodação no sistema.")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Recurso salvo com sucesso!" )
+			@ApiResponse(responseCode = "201", description = "Acomodação criada com sucesso"),
+			@ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos")
 	})
 	public ResponseEntity<Accommodation> save(@RequestBody AccommodationDTO accommodationDTO) {
 
@@ -40,7 +43,10 @@ public class AccommodationResource {
 
 		var accommodation = mapper.convertValue(accommodationDTO, Accommodation.class);
 		accommodationService.save(accommodation);
-		return ResponseEntity.status(HttpStatus.OK).body(accommodation);
+
+		URI location = URI.create("/accommodations/" + accommodation.getId());
+
+		return ResponseEntity.created(location).body(accommodation);
 	}
 	
 	@GetMapping
