@@ -36,8 +36,8 @@ class AccommodationServiceImplTest {
     void setUp() {
         accommodation =  Accommodation.builder()
                 .id("1")
-                .number(101)
-                .zipCode("ADDR123")
+                .addressNumber(101)
+                .postalCode("ADDR123")
                 .build();
     }
 
@@ -113,26 +113,26 @@ class AccommodationServiceImplTest {
 
     @Test
     void testExistsByCodAddressAndNumberReturnsTrue() {
-        String codeAddress = accommodation.getZipCode();
-        int number = accommodation.getNumber();
-        when(propertyRepository.existsByZipCodeAndNumber(codeAddress, number)).thenReturn(true);
+        String codeAddress = accommodation.getPostalCode();
+        int number = accommodation.getAddressNumber();
+        when(propertyRepository.existsByZipCodeAndStreetNumber(codeAddress, number)).thenReturn(true);
 
         boolean result = accommodationService.existsByCodAddressAndNumber(codeAddress, number);
 
         assertTrue(result);
-        verify(propertyRepository, times(1)).existsByZipCodeAndNumber(codeAddress, number);
+        verify(propertyRepository, times(1)).existsByZipCodeAndStreetNumber(codeAddress, number);
     }
 
     @Test
     void testExistsByCodAddressAndNumberReturnsFalse() {
-        String codeAddress = accommodation.getZipCode();
-        int number = accommodation.getNumber();
-        when(propertyRepository.existsByZipCodeAndNumber(codeAddress, number)).thenReturn(false);
+        String codeAddress = accommodation.getPostalCode();
+        int number = accommodation.getAddressNumber();
+        when(propertyRepository.existsByZipCodeAndStreetNumber(codeAddress, number)).thenReturn(false);
 
         boolean result = accommodationService.existsByCodAddressAndNumber(codeAddress, number);
 
         assertFalse(result);
-        verify(propertyRepository, times(1)).existsByZipCodeAndNumber(codeAddress, number);
+        verify(propertyRepository, times(1)).existsByZipCodeAndStreetNumber(codeAddress, number);
     }
 
     @Test
