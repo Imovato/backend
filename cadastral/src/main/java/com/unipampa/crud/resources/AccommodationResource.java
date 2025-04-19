@@ -13,11 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -113,48 +109,4 @@ public class AccommodationResource {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao atualizar a acomodação. Verifique os dados fornecidos.");
 		}
 	}
-
-	@GetMapping("{id}/price-per-person")
-	@Operation(summary = "Shows the price each person will pay for the shared accommodation")
-	public ResponseEntity<Object> getPricePerPerson (
-			@PathVariable("id") String id,
-			@RequestParam(value = "people", required = false) Integer numberOfPeople
-	) {
-		Optional<Accommodation> accommodationOpt = accommodationService.findById(id);
-
-		if (accommodationOpt.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Accomodations not found for this ID!");
-		}
-
-        Accommodation accommodation = accommodationOpt.get();
-        int maxOccupancy = accommodation.getMaxOccupancy();
-
-        if (maxOccupancy <= 0) {
-            return ResponseEntity.badRequest().body("Max occupancy must be greater than 0");
-        }
-
-		if (numberOfPeople == null) {
-			numberOfPeople = maxOccupancy;
-		}
-
-        if (numberOfPeople <= 0) {
-            return ResponseEntity.badRequest().body("Number of people must be greater than 0");
-        }
-
-        if (numberOfPeople > maxOccupancy) {
-            return ResponseEntity.badRequest().body("Number of people exceeds the maximum occupancy");
-        }
-
-        BigDecimal totalPrice = accommodation.getPrice();
-
-        BigDecimal pricePerPerson = totalPrice.divide(BigDecimal.valueOf(numberOfPeople), 2, RoundingMode.HALF_UP);
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("totalPrice", totalPrice);
-        response.put("numberOfPeople", numberOfPeople);
-        response.put("pricePerPerson", pricePerPerson);
-        response.put("maxOccupancy", maxOccupancy);
-
-        return ResponseEntity.ok(response);
-    }
 }
