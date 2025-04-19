@@ -33,5 +33,6 @@ public class Accommodation {
     private String address;
     private String state;
     private int imageQuantity;
+    private int maxOccupancy;
 
 }

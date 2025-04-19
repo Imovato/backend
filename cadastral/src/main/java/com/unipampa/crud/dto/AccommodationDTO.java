@@ -18,5 +18,6 @@ public record AccommodationDTO(
 		@NotBlank BigDecimal price,
 		int number,
 		@NotNull int imageQuantity,
-		@NotNull AccommodationType accommodationType
+		@NotNull AccommodationType accommodationType,
+		@NotNull int maxOccupancy
 ) {}
