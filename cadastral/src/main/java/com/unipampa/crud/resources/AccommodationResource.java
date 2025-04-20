@@ -45,7 +45,7 @@ public class AccommodationResource {
             @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    public ResponseEntity<Accommodation> save(@RequestBody AccommodationRequestDTO accommodationDTO) {
+    public ResponseEntity<AccommodationDTO> save(@RequestBody AccommodationRequestDTO accommodationDTO) {
 
         validations.forEach(e -> e.validate(accommodationDTO));
 
@@ -54,7 +54,9 @@ public class AccommodationResource {
 
         URI location = URI.create("/accommodations/" + accommodation.getId());
 
-        return ResponseEntity.created(location).body(accommodation);
+        var accomodationResponseDTO = accommodationMapper.toDTO(accommodation);
+
+        return ResponseEntity.created(location).body(accomodationResponseDTO);
     }
 
     @GetMapping
