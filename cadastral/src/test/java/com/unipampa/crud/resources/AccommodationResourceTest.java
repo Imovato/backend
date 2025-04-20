@@ -21,7 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import javax.validation.Validation;
+import jakarta.validation.Validation;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
