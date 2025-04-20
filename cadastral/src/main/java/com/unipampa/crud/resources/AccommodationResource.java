@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/accommodations")
@@ -48,12 +49,16 @@ public class AccommodationResource {
 
 		return ResponseEntity.created(location).body(accommodation);
 	}
-	
+
 	@GetMapping
 	@Operation(summary = "Retorna uma lista com todas as acomodações")
-	public ResponseEntity<List<Accommodation>> findAll() {
-		List<Accommodation> accommodations = accommodationService.findAll();
-		return ResponseEntity.status(HttpStatus.OK).body(accommodations);
+	public ResponseEntity<List<AccommodationDTO>> findAll() {
+		List<AccommodationDTO> accommodationDtos = accommodationService.findAll()
+				.stream()
+				.map(accommodation -> mapper.convertValue(accommodation, AccommodationDTO.class))
+				.collect(Collectors.toList());
+
+		return ResponseEntity.ok(accommodationDtos);
 	}
 
 	@GetMapping("{id}")
