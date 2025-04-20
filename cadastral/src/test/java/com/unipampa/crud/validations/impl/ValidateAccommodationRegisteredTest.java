@@ -46,23 +46,23 @@ class ValidateAccommodationRegisteredTest {
 
     @Test
     void shouldValidateSuccessWhenHouseNotRegistered() {
-        when(service.existsByCodAddressAndNumber(dtoHouse.codAddress(), dtoHouse.number())).thenReturn(false);
+        when(service.existsByCodAddressAndNumber(dtoHouse.codAddress(), dtoHouse.streetNumber())).thenReturn(false);
 
         assertDoesNotThrow(() -> validateAccommodation.validate(dtoHouse));
 
-        verify(service).existsByCodAddressAndNumber(dtoHouse.codAddress(), dtoHouse.number());
+        verify(service).existsByCodAddressAndNumber(dtoHouse.codAddress(), dtoHouse.streetNumber());
     }
 
     @Test
     void testValidateFailureWhenHouseAlreadyRegistered() {
-        when(service.existsByCodAddressAndNumber(dtoHouse.codAddress(), dtoHouse.number())).thenReturn(true);
+        when(service.existsByCodAddressAndNumber(dtoHouse.codAddress(), dtoHouse.streetNumber())).thenReturn(true);
 
         ValidateRegisterException exception = assertThrows(ValidateRegisterException.class, () -> {
             validateAccommodation.validate(dtoHouse);
         });
 
         assertEquals("HOUSE is already registered!", exception.getMessage());
-        verify(service).existsByCodAddressAndNumber(dtoHouse.codAddress(), dtoHouse.number());
+        verify(service).existsByCodAddressAndNumber(dtoHouse.codAddress(), dtoHouse.streetNumber());
     }
 
 }

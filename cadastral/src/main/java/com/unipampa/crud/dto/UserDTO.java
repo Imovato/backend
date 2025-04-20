@@ -3,7 +3,7 @@ package com.unipampa.crud.dto;
 import com.unipampa.crud.enums.UserType;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 public record UserDTO(
 		@NotBlank String email,

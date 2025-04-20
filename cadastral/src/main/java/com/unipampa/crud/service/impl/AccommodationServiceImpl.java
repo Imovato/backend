@@ -44,7 +44,7 @@ public class AccommodationServiceImpl implements AccommodationService {
 
 	@Override
 	public boolean existsByCodAddressAndNumber(String codeAddress, int number) {
-		return propertyRepository.existsByZipCodeAndNumber(codeAddress, number);
+		return propertyRepository.existsByZipCodeAndStreetNumber(codeAddress, number);
 	}
 
 	@Override

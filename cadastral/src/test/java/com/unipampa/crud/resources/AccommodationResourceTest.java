@@ -21,7 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import javax.validation.Validation;
+import jakarta.validation.Validation;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
@@ -111,7 +111,7 @@ class AccommodationResourceTest {
         List<Accommodation> mockAccommodations = Arrays.asList(accommodation, accommodation2);
         when(accommodationService.findAll()).thenReturn(mockAccommodations);
 
-        ResponseEntity<List<Accommodation>> response = accommodationResource.findAll();
+        ResponseEntity<List<AccommodationDTO>> response = accommodationResource.findAll();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
