@@ -1,6 +1,7 @@
 package com.unipampa.crud.validations.impl;
 
 import com.unipampa.crud.dto.AccommodationDTO;
+import com.unipampa.crud.dto.AccommodationRequestDTO;
 import com.unipampa.crud.enums.AccommodationType;
 import com.unipampa.crud.exceptions.ValidateRegisterException;
 import com.unipampa.crud.service.AccommodationService;
@@ -17,7 +18,7 @@ public class ValidateAccommodationRegistered implements ValidationsRegisterAccom
     private AccommodationService service;
 
     @Override
-    public void validate(AccommodationDTO entity) {
+    public void validate(AccommodationRequestDTO entity) {
         if (entity.accommodationType().equals(AccommodationType.HOUSE)
                 && service.existsByCodAddressAndNumber(entity.codAddress(), entity.streetNumber())) {
             log.error("HOUSE {} is already registered!", entity.description());

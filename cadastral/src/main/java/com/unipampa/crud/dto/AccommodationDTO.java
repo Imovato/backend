@@ -1,13 +1,13 @@
 package com.unipampa.crud.dto;
 
 import com.unipampa.crud.enums.AccommodationType;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 
 public record AccommodationDTO(
+		String id,
 		@NotBlank String title,
 		String neighborhood,
 		String codAddress,
@@ -15,10 +15,10 @@ public record AccommodationDTO(
 		@NotBlank String description,
 		String address,
 		@NotBlank String state,
-		@NotBlank BigDecimal price,
+		@NotNull BigDecimal price,
 		int streetNumber,
-		@NotNull int imageQuantity,
+		@NotNull Integer imageQuantity,
 		@NotNull AccommodationType accommodationType,
-		@NotNull int maxOccupancy,
+		@NotNull Integer maxOccupancy,
 		List<String> imagesUrls
 ) {}
