@@ -13,7 +13,7 @@ public record AccommodationDTO(
 		String codAddress,
 		@NotNull String city,
 		@NotBlank String description,
-		String adress,
+		String address,
 		@NotBlank String state,
 		@NotBlank BigDecimal price,
 		int streetNumber,

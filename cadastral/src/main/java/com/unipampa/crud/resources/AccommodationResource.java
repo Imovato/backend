@@ -2,6 +2,7 @@ package com.unipampa.crud.resources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unipampa.crud.dto.AccommodationDTO;
+import com.unipampa.crud.dto.ErrorResponse;
 import com.unipampa.crud.entities.Accommodation;
 import com.unipampa.crud.service.AccommodationService;
 import com.unipampa.crud.validations.ValidationsRegisterAccommodation;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -68,24 +70,35 @@ public class AccommodationResource {
 			@ApiResponse(responseCode = "404", description = "Recurso não encontrado")
 	})
 	public ResponseEntity<Object> getById(@PathVariable("id") String id) {
-		Optional<Accommodation> accomodation = accommodationService.findById(id);
-		return accomodation.<ResponseEntity<Object>>map(accommodation -> new ResponseEntity<>(accommodation, HttpStatus.OK))
-				.orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("Acomodação não encontrada para esse id"));
+		Optional<Accommodation> accommodation = accommodationService.findById(id);
+
+		if (accommodation.isPresent()) {
+			AccommodationDTO dto = mapper.convertValue(accommodation.get(), AccommodationDTO.class);
+			return ResponseEntity.ok(dto);
+		}
+
+		ErrorResponse errorResponse = new ErrorResponse("Acomodação não encontrada para esse id", LocalDateTime.now());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
 	}
-	
+
+
 	@DeleteMapping("{id}")
-	@Operation(summary = "Deleta uma acomodação através do id")
+	@Operation(summary = "Deleta uma Acomodação através do id")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Recurso deletado com sucesso"),
-			@ApiResponse(responseCode = "404", description = "Recurso não encontrado")
+			@ApiResponse(responseCode = "204", description = "Acomodação deletada com sucesso"),
+			@ApiResponse(responseCode = "404", description = "Acomodação não encontrada")
 	})
 	public ResponseEntity<Object> deleteAccommodation(@PathVariable("id") String id) {
 		Optional<Accommodation> accommodation = accommodationService.findById(id);
-		if(accommodation.isEmpty()){
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Acomodação não encontrada para esse id, portanto não pode ser deletada!");
+
+		if (accommodation.isEmpty()) {
+			ErrorResponse errorResponse = new ErrorResponse("Acomodação não encontrada para esse id, portanto não pode ser deletada!", LocalDateTime.now());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
 		}
+
 		accommodationService.delete(id);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+		return ResponseEntity.noContent().build();
 	}
 
 	@PutMapping("{id}")
@@ -97,27 +110,31 @@ public class AccommodationResource {
 	})
 	public ResponseEntity<Object> updateAccommodation(
 			@PathVariable("id") String id,
-			@RequestBody AccommodationDTO accommodationDTO) {
-
+			@RequestBody AccommodationDTO accommodationDTO
+	) {
 		Optional<Accommodation> existingAccommodation = accommodationService.findById(id);
 		if (existingAccommodation.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Acomodação não encontrada para esse id, portanto não pode ser atualizada!");
+			ErrorResponse errorResponse = new ErrorResponse("Acomodação não encontrada para esse id, portanto não pode ser atualizada!", LocalDateTime.now());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
 		}
 
 		try {
-			validations.forEach(e -> e.validate(accommodationDTO));
+			validations.forEach(e -> e.validate(accommodationDTO)); // Custom validation logic
 
 			Accommodation accommodation = existingAccommodation.get();
-
 			accommodation.setTitle(accommodationDTO.title());
-			accommodation.setAddress(accommodationDTO.adress());
+			accommodation.setAddress(accommodationDTO.address());
 			accommodation.setPrice(accommodationDTO.price());
 
 			accommodationService.save(accommodation);
 
-			return ResponseEntity.ok(accommodation);
+			AccommodationDTO updatedDTO = mapper.convertValue(accommodation, AccommodationDTO.class);
+
+			return ResponseEntity.ok(updatedDTO);
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao atualizar a acomodação. Verifique os dados fornecidos.");
+			ErrorResponse errorResponse = new ErrorResponse("Erro ao atualizar a acomodação. Verifique os dados fornecidos.", LocalDateTime.now());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
 		}
 	}
+
 }
