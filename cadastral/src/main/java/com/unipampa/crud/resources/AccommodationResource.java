@@ -41,7 +41,7 @@ public class AccommodationResource {
             description = "Valida e salva uma nova acomodação no sistema.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Acomodação criada com sucesso",
-                    content = @Content(schema = @Schema(implementation = Accommodation.class))),
+                    content = @Content(schema = @Schema(implementation = AccommodationDTO.class))),
             @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
