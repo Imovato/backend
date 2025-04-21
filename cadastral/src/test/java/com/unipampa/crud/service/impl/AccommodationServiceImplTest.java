@@ -36,8 +36,8 @@ class AccommodationServiceImplTest {
     void setUp() {
         accommodation =  Accommodation.builder()
                 .id("1")
-                .addressNumber(101)
-                .postalCode("ADDR123")
+                .streetNumber(101)
+                .zipCode("ADDR123")
                 .build();
     }
 
@@ -113,8 +113,8 @@ class AccommodationServiceImplTest {
 
     @Test
     void testExistsByCodAddressAndNumberReturnsTrue() {
-        String codeAddress = accommodation.getPostalCode();
-        int number = accommodation.getAddressNumber();
+        String codeAddress = accommodation.getZipCode();
+        int number = accommodation.getStreetNumber();
         when(propertyRepository.existsByZipCodeAndStreetNumber(codeAddress, number)).thenReturn(true);
 
         boolean result = accommodationService.existsByCodAddressAndNumber(codeAddress, number);
@@ -125,8 +125,8 @@ class AccommodationServiceImplTest {
 
     @Test
     void testExistsByCodAddressAndNumberReturnsFalse() {
-        String codeAddress = accommodation.getPostalCode();
-        int number = accommodation.getAddressNumber();
+        String codeAddress = accommodation.getZipCode();
+        int number = accommodation.getStreetNumber();
         when(propertyRepository.existsByZipCodeAndStreetNumber(codeAddress, number)).thenReturn(false);
 
         boolean result = accommodationService.existsByCodAddressAndNumber(codeAddress, number);
