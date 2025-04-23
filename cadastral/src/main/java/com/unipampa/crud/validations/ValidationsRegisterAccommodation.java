@@ -1,8 +1,8 @@
 package com.unipampa.crud.validations;
 
-import com.unipampa.crud.dto.AccommodationDTO;
+import com.unipampa.crud.dto.AccommodationRequestDTO;
 
 public interface ValidationsRegisterAccommodation {
 
-    void validate(AccommodationDTO accommodationDTO);
+    void validate(AccommodationRequestDTO accommodationDTO);
 }
