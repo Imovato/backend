@@ -109,4 +109,6 @@ public class AccommodationResource {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao atualizar a acomodação. Verifique os dados fornecidos.");
 		}
 	}
+
+
 }

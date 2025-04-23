@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class ParticipanteReserva {
+public class GuestBooking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,7 +23,7 @@ public class ParticipanteReserva {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JsonBackReference
-    private Reservation reservation;
+    private Booking reservation;
 
     private boolean isPaid;
     private LocalDateTime paymentDate;

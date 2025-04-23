@@ -1,8 +1,8 @@
 package com.example.rent.scheduler;
 
-import com.example.rent.entities.Reservation;
+import com.example.rent.entities.Booking;
 import com.example.rent.enums.StatusReservation;
-import com.example.rent.repository.ReservationRepository;
+import com.example.rent.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -14,15 +14,15 @@ import java.util.List;
 public class CancelamentoReservaScheduler {
 
     @Autowired
-    private ReservationRepository repository;
+    private BookingRepository repository;
 
     @Scheduled
     public void cancelarReservasExpiradasPorFaltaDePagamentoNoPeriodo() {
 
         LocalDateTime now = LocalDateTime.now();
-        List<Reservation> expires = repository.findByStatusReservationAndExpiresDateBefore(StatusReservation.WAITING, now);
+        List<Booking> expires = repository.findByStatusReservationAndExpiresDateBefore(StatusReservation.WAITING_PAYMENT, now);
 
-        for (Reservation reservation : expires) {
+        for (Booking reservation : expires) {
             reservation.setStatusReservation(StatusReservation.CANCELED);
             repository.save(reservation);
 

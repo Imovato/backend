@@ -29,7 +29,7 @@ public class Rent implements Serializable {
     private Integer numUsers;
 
     @OneToOne
-    private Reservation reservation;
+    private Booking reservation;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateRent;

@@ -1,10 +1,10 @@
 package com.example.rent.resources;
 
-import com.example.rent.dto.ReservationDto;
-import com.example.rent.entities.Reservation;
+import com.example.rent.dto.BookingDto;
+import com.example.rent.entities.Booking;
 import com.example.rent.response.RentResponse;
+import com.example.rent.service.BookingService;
 import com.example.rent.service.RentService;
-import com.example.rent.service.ReservationService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,26 +15,26 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/reservations")
+@RequestMapping("/bookings")
 @RequiredArgsConstructor
-public class ReservationResource {
+public class BookingResource {
 
     @Autowired
-    private ReservationService reservationService;
+    private BookingService bookingService;
 
     @Autowired
     private RentService rentService;
 
     @PostMapping
-    public ResponseEntity<Reservation> criarReserva(@RequestBody ReservationDto request) {
-        Reservation response = reservationService.criarReserva(request);
+    public ResponseEntity<Booking> createBooking(@RequestBody BookingDto request) {
+        Booking response = bookingService.createBooking(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PostMapping("/checkin/{idReservation}")
+    @PostMapping("/checkin/{idBooking}")
     @Operation(summary = "Faz checkin em uma reserva existente")
-    public ResponseEntity<RentResponse> checkin(@PathVariable @Valid Long idReservation) {
-        return new ResponseEntity<>(rentService.processCheckin(idReservation), HttpStatus.CREATED);
+    public ResponseEntity<RentResponse> checkin(@PathVariable @Valid Long idBooking) {
+        return new ResponseEntity<>(rentService.processCheckin(idBooking), HttpStatus.CREATED);
     }
 
     //consultar reserva
