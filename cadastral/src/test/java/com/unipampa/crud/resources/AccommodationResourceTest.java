@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unipampa.crud.dto.AccommodationDTO;
+import com.unipampa.crud.dto.AccommodationRequestDTO;
 import com.unipampa.crud.entities.Accommodation;
 import com.unipampa.crud.enums.AccommodationType;
 import com.unipampa.crud.service.AccommodationService;
@@ -42,13 +43,13 @@ class AccommodationResourceTest {
     @InjectMocks
     private AccommodationResource accommodationResource;
 
-    private AccommodationDTO accommodationDTO;
+    private AccommodationRequestDTO accommodationDTO;
     private Accommodation accommodation;
 
 
     @BeforeEach
     void setUp() {
-        accommodationDTO = new AccommodationDTO(
+        accommodationDTO = new AccommodationRequestDTO(
                 "Cozy Apartment",
                 "Downtown",
                 "123456",
@@ -59,7 +60,9 @@ class AccommodationResourceTest {
                 BigDecimal.valueOf(1500.00),
                 101,
                 5,
-                AccommodationType.APARTMENT
+                AccommodationType.APARTMENT,
+                5,
+                List.of("https://img.com/1.jpg", "https://img.com/2.jpg")
         );
         accommodation = Accommodation.builder().build();
 
@@ -70,19 +73,21 @@ class AccommodationResourceTest {
         when(mapper.convertValue(accommodationDTO, Accommodation.class)).thenReturn(accommodation);
         doNothing().when(accommodationService).save(accommodation);
 
-        ResponseEntity<Accommodation> response = accommodationResource.save(accommodationDTO);
+        AccommodationRequestDTO accommodationRequestDTO = mapper.convertValue(accommodationDTO,
+                AccommodationRequestDTO.class);
 
+        ResponseEntity<AccommodationDTO> response = accommodationResource.save(accommodationRequestDTO);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(accommodation, response.getBody());
+        assertEquals(accommodationDTO, response.getBody());
         verify(validations, times(1)).forEach(any());
         verify(accommodationService, times(1)).save(accommodation);
     }
 
     @Test
     void shouldSaveFailureValidationException() {
-        AccommodationDTO invalidDTO = new AccommodationDTO(null, null, null,
+        AccommodationRequestDTO invalidDTO = new AccommodationRequestDTO(null, null, null,
                 null, null, null, null, null,
-                0, 0, null);
+                0, 0, null, null, null);
 
         doThrow(new RuntimeException("Erro de validação"))
                 .when(validations).forEach(any());
