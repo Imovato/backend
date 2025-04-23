@@ -67,7 +67,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     protected void verifyAccommodationStats(Accommodation accommodation) {
-        if (accommodation.getStatus().equals(StatusAccommodation.BOOKING)) {
+        if (accommodation.getStatus().equals(StatusAccommodation.BOOKING) || accommodation.getStatus().equals(StatusAccommodation.RENTED)) {
             throw new RuntimeException(ACCOMMODATION_NOT_AVAILABLE);
         }
     }

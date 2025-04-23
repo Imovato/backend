@@ -43,4 +43,6 @@ public class BookingResource {
 
     //deletar reserva
 
+    //criar o metodo de pagamento da reserva
+
 }
