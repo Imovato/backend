@@ -26,7 +26,7 @@ public class BookingServiceImpl implements BookingService {
     public static final int MIN_DAYS = 30;
     public static final int DAYS_FOR_EXPIRES = 3;
     public static final String MINIMUM_RENTAL_TIME = "O período mínimo de aluguel é 30 dias";
-    public static final String ACCOMMODATION_NOT_AVAILABLE = "O imóvel já foi reservado";
+    public static final String ACCOMMODATION_NOT_AVAILABLE = "O imóvel não está disponível para reserva.";
     public static final String USER_NOT_FOUND = "Usuário não encontrado";
     public static final String ACCOMMODATION_NOT_FOUND = "Imóvel não encontrado";
     public static final String NUMBER_OF_GUESTS_MSG = "Número de convidados : ";
