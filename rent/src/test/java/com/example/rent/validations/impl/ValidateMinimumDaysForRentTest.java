@@ -3,12 +3,8 @@ package com.example.rent.validations.impl;
 import com.example.rent.dto.RentDto;
 import com.example.rent.entities.Accommodation;
 import com.example.rent.entities.User;
-import com.example.rent.service.RentService;
-import com.example.rent.service.impl.RentServiceImpl;
-import jakarta.inject.Inject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 
 import java.time.LocalDate;
 

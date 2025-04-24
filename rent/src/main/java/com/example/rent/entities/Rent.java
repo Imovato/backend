@@ -25,8 +25,11 @@ public class Rent implements Serializable {
     @ManyToOne
     private Accommodation accommodation;
 
-    @ManyToOne
-    private User user;
+    @Column
+    private Integer numUsers;
+
+    @OneToOne
+    private Booking reservation;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateRent;

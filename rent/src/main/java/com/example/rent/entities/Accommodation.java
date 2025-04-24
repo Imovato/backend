@@ -26,5 +26,6 @@ public class Accommodation implements Serializable {
     @Enumerated(EnumType.STRING)
     private StatusAccommodation status;
 
-    //PRECISA TER UMA FLAG DIZENDO SE A HOSPEDAGEM É COMPARTILHADA OU NÃO
+    private int guestCapacity;
+
 }

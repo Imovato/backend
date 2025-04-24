@@ -1,76 +1,83 @@
 package com.example.rent.service.impl;
 
-import com.example.rent.dto.RentDto;
 import com.example.rent.entities.Accommodation;
+import com.example.rent.entities.GuestBooking;
 import com.example.rent.entities.Rent;
-import com.example.rent.entities.User;
+import com.example.rent.entities.Booking;
 import com.example.rent.enums.StatusAccommodation;
+import com.example.rent.repository.AccommodationRepository;
 import com.example.rent.repository.RentRepository;
+import com.example.rent.repository.BookingRepository;
 import com.example.rent.response.RentResponse;
-import com.example.rent.service.AccommodationService;
 import com.example.rent.service.RentService;
-import com.example.rent.service.UserService;
 import com.example.rent.utils.ConverterResponse;
-import com.example.rent.validations.DateValidations;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class RentServiceImpl implements RentService {
 
+    public static final String PAYMENTS_HAS_SUCCESSFULLY = "Todos os participantes pagaram. Processando check-in...";
+    public static final String BOOKING_NOT_FOUND = "Reserva Não Encontrada";
+    public static final String GUESTS_HAS_NO_PAYED = "Participantes da reserva que ainda não pagaram";
+    public static final String GUEST_PAYMENT_MISSING = "Falta o pagamento do participante : ";
+    public static final String CHECKIN_NOT_ALLOWED_FOR_NOT_PAYING = "Checkin não permitido, existem participantes da reserva que ainda não efetuaram o pagamento.";
+    public static final String ACCOMMODATION_NOT_FOUND = "Accomodação não encontrada";
     private final RentRepository rentRepository;
-    private final AccommodationService accommodationService;
-    private final UserService userService;
-    private final List<DateValidations> dateValidations;
+    private final BookingRepository bookingRepository;
+    private final AccommodationRepository accommodationRepository;
     private final ConverterResponse converterResponse;
 
     @Override
-    public List<RentResponse> findByUserId(Long id) {
-        List<RentDto> rents = rentRepository.findByUserId(id);
-        return converterResponse.convertToRentResponseList(rents);
+    public RentResponse processCheckin(Long idReservation) {
+        var booking = findBooking(idReservation);
+        checkBookingPayment(booking);
+
+        log.info(PAYMENTS_HAS_SUCCESSFULLY);
+
+        var accommodation = findAccommodationInBooking(booking);
+        var rent = buildRent(accommodation, booking);
+        rentRepository.save(rent);
+
+        return converterResponse.convertToRentResponse(rent);
     }
 
-    @Override
-    @Transactional
-    public RentResponse createNewRent(RentDto dto) {
-        var accommodation = searchAccommodationForRent(dto);
-        var user = searchUserForRent(dto);
-        var rent = buildRent(accommodation, user, dto);
-        dateValidations.forEach(e -> e.validate(dto));
-        accommodationService.changeStatusForRented(accommodation);
-        return converterResponse.convertToRentResponse(rentRepository.save(rent));
-
+    protected Booking findBooking(Long idReservation) {
+        return bookingRepository.findById(idReservation)
+                .orElseThrow(() -> new RuntimeException(BOOKING_NOT_FOUND));
     }
 
-    protected Accommodation searchAccommodationForRent(RentDto dto){
-        return Optional.ofNullable(accommodationService.findAccommodationById(dto.accommodation().getId()))
-                .orElseThrow(() -> new IllegalArgumentException("Acomodação não encontrada"))
-                .filter(accommodation -> accommodation.getStatus().equals(StatusAccommodation.AVAILABLE))
-                .orElseThrow(() -> new IllegalStateException("Acomodação não está disponível para aluguel"));
+    protected void checkBookingPayment(Booking reservation) {
+        List<GuestBooking> guestsForBooking = reservation.getGuests();
+        List<GuestBooking> notPayed = guestsForBooking.stream().filter(e -> !e.isPaid()).toList();
+
+        if (!notPayed.isEmpty()) {
+            System.out.println(GUESTS_HAS_NO_PAYED);
+            notPayed.stream().forEach(e -> System.out.println(GUEST_PAYMENT_MISSING + e.getGuest().getName()));
+            throw new RuntimeException(CHECKIN_NOT_ALLOWED_FOR_NOT_PAYING);
+        }
     }
 
-    protected User searchUserForRent(RentDto dto) {
-        return userService.findById(dto.user().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+    protected Accommodation findAccommodationInBooking(Booking booking) {
+        return accommodationRepository.findById(booking.getAccommodation().getId())
+                .orElseThrow(() -> new RuntimeException(ACCOMMODATION_NOT_FOUND));
     }
 
-    protected Rent buildRent(Accommodation accommodation, User user, RentDto dto) {
+    protected Rent buildRent(Accommodation accommodation, Booking reservation) {
         var rent = Rent.builder()
                 .accommodation(accommodation)
-                .user(user)
+                .numUsers(reservation.getGuests().size())
+                .reservation(reservation)
                 .price(accommodation.getPrice())
+                .startDateRent(reservation.getInitialDate())
+                .endDateRent(reservation.getEndDate())
                 .build();
-
-        BeanUtils.copyProperties(rent, dto);
-
         accommodation.setStatus(StatusAccommodation.RENTED);
-        rent.setDateRent(dto.startDateRent());
 
         return rent;
     }

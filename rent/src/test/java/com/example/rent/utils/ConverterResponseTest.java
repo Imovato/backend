@@ -43,7 +43,6 @@ class ConverterResponseTest {
         rent = new Rent();
         rent.setId(10L);
         rent.setAccommodation(accommodation);
-        rent.setUser(user);
         rent.setDateRent(LocalDate.now());
         rent.setStartDateRent(LocalDate.of(2023, 1, 1));
         rent.setEndDateRent(LocalDate.of(2023, 1, 31));
