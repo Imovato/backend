@@ -31,6 +31,7 @@ public class BookingServiceImpl implements BookingService {
     public static final String ACCOMMODATION_NOT_FOUND = "Imóvel não encontrado";
     public static final String NUMBER_OF_GUESTS_MSG = "Número de convidados : ";
     public static final String ACCOMMODATION_CAPACITY_MSG = "\n O número máximo de participantes dessa reserva é : ";
+    public static final String BOOKING_NOT_FOUND_MSG = "Reserva não encontrada com o id: ";
     @Autowired
     AccommodationRepository accommodationRepository;
 
@@ -106,6 +107,11 @@ public class BookingServiceImpl implements BookingService {
             throw new RuntimeException(NUMBER_OF_GUESTS_MSG + request.guestIds().size() +
                     ACCOMMODATION_CAPACITY_MSG + accommodation.getGuestCapacity());
         }
+    }
+
+    @Override
+    public Booking getBookingById(Long id) throws Exception {
+        return bookingRepository.findById(id).orElseThrow(() -> new Exception(BOOKING_NOT_FOUND_MSG + id));
     }
 
 }
