@@ -114,4 +114,11 @@ public class BookingServiceImpl implements BookingService {
         return bookingRepository.findById(id).orElseThrow(() -> new Exception(BOOKING_NOT_FOUND_MSG + id));
     }
 
+    @Override
+    public Booking cancelBooking(Long id) throws Exception {
+        Booking booking = getBookingById(id);
+        booking.setStatusReservation(StatusReservation.CANCELED);
+        return bookingRepository.save(booking);
+    }
+
 }

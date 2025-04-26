@@ -8,4 +8,5 @@ public interface BookingService {
     Booking createBooking(BookingDto request);
 
     Booking getBookingById(Long id) throws Exception;
+    Booking cancelBooking(Long id) throws Exception;
 }

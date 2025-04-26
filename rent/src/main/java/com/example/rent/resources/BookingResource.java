@@ -39,7 +39,9 @@ public class BookingResource {
         return new ResponseEntity<>(rentService.processCheckin(idBooking), HttpStatus.CREATED);
     }
 
-    //consultar reserva
+    /* CONSULTAR RESERVA
+     * Retornar detalhes da reserva.
+     */
     @Operation(summary = "Consulta uma reserva existente")
     @GetMapping("/{id}")
     public ResponseEntity<BookingDto> getBookingById(@PathVariable Long id) throws Exception {
@@ -49,10 +51,23 @@ public class BookingResource {
 
     }
 
-    //atualizar reserva
+    /* CANCELAR RESERVA
+     * cancelar os dados de uma reserva,
+     * trocar a coluna status_reservation da tabela boooking para CANCELED
+     */
+    @Operation(summary = "Cancela uma reserva existente")
+    @PatchMapping("/{id}/cancel")
+    public ResponseEntity<BookingDto> cancelBookingById(@PathVariable Long id) throws Exception {
+        Booking booking = bookingService.cancelBooking(id);
+        return ResponseEntity.ok(BookingMapper.toDto(booking));
+    }
 
-    //deletar reserva
 
-    //criar o metodo de pagamento da reserva
+    /* CRIAR O ENDPOINT DE PAGAMENTO DA RESERVA
+     * - Validar o status_reservation da tabela boooking (se CANCELED ou CONFIRMED lançar exception)
+     * - verificar o usuario que está pagando para alterar essas informações.
+     * - trocar a coluna is_paid para true e popular a coluna payment_date
+        com a data do pagamento.
+     */
 
 }
