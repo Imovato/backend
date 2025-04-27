@@ -68,7 +68,8 @@ public class BookingServiceImpl implements BookingService {
     }
 
     protected void verifyAccommodationStats(Accommodation accommodation) {
-        if (accommodation.getStatus().equals(StatusAccommodation.BOOKING) || accommodation.getStatus().equals(StatusAccommodation.RENTED)) {
+        if (accommodation.getStatus().equals(StatusAccommodation.BOOKING)
+                || accommodation.getStatus().equals(StatusAccommodation.RENTED)) {
             throw new RuntimeException(ACCOMMODATION_NOT_AVAILABLE);
         }
     }
@@ -90,11 +91,11 @@ public class BookingServiceImpl implements BookingService {
 
     protected List<User> findGuests(BookingDto request) {
         return request.guestIds().stream().map(id -> userRepository.findById(id)
-                        .orElseThrow(() -> new RuntimeException(USER_NOT_FOUND))).toList();
+                .orElseThrow(() -> new RuntimeException(USER_NOT_FOUND))).toList();
     }
 
-    protected List<GuestBooking> buildGuestsForBooking (List<User> guests) {
-       return guests.stream().map(e -> {
+    protected List<GuestBooking> buildGuestsForBooking(List<User> guests) {
+        return guests.stream().map(e -> {
             var guestBooking = new GuestBooking();
             guestBooking.setGuest(e);
             guestBooking.setPaid(false);
@@ -119,6 +120,21 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = getBookingById(id);
         booking.setStatusReservation(StatusReservation.CANCELED);
         return bookingRepository.save(booking);
+    }
+
+    @Override
+    public Booking updateBooking(Booking request) throws Exception {
+        if (request.getId() == null) {
+            throw new IllegalArgumentException("O ID da reserva não pode ser nulo!");
+        }
+
+        Booking existingBooking = bookingRepository.findById(request.getId())
+                .orElseThrow(() -> new Exception("Reserva não encontrada com o id: " + request.getId()));
+
+        existingBooking.setGuests(request.getGuests());
+        existingBooking.setStatusReservation(request.getStatusReservation());
+
+        return bookingRepository.save(existingBooking);
     }
 
 }

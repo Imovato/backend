@@ -9,4 +9,6 @@ public interface BookingService {
 
     Booking getBookingById(Long id) throws Exception;
     Booking cancelBooking(Long id) throws Exception;
+
+    Booking updateBooking(Booking request) throws Exception;
 }
