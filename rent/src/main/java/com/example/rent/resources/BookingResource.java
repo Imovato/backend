@@ -83,39 +83,9 @@ public class BookingResource {
      */
 
     @PatchMapping("/{id}/pay/{userId}")
+    @Operation(summary = "Realiza o pagamento de uma reserva")
     public ResponseEntity<BookingDto> payBooking(@PathVariable Long id, @PathVariable Long userId) throws Exception {
-        Booking booking = bookingService.getBookingById(id);
-        if (booking.getStatusReservation() == StatusReservation.CANCELED
-                || booking.getStatusReservation() == StatusReservation.CONFIRMED ) throw new Exception("Erro ao tentar efetuar uma reserva");
-
-        Optional<User> user = userService.findById(userId);
-
-        if (user.isEmpty()) {
-            throw new Exception("Usuário não encontrado");
-        }
-
-        List<GuestBooking> guestBookings = booking.getGuests();
-
-        Optional<GuestBooking> matchingGuestBooking = guestBookings.stream()
-                .filter(guestBooking -> guestBooking.getGuest().getId().equals(userId))
-                .findFirst();
-
-        if (matchingGuestBooking.isEmpty()) {
-            throw new Exception("Usuário não está entre os convidados da reserva");
-        }
-
-        GuestBooking guestBooking = matchingGuestBooking.get();
-
-        if(guestBooking.isPaid()) {
-            throw new Exception("Usuário já efetuou o pagamento");
-        }
-
-        guestBooking.setPaid(true);
-        guestBooking.setPaymentDate(LocalDateTime.now());
-
-        Booking updatedBooking = bookingService.updateBooking(booking);
-
-        BookingDto bookingDto = BookingMapper.toDto(updatedBooking);
+        BookingDto bookingDto = bookingService.payBooking(id, userId);
         return ResponseEntity.ok(bookingDto);
     }
 

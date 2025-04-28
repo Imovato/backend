@@ -7,10 +7,12 @@ import com.example.rent.entities.Booking;
 import com.example.rent.entities.User;
 import com.example.rent.enums.StatusAccommodation;
 import com.example.rent.enums.StatusReservation;
+import com.example.rent.mapper.BookingMapper;
 import com.example.rent.repository.AccommodationRepository;
 import com.example.rent.repository.BookingRepository;
 import com.example.rent.repository.UserRepository;
 import com.example.rent.service.BookingService;
+import com.example.rent.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -40,6 +43,9 @@ public class BookingServiceImpl implements BookingService {
 
     @Autowired
     BookingRepository bookingRepository;
+
+    @Autowired
+    private final UserService userService;
 
     @Override
     public Booking createBooking(BookingDto request) {
@@ -135,6 +141,44 @@ public class BookingServiceImpl implements BookingService {
         existingBooking.setStatusReservation(request.getStatusReservation());
 
         return bookingRepository.save(existingBooking);
+    }
+
+    @Override
+    public BookingDto payBooking(Long bookingId, Long userId) throws Exception {
+        Booking booking = getBookingById(bookingId);
+
+        if (booking.getStatusReservation() == StatusReservation.CANCELED
+                || booking.getStatusReservation() == StatusReservation.CONFIRMED) {
+            throw new Exception("Não é possível pagar uma reserva que está cancelada ou já confirmada.");
+        }
+
+        Optional<User> user = userService.findById(userId);
+        if (user.isEmpty()) {
+            throw new Exception("Usuário não encontrado.");
+        }
+
+        List<GuestBooking> guestBookings = booking.getGuests();
+
+        Optional<GuestBooking> matchingGuestBooking = guestBookings.stream()
+                .filter(guestBooking -> guestBooking.getGuest().getId().equals(userId))
+                .findFirst();
+
+        if (matchingGuestBooking.isEmpty()) {
+            throw new Exception("Usuário não está entre os convidados da reserva.");
+        }
+
+        GuestBooking guestBooking = matchingGuestBooking.get();
+
+        if (guestBooking.isPaid()) {
+            throw new Exception("Usuário já efetuou o pagamento.");
+        }
+
+        guestBooking.setPaid(true);
+        guestBooking.setPaymentDate(LocalDateTime.now());
+
+        Booking updatedBooking = updateBooking(booking);
+
+        return BookingMapper.toDto(updatedBooking);
     }
 
 }

@@ -11,4 +11,6 @@ public interface BookingService {
     Booking cancelBooking(Long id) throws Exception;
 
     Booking updateBooking(Booking request) throws Exception;
+
+    BookingDto payBooking(Long bookingId, Long userId) throws Exception;
 }
