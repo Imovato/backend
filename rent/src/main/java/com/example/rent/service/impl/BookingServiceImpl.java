@@ -7,10 +7,12 @@ import com.example.rent.entities.Booking;
 import com.example.rent.entities.User;
 import com.example.rent.enums.StatusAccommodation;
 import com.example.rent.enums.StatusReservation;
+import com.example.rent.mapper.BookingMapper;
 import com.example.rent.repository.AccommodationRepository;
 import com.example.rent.repository.BookingRepository;
 import com.example.rent.repository.UserRepository;
 import com.example.rent.service.BookingService;
+import com.example.rent.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -31,6 +34,7 @@ public class BookingServiceImpl implements BookingService {
     public static final String ACCOMMODATION_NOT_FOUND = "Imóvel não encontrado";
     public static final String NUMBER_OF_GUESTS_MSG = "Número de convidados : ";
     public static final String ACCOMMODATION_CAPACITY_MSG = "\n O número máximo de participantes dessa reserva é : ";
+    public static final String BOOKING_NOT_FOUND_MSG = "Reserva não encontrada com o id: ";
     @Autowired
     AccommodationRepository accommodationRepository;
 
@@ -39,6 +43,9 @@ public class BookingServiceImpl implements BookingService {
 
     @Autowired
     BookingRepository bookingRepository;
+
+    @Autowired
+    private final UserService userService;
 
     @Override
     public Booking createBooking(BookingDto request) {
@@ -67,7 +74,8 @@ public class BookingServiceImpl implements BookingService {
     }
 
     protected void verifyAccommodationStats(Accommodation accommodation) {
-        if (accommodation.getStatus().equals(StatusAccommodation.BOOKING) || accommodation.getStatus().equals(StatusAccommodation.RENTED)) {
+        if (accommodation.getStatus().equals(StatusAccommodation.BOOKING)
+                || accommodation.getStatus().equals(StatusAccommodation.RENTED)) {
             throw new RuntimeException(ACCOMMODATION_NOT_AVAILABLE);
         }
     }
@@ -89,11 +97,11 @@ public class BookingServiceImpl implements BookingService {
 
     protected List<User> findGuests(BookingDto request) {
         return request.guestIds().stream().map(id -> userRepository.findById(id)
-                        .orElseThrow(() -> new RuntimeException(USER_NOT_FOUND))).toList();
+                .orElseThrow(() -> new RuntimeException(USER_NOT_FOUND))).toList();
     }
 
-    protected List<GuestBooking> buildGuestsForBooking (List<User> guests) {
-       return guests.stream().map(e -> {
+    protected List<GuestBooking> buildGuestsForBooking(List<User> guests) {
+        return guests.stream().map(e -> {
             var guestBooking = new GuestBooking();
             guestBooking.setGuest(e);
             guestBooking.setPaid(false);
@@ -106,6 +114,71 @@ public class BookingServiceImpl implements BookingService {
             throw new RuntimeException(NUMBER_OF_GUESTS_MSG + request.guestIds().size() +
                     ACCOMMODATION_CAPACITY_MSG + accommodation.getGuestCapacity());
         }
+    }
+
+    @Override
+    public Booking getBookingById(Long id) throws Exception {
+        return bookingRepository.findById(id).orElseThrow(() -> new Exception(BOOKING_NOT_FOUND_MSG + id));
+    }
+
+    @Override
+    public Booking cancelBooking(Long id) throws Exception {
+        Booking booking = getBookingById(id);
+        booking.setStatusReservation(StatusReservation.CANCELED);
+        return bookingRepository.save(booking);
+    }
+
+    @Override
+    public Booking updateBooking(Booking request) throws Exception {
+        if (request.getId() == null) {
+            throw new IllegalArgumentException("O ID da reserva não pode ser nulo!");
+        }
+
+        Booking existingBooking = bookingRepository.findById(request.getId())
+                .orElseThrow(() -> new Exception("Reserva não encontrada com o id: " + request.getId()));
+
+        existingBooking.setGuests(request.getGuests());
+        existingBooking.setStatusReservation(request.getStatusReservation());
+
+        return bookingRepository.save(existingBooking);
+    }
+
+    @Override
+    public BookingDto payBooking(Long bookingId, Long userId) throws Exception {
+        Booking booking = getBookingById(bookingId);
+
+        if (booking.getStatusReservation() == StatusReservation.CANCELED
+                || booking.getStatusReservation() == StatusReservation.CONFIRMED) {
+            throw new Exception("Não é possível pagar uma reserva que está cancelada ou já confirmada.");
+        }
+
+        Optional<User> user = userService.findById(userId);
+        if (user.isEmpty()) {
+            throw new Exception("Usuário não encontrado.");
+        }
+
+        List<GuestBooking> guestBookings = booking.getGuests();
+
+        Optional<GuestBooking> matchingGuestBooking = guestBookings.stream()
+                .filter(guestBooking -> guestBooking.getGuest().getId().equals(userId))
+                .findFirst();
+
+        if (matchingGuestBooking.isEmpty()) {
+            throw new Exception("Usuário não está entre os convidados da reserva.");
+        }
+
+        GuestBooking guestBooking = matchingGuestBooking.get();
+
+        if (guestBooking.isPaid()) {
+            throw new Exception("Usuário já efetuou o pagamento.");
+        }
+
+        guestBooking.setPaid(true);
+        guestBooking.setPaymentDate(LocalDateTime.now());
+
+        Booking updatedBooking = updateBooking(booking);
+
+        return BookingMapper.toDto(updatedBooking);
     }
 
 }
