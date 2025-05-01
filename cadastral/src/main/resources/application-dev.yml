@@ -18,6 +18,15 @@ spring:
       host: localhost
       port: 27017
       database: crud-service
+      auto-index-creation: true
+  mongodb:
+    embedded:
+      version: 4.0.21
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:db/init-mongo.js
+
 
   rabbitmq:
     host: localhost

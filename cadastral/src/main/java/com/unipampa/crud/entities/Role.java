@@ -1,5 +1,6 @@
 package com.unipampa.crud.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unipampa.crud.enums.UserType;
 import jakarta.persistence.Id;
 import lombok.Builder;
@@ -22,7 +23,8 @@ public class Role implements Serializable, GrantedAuthority {
     private UserType roleName;
 
     @Override
+//    @JsonIgnore
     public String getAuthority() {
-        return "";
+        return this.roleName.name();
     }
 }
