@@ -1,30 +1,31 @@
 package com.unipampa.crud.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.unipampa.crud.enums.UserType;
-import jakarta.persistence.Id;
-import lombok.Builder;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.io.Serializable;
 
-@Builder
 @Document
 @Data
-public class Role implements Serializable, GrantedAuthority {
-
-    private static final long serialVersionUID = 747266736447607848L;
+@NoArgsConstructor
+@AllArgsConstructor
+public class Role implements GrantedAuthority, Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     private String id;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private UserType roleName;
 
     @Override
-//    @JsonIgnore
     public String getAuthority() {
-        return this.roleName.name();
+        return this.roleName.toString();
     }
 }

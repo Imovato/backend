@@ -21,7 +21,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/public/**").permitAll()
+                        .requestMatchers("/eureka/**").permitAll()
+                        .requestMatchers("/actuator/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
@@ -34,7 +35,7 @@ public class SecurityConfig {
         UserDetails user = User.builder()
                 .username("admin")
                 .password(encoder.encode("123456"))
-                .roles("GUEST")
+                .roles("ADMIN")
                 .build();
 
         return new InMemoryUserDetailsManager(user);

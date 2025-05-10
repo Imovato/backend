@@ -18,7 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private static final String[] PUBLIC_MATCHERS = {"/users/**"};
+    private static final String[] PUBLIC_MATCHERS = {"/crudservice/**"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -36,7 +36,7 @@ public class SecurityConfig {
         UserDetails user = User.builder()
                 .username("admin")
                 .password(encoder.encode("123456"))
-                .roles("GUEST")
+                .roles("ADMIN")
                 .build();
 
         return new InMemoryUserDetailsManager(user);

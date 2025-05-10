@@ -2,7 +2,9 @@ package com.unipampa.crud.resources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unipampa.crud.dto.UserDTO;
+import com.unipampa.crud.entities.Role;
 import com.unipampa.crud.entities.User;
+import com.unipampa.crud.service.RoleService;
 import com.unipampa.crud.service.UserService;
 import com.unipampa.crud.validations.ValidationsSignup;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -36,6 +39,12 @@ public class UserResource {
 	@Autowired
 	List<ValidationsSignup> validations;
 
+	@Autowired
+	RoleService roleService;
+
+	@Autowired
+	PasswordEncoder passwordEncoder;
+
 	public UserResource(UserService userService) {
 		this.userService = userService;
 	}
@@ -46,10 +55,14 @@ public class UserResource {
 
 		this.validations.forEach(e -> e.validate(userDto));
 
+		Role role = roleService.findByName(userDto.type().name()).orElseThrow( () -> new RuntimeException("Role not found"));
+
 		var user = mapper.convertValue(userDto, User.class);
+		user.setPassword(passwordEncoder.encode(userDto.password()));
 		user.setType(userDto.type());
 		user.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
 		user.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
+		user.getRoles().add(role);
 		userService.save(user);
 		log.info("User saved successfully username: {}", user.getUserName());
 		return new ResponseEntity<>(HttpStatus.CREATED);

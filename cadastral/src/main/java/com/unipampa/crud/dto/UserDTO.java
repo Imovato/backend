@@ -1,8 +1,7 @@
 package com.unipampa.crud.dto;
 
-import com.unipampa.crud.enums.UserType;
-import lombok.Data;
 
+import com.unipampa.crud.enums.UserType;
 import jakarta.validation.constraints.NotBlank;
 
 public record UserDTO(
@@ -12,5 +11,7 @@ public record UserDTO(
 		@NotBlank String cpf,
 		@NotBlank String phone,
 		@NotBlank String address,
-		UserType type
+		@NotBlank String password,
+		@NotBlank String role,
+		@NotBlank UserType type
 ) {}
