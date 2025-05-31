@@ -5,15 +5,15 @@ db.role.drop();
 const roles = [
     {
         _id: "65f3c89d-8f45-4732-9021-f84d559d6a12",
-        roleName: "HOST"
+        roleName: "ROLE_HOST"
     },
     {
         _id: "65f3c89d-8f45-4732-9021-f84d559d6a13",
-        roleName: "GUEST"
+        roleName: "ROLE_GUEST"
     },
     {
         _id: "65f3c89d-8f45-4732-9021-f84d559d6a14",
-        roleName: "ADMINISTRATOR"
+        roleName: "ROLE_ADMINISTRATOR"
     }
 ];
 
