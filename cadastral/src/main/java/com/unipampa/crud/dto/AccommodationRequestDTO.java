@@ -54,5 +54,8 @@ public record AccommodationRequestDTO(
         Integer maxOccupancy,
 
         @Schema(example = "[\"https://img.com/1.jpg\", \"https://img.com/2.jpg\"]")
-        List<String> imagesUrls
+        List<String> imagesUrls,
+
+        @NotBlank
+        String hostId
 ) {}

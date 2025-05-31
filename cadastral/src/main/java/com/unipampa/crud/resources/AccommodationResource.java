@@ -1,5 +1,6 @@
 package com.unipampa.crud.resources;
 
+import com.unipampa.crud.config.security.SecurityUtil;
 import com.unipampa.crud.dto.AccommodationDTO;
 import com.unipampa.crud.dto.AccommodationRequestDTO;
 import com.unipampa.crud.dto.ErrorResponse;
@@ -50,6 +51,10 @@ public class AccommodationResource {
         validations.forEach(e -> e.validate(accommodationDTO));
 
         var accommodation = accommodationMapper.toEntity(accommodationDTO);
+
+        String authenticatedUserId = SecurityUtil.getAuthenticatedUserId();
+        accommodation.setHostId(authenticatedUserId);
+
         accommodationService.save(accommodation);
 
         URI location = URI.create("/accommodations/" + accommodation.getId());
@@ -112,6 +117,13 @@ public class AccommodationResource {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
 
+        String authenticatedUserId = SecurityUtil.getAuthenticatedUserId();
+        boolean isAdmin = SecurityUtil.isAuthenticatedAdmin();
+
+        if (!isAdmin && !accommodation.get().getHostId().equals(authenticatedUserId)) {
+            throw new SecurityException("Você não tem permissão para deletar esta acomodação");
+        }
+
         accommodationService.delete(id);
         return ResponseEntity.noContent().build();
     }
@@ -137,7 +149,12 @@ public class AccommodationResource {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
 
-//        if(existingAccommodation.get().ge)
+        String authenticatedUserId = SecurityUtil.getAuthenticatedUserId();
+        boolean isAdmin = SecurityUtil.isAuthenticatedAdmin();
+
+        if (!isAdmin && !existingAccommodation.get().getHostId().equals(authenticatedUserId)) {
+            throw new SecurityException("Você não tem permissão para atualizar esta acomodação");
+        }
 
         try {
             validations.forEach(e -> e.validate(accommodationDTO));
