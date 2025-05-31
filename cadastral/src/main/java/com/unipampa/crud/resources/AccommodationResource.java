@@ -137,6 +137,8 @@ public class AccommodationResource {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
 
+//        if(existingAccommodation.get().ge)
+
         try {
             validations.forEach(e -> e.validate(accommodationDTO));
 

@@ -18,6 +18,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    private static final String HOST = "HOST";
+    private static final String ADMIN = "ADMINISTRATOR";
+    private static final String GUEST = "GUEST";
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
@@ -29,7 +32,16 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, PUBLIC_MATCHERS).permitAll()
-                        .requestMatchers(HttpMethod.GET, "/accommodations/**").hasRole("GUEST")
+                        .requestMatchers(HttpMethod.POST, "/accommodations/**").hasAnyRole(HOST, ADMIN)
+                        .requestMatchers(HttpMethod.GET, "/accommodations/**").hasAnyRole(HOST, GUEST, ADMIN)
+                        .requestMatchers(HttpMethod.GET, "/accommodations/{id}").hasAnyRole(HOST, GUEST, ADMIN)
+
+                        // Permitir atualização de acomodação (HOST se dono, ADMIN - controle adicional no serviço)
+                        .requestMatchers(HttpMethod.PUT, "/accommodations/{id}").hasAnyRole(HOST, ADMIN)
+
+                        // Permitir exclusão de acomodação (HOST se dono, ADMIN - controle adicional no serviço)
+                        .requestMatchers(HttpMethod.DELETE, "/accommodations/{id}").hasAnyRole(HOST, ADMIN)
+
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
