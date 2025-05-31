@@ -2,14 +2,9 @@ package com.unipampa.crud.enums;
 
 public enum UserType {
 
-    HOST,
+    ROLE_HOST,
 
-    GUEST,
+    ROLE_GUEST,
 
-    ADMINISTRATOR;
-
-//    @JsonCreator
-//    public static UserType fromString(String value) {
-//        return UserType.valueOf(value.toUpperCase());
-//    }
+    ROLE_ADMINISTRATOR;
 }
