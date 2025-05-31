@@ -36,7 +36,9 @@ class ValidateEmailTest {
                 "123.456.789-00",
                 "(11) 99999-9999",
                 "123 Main St, Springfield",
-                UserType.ADMINITSTRATOR
+                "123456",
+                "ADMIN",
+                UserType.ROLE_ADMINISTRATOR
         );
     }
 
@@ -56,7 +58,7 @@ class ValidateEmailTest {
         ValidateRegisterException exception = assertThrows(ValidateRegisterException.class, () -> {
             validateEmail.validate(userDto);
         });
-        
+
         assertEquals("Email is already registered!", exception.getMessage());
         verify(userService).existsByEmail(userDto.email());
     }
