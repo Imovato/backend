@@ -25,4 +25,10 @@ public class SecurityUtil {
         return false;
     }
 
+    public static boolean isOwnerOrAdmin(String resourceUserId) {
+        String authenticatedUserId = getAuthenticatedUserId();
+        return isAuthenticatedAdmin() || authenticatedUserId.equals(resourceUserId);
+    }
+
+
 }

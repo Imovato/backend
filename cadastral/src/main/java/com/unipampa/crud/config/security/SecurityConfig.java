@@ -35,12 +35,14 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/accommodations/**").hasAnyRole(HOST, ADMIN)
                         .requestMatchers(HttpMethod.GET, "/accommodations/**").hasAnyRole(HOST, GUEST, ADMIN)
                         .requestMatchers(HttpMethod.GET, "/accommodations/{id}").hasAnyRole(HOST, GUEST, ADMIN)
-
-                        // Permitir atualização de acomodação (HOST se dono, ADMIN - controle adicional no serviço)
                         .requestMatchers(HttpMethod.PUT, "/accommodations/{id}").hasAnyRole(HOST, ADMIN)
-
-                        // Permitir exclusão de acomodação (HOST se dono, ADMIN - controle adicional no serviço)
                         .requestMatchers(HttpMethod.DELETE, "/accommodations/{id}").hasAnyRole(HOST, ADMIN)
+
+                        .requestMatchers(HttpMethod.GET, "/users").hasRole(ADMIN)
+                        .requestMatchers(HttpMethod.GET, "/users/email/**").hasAnyRole(ADMIN, HOST, GUEST)
+                        .requestMatchers(HttpMethod.GET, "/users/{id}").hasAnyRole(ADMIN, HOST, GUEST)
+                        .requestMatchers(HttpMethod.PUT, "/users/{id}").hasAnyRole(ADMIN, HOST, GUEST)
+                        .requestMatchers(HttpMethod.DELETE, "/users/{id}").hasAnyRole(ADMIN, HOST, GUEST)
 
                         .anyRequest().authenticated()
                 )
