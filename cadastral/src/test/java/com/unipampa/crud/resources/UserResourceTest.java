@@ -2,8 +2,10 @@ package com.unipampa.crud.resources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unipampa.crud.dto.UserDTO;
+import com.unipampa.crud.entities.Role;
 import com.unipampa.crud.entities.User;
 import com.unipampa.crud.enums.UserType;
+import com.unipampa.crud.service.RoleService;
 import com.unipampa.crud.service.UserService;
 import com.unipampa.crud.validations.ValidationsSignup;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +17,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,11 +37,19 @@ class UserResourceTest {
     @Mock
     private ValidationsSignup validation;
 
+    @Mock
+    private RoleService roleService;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     @InjectMocks
     private UserResource userResource;
 
     private UserDTO userDto;
     private User user;
+    private Role role;
+
 
     private String email = "test@example.com";
 
@@ -51,29 +63,41 @@ class UserResourceTest {
                 "123.456.789-00",
                 "(11) 99999-9999",
                 "123 Main St, Springfield",
-                UserType.ADMINITSTRATOR
+                "123456",
+                "ADMIN",
+                UserType.ROLE_ADMINISTRATOR
         );
 
         user = User.builder()
                 .userName("Cooper")
                 .email(email)
+                .roles(new HashSet<>())
                 .build();
+
+        role = new Role("1", UserType.ROLE_ADMINISTRATOR);
 
         userResource.validations = List.of(validation);
         userResource.mapper = mapper;
+        userResource.roleService = roleService;
+        userResource.passwordEncoder = passwordEncoder;
+
     }
 
     @Test
     void testSaveUserSuccess() {
+        when(roleService.findByName("ROLE_ADMINISTRATOR")).thenReturn(Optional.of(role));
         when(mapper.convertValue(userDto, User.class)).thenReturn(user);
-        doNothing().when(validation).validate(userDto);
-        doNothing().when(userService).save(user);
+        when(passwordEncoder.encode("123456")).thenReturn("encodedPassword");
 
         ResponseEntity<Object> response = userResource.saveUser(userDto);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
+
+        assertTrue(user.getRoles().contains(role));
+        assertEquals("encodedPassword", user.getPassword());
         verify(userService).save(user);
     }
+
 
     @Test
     void testSaveUserValidationFailure() {
