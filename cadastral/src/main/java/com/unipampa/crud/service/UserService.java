@@ -25,4 +25,7 @@ public interface UserService {
 	boolean existsByCpf(String cpf);
 
 	Page<User> findAll(Pageable pageable);
+
+	void isOwnerOrAdmin(Optional<User> user);
+
 }

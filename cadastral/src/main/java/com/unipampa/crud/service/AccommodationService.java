@@ -17,4 +17,5 @@ public interface AccommodationService {
 
 	boolean existsByCodAddressAndNumber(String codeAddress, int number);
 
+	void validateAuthorizationUser(Optional<Accommodation> accommodation);
 }

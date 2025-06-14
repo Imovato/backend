@@ -5,7 +5,6 @@ import com.unipampa.crud.config.security.SecurityUtil;
 import com.unipampa.crud.dto.UserDTO;
 import com.unipampa.crud.entities.Role;
 import com.unipampa.crud.entities.User;
-import com.unipampa.crud.enums.UserType;
 import com.unipampa.crud.service.RoleService;
 import com.unipampa.crud.service.UserService;
 import com.unipampa.crud.validations.ValidationsSignup;
@@ -32,6 +31,10 @@ import java.util.Optional;
 @RequestMapping("/users")
 public class UserResource {
 
+	private static final String ROLE_NOT_FOUND = "Perfil de acesso não encontrado.";
+	private static final String USER_NOT_FOUND = "Usuário não encontrado para esse email!";
+	private static final String USER_SAVED_SUCCESSFULLY_LOG = "Usuário salvo com sucesso, username: {}";
+	private static final String ACTION_NOT_AUTHORIZED = "Você não pode executar essa ação";
 	@Autowired
 	private UserService userService;
 
@@ -54,16 +57,9 @@ public class UserResource {
 	@PostMapping
 	@Operation(summary = "Salva um usuario")
 	public ResponseEntity<Object> saveUser(@RequestBody UserDTO userDto) {
-
 		this.validations.forEach(e -> e.validate(userDto));
 
-		if (userDto.type() == UserType.ROLE_ADMINISTRATOR) {
-			log.warn("Tentativa de criar usuário com role ADMINISTRATOR bloqueada. Username: {}", userDto.userName());
-			return ResponseEntity.status(HttpStatus.FORBIDDEN)
-					.body("Não é permitido criar usuários com perfil ADMINISTRATOR.");
-		}
-
-		Role role = roleService.findByName(userDto.type().name()).orElseThrow( () -> new RuntimeException("Role not found"));
+		Role role = roleService.findByName(userDto.type().name()).orElseThrow( () -> new RuntimeException(ROLE_NOT_FOUND));
 
 		var user = mapper.convertValue(userDto, User.class);
 		user.setPassword(passwordEncoder.encode(userDto.password()));
@@ -72,20 +68,19 @@ public class UserResource {
 		user.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
 		user.getRoles().add(role);
 		userService.save(user);
-		log.info("User saved successfully username: {}", user.getUserName());
+		log.info(USER_SAVED_SUCCESSFULLY_LOG, user.getUserName());
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
+
 
 	@GetMapping
 	@Operation(summary = "Retorna todos os usuários cadastrados")
 	public ResponseEntity<Page<User>> getAllUsers(
 			@PageableDefault(page = 0, size = 3, direction = Sort.Direction.ASC) Pageable pageable) {
 		Page<User> users = userService.findAll(pageable);
-
 		if (!SecurityUtil.isAuthenticatedAdmin()) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Page.empty());
 		}
-
 		return ResponseEntity.status(HttpStatus.OK).body(users);
 	}
 
@@ -94,13 +89,9 @@ public class UserResource {
 	public ResponseEntity<Object> getUserByEmail(@PathVariable("email") String email) {
 		Optional<User> user = userService.findByEmail(email);
 		if (user.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado para esse email!");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(USER_NOT_FOUND);
 		}
-
-		if (!SecurityUtil.isOwnerOrAdmin(user.get().getId())) {
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para acessar esse usuário.");
-		}
-
+		userService.isOwnerOrAdmin(user);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
@@ -109,13 +100,9 @@ public class UserResource {
 	public ResponseEntity<Object> getUserById(@PathVariable("id") String id) {
 		Optional<User> user = userService.findById(id);
 		if (user.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(USER_NOT_FOUND);
 		}
-
-		if (!SecurityUtil.isOwnerOrAdmin(user.get().getId())) {
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para acessar esse usuário.");
-		}
-
+		userService.isOwnerOrAdmin(user);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
@@ -124,18 +111,10 @@ public class UserResource {
 	@Operation(summary = "Atualiza um usuario pelo id")
 	public ResponseEntity<Object> updateUser(@RequestBody  UserDTO userDTO, @PathVariable("id")String id) {
 		Optional<User> user = userService.findById(id);
-		if(user.isEmpty()){
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("usuário não encontrado para esse id, portanto não pode ser atualizado!");
-		}
-
 		if (userDTO.type() != user.get().getType()) {
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não pode alterar o seu tipo de perfil.");
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ACTION_NOT_AUTHORIZED);
 		}
-
-		if (!SecurityUtil.isOwnerOrAdmin(user.get().getId())) {
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não pode atualizar outro usuário.");
-		}
-
+		userService.isOwnerOrAdmin(user);
 		var userModel = user.get();
 		BeanUtils.copyProperties(userDTO, userModel);
 		userService.save(userModel);
@@ -146,15 +125,7 @@ public class UserResource {
 	@Operation(summary = "Remove um usuario pelo seu id")
 	public ResponseEntity<Object> deleteUser(@PathVariable("id") String id) {
 		Optional<User> user = userService.findById(id);
-
-		if(user.isEmpty()){
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado para esse id, portanto não pode ser deletado!");
-		}
-
-		if (!SecurityUtil.isOwnerOrAdmin(user.get().getId())) {
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para deletar este usuário.");
-		}
-
+		userService.isOwnerOrAdmin(user);
 		userService.delete(id);
 		return ResponseEntity.status(HttpStatus.OK).body("Usuário deletado!");
 	}

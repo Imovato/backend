@@ -28,6 +28,9 @@ import java.util.stream.Collectors;
 @RequestMapping("/accommodations")
 public class AccommodationResource {
 
+    private static final String ACOMODACAO_NAO_ENCONTRADA_PARA_EXCLUSAO = "Acomodação não encontrada para o ID fornecido. Exclusão não realizada.";
+    private static final String ACOMODACAO_NAO_ECONTRADA_PARA_ATUALIZACAO = "Acomodação não encontrada para o ID fornecido. Atualização não realizada.";
+    private static final String ERRO_AO_ATUALIZAR_ACOMODACAO = "Erro ao atualizar a acomodação. Verifique os dados fornecidos.";
     @Autowired
     private AccommodationService accommodationService;
 
@@ -110,20 +113,11 @@ public class AccommodationResource {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<Object> deleteAccommodation(@PathVariable("id") String id) {
-        Optional<Accommodation> accommodation = accommodationService.findById(id);
-
+        var accommodation = accommodationService.findById(id);
         if (accommodation.isEmpty()) {
-            ErrorResponse errorResponse = new ErrorResponse("Acomodação não encontrada para o ID fornecido. Exclusão não realizada.", LocalDateTime.now());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(ACOMODACAO_NAO_ENCONTRADA_PARA_EXCLUSAO, LocalDateTime.now()));
         }
-
-        String authenticatedUserId = SecurityUtil.getAuthenticatedUserId();
-        boolean isAdmin = SecurityUtil.isAuthenticatedAdmin();
-
-        if (!isAdmin && !accommodation.get().getHostId().equals(authenticatedUserId)) {
-            throw new SecurityException("Você não tem permissão para deletar esta acomodação");
-        }
-
+        accommodationService.validateAuthorizationUser(accommodation);
         accommodationService.delete(id);
         return ResponseEntity.noContent().build();
     }
@@ -141,20 +135,12 @@ public class AccommodationResource {
     })
     public ResponseEntity<Object> updateAccommodation(
             @PathVariable("id") String id,
-            @RequestBody AccommodationRequestDTO accommodationDTO
-    ) {
-        Optional<Accommodation> existingAccommodation = accommodationService.findById(id);
+            @RequestBody AccommodationRequestDTO accommodationDTO) {
+        var existingAccommodation = accommodationService.findById(id);
         if (existingAccommodation.isEmpty()) {
-            ErrorResponse errorResponse = new ErrorResponse("Acomodação não encontrada para o ID fornecido. Atualização não realizada.", LocalDateTime.now());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(ACOMODACAO_NAO_ECONTRADA_PARA_ATUALIZACAO, LocalDateTime.now()));
         }
-
-        String authenticatedUserId = SecurityUtil.getAuthenticatedUserId();
-        boolean isAdmin = SecurityUtil.isAuthenticatedAdmin();
-
-        if (!isAdmin && !existingAccommodation.get().getHostId().equals(authenticatedUserId)) {
-            throw new SecurityException("Você não tem permissão para atualizar esta acomodação");
-        }
+        accommodationService.validateAuthorizationUser(existingAccommodation);
 
         try {
             validations.forEach(e -> e.validate(accommodationDTO));
@@ -170,7 +156,7 @@ public class AccommodationResource {
             return ResponseEntity.ok(updatedDTO);
 
         } catch (Exception e) {
-            ErrorResponse errorResponse = new ErrorResponse("Erro ao atualizar a acomodação. Verifique os dados fornecidos.", LocalDateTime.now());
+            ErrorResponse errorResponse = new ErrorResponse(ERRO_AO_ATUALIZAR_ACOMODACAO, LocalDateTime.now());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
     }

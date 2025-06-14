@@ -1,5 +1,6 @@
 package com.unipampa.crud.service.impl;
 
+import com.unipampa.crud.config.security.SecurityUtil;
 import com.unipampa.crud.entities.Accommodation;
 import com.unipampa.crud.repository.AccommodationRepository;
 import com.unipampa.crud.sender.AccommodationSender;
@@ -7,13 +8,13 @@ import com.unipampa.crud.service.AccommodationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class AccommodationServiceImpl implements AccommodationService {
 
+	private static final String ACAO_NAO_AUTORIZADA = "Você não tem permissão para esta ação.";
 	private AccommodationRepository propertyRepository;
 	private AccommodationSender accommodationSender;
 
@@ -52,4 +53,11 @@ public class AccommodationServiceImpl implements AccommodationService {
 		return propertyRepository.findById(id);
 	}
 
+	public void validateAuthorizationUser(Optional<Accommodation> accommodation) {
+		String authenticatedUserId = SecurityUtil.getAuthenticatedUserId();
+		boolean isAdmin = SecurityUtil.isAuthenticatedAdmin();
+		if (!isAdmin && !accommodation.get().getHostId().equals(authenticatedUserId)) {
+			throw new SecurityException(ACAO_NAO_AUTORIZADA);
+		}
+	}
 }
