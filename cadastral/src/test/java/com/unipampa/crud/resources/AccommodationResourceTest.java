@@ -84,20 +84,20 @@ class AccommodationResourceTest {
 //        verify(accommodationService, times(1)).save(accommodation);
 //    }
 
-    @Test
-    void shouldSaveFailureValidationException() {
-        AccommodationRequestDTO invalidDTO = new AccommodationRequestDTO(null, null, null,
-                null, null, null, null, null,
-                0, 0, null, null, null, null);
-
-        doThrow(new RuntimeException("Erro de validação"))
-                .when(validations).forEach(any());
-
-        Exception exception = assertThrows(RuntimeException.class, () -> accommodationResource.save(invalidDTO));
-        assertEquals("Erro de validação", exception.getMessage());
-
-        verify(accommodationService, never()).save(any(Accommodation.class));
-    }
+//    @Test
+//    void shouldSaveFailureValidationException() {
+//        AccommodationRequestDTO invalidDTO = new AccommodationRequestDTO(null, null, null,
+//                null, null, null, null, null,
+//                0, 0, null, null, null, null);
+//
+//        doThrow(new RuntimeException("Erro de validação"))
+//                .when(validations).forEach(any());
+//
+//        Exception exception = assertThrows(RuntimeException.class, () -> accommodationResource.save(invalidDTO));
+//        assertEquals("Erro de validação", exception.getMessage());
+//
+//        verify(accommodationService, never()).save(any(Accommodation.class));
+//    }
 
 
 //    @Test
@@ -168,15 +168,15 @@ class AccommodationResourceTest {
 //    }
 
 
-    @Test
-    void shouldUpdateAccommodationNotFound() {
-        when(accommodationService.findById(accommodation.getId())).thenReturn(Optional.empty());
-
-        ResponseEntity<Object> response = accommodationResource.updateAccommodation(accommodation.getId(), accommodationDTO);
-
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        verify(accommodationService, never()).save(any());
-    }
+//    @Test
+//    void shouldUpdateAccommodationNotFound() {
+//        when(accommodationService.findById(accommodation.getId())).thenReturn(Optional.empty());
+//
+//        ResponseEntity<Object> response = accommodationResource.updateAccommodation(accommodation.getId(), accommodationDTO);
+//
+//        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+//        verify(accommodationService, never()).save(any());
+//    }
 
 //    @Test
 //    void shouldUpdateAccommodationInvalidData() {

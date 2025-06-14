@@ -3,14 +3,11 @@ package com.unipampa.crud.entities;
 import com.unipampa.crud.enums.AccommodationType;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import org.springframework.data.annotation.Id;
 import java.math.BigDecimal;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Builder
 @Document
