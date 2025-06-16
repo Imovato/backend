@@ -32,6 +32,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, PUBLIC_MATCHERS).permitAll()
+                        .requestMatchers("/accommodations/images/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/accommodations/**").hasAnyRole(HOST, ADMIN)
                         .requestMatchers(HttpMethod.GET, "/accommodations/**").hasAnyRole(HOST, GUEST, ADMIN)
                         .requestMatchers(HttpMethod.GET, "/accommodations/{id}").hasAnyRole(HOST, GUEST, ADMIN)

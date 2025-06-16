@@ -1,5 +1,7 @@
 package com.unipampa.crud.resources;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unipampa.crud.config.security.SecurityUtil;
 import com.unipampa.crud.dto.AccommodationDTO;
 import com.unipampa.crud.dto.AccommodationRequestDTO;
@@ -13,12 +15,24 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.MediaTypeFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +41,13 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/accommodations")
 public class AccommodationResource {
+
+    private static final String ACOMODACAO_NAO_ENCONTRADA_PARA_EXCLUSAO = "Acomodação não encontrada para o ID fornecido. Exclusão não realizada.";
+    private static final String ACOMODACAO_NAO_ECONTRADA_PARA_ATUALIZACAO = "Acomodação não encontrada para o ID fornecido. Atualização não realizada.";
+    private static final String ERRO_AO_ATUALIZAR_ACOMODACAO = "Erro ao atualizar a acomodação. Verifique os dados fornecidos.";
+
+    @Value("${app.uploads-dir}")
+    private String uploadsDir;
 
     @Autowired
     private AccommodationService accommodationService;
@@ -46,21 +67,24 @@ public class AccommodationResource {
             @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    public ResponseEntity<AccommodationDTO> save(@RequestBody AccommodationRequestDTO accommodationDTO) {
+    public ResponseEntity<AccommodationDTO> save(
+            @RequestPart ("dados") String dadosJson,
+            @RequestPart ("images") MultipartFile[] images
+    ) throws IOException {
+
+        ObjectMapper mapper = new ObjectMapper();
+        AccommodationRequestDTO accommodationDTO = mapper.readValue(dadosJson, AccommodationRequestDTO.class);
 
         validations.forEach(e -> e.validate(accommodationDTO));
-
         var accommodation = accommodationMapper.toEntity(accommodationDTO);
-
+        String novoId = new ObjectId().toString();
+        accommodation.setId(novoId);
         String authenticatedUserId = SecurityUtil.getAuthenticatedUserId();
         accommodation.setHostId(authenticatedUserId);
-
-        accommodationService.save(accommodation);
+        accommodationService.save(accommodation, images);
 
         URI location = URI.create("/accommodations/" + accommodation.getId());
-
         var accomodationResponseDTO = accommodationMapper.toDTO(accommodation);
-
         return ResponseEntity.created(location).body(accomodationResponseDTO);
     }
 
@@ -110,20 +134,11 @@ public class AccommodationResource {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<Object> deleteAccommodation(@PathVariable("id") String id) {
-        Optional<Accommodation> accommodation = accommodationService.findById(id);
-
+        var accommodation = accommodationService.findById(id);
         if (accommodation.isEmpty()) {
-            ErrorResponse errorResponse = new ErrorResponse("Acomodação não encontrada para o ID fornecido. Exclusão não realizada.", LocalDateTime.now());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(ACOMODACAO_NAO_ENCONTRADA_PARA_EXCLUSAO, LocalDateTime.now()));
         }
-
-        String authenticatedUserId = SecurityUtil.getAuthenticatedUserId();
-        boolean isAdmin = SecurityUtil.isAuthenticatedAdmin();
-
-        if (!isAdmin && !accommodation.get().getHostId().equals(authenticatedUserId)) {
-            throw new SecurityException("Você não tem permissão para deletar esta acomodação");
-        }
-
+        accommodationService.validateAuthorizationUser(accommodation);
         accommodationService.delete(id);
         return ResponseEntity.noContent().build();
     }
@@ -141,38 +156,54 @@ public class AccommodationResource {
     })
     public ResponseEntity<Object> updateAccommodation(
             @PathVariable("id") String id,
-            @RequestBody AccommodationRequestDTO accommodationDTO
-    ) {
-        Optional<Accommodation> existingAccommodation = accommodationService.findById(id);
+            @RequestPart("dados") String dadosJson,
+            @RequestPart(value = "images", required = false) MultipartFile[] images) throws JsonProcessingException {
+
+        var existingAccommodation = accommodationService.findById(id);
         if (existingAccommodation.isEmpty()) {
-            ErrorResponse errorResponse = new ErrorResponse("Acomodação não encontrada para o ID fornecido. Atualização não realizada.", LocalDateTime.now());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(ACOMODACAO_NAO_ECONTRADA_PARA_ATUALIZACAO, LocalDateTime.now()));
         }
+        accommodationService.validateAuthorizationUser(existingAccommodation);
 
-        String authenticatedUserId = SecurityUtil.getAuthenticatedUserId();
-        boolean isAdmin = SecurityUtil.isAuthenticatedAdmin();
+        ObjectMapper mapper = new ObjectMapper();
+        AccommodationRequestDTO accommodationDTO = mapper.readValue(dadosJson, AccommodationRequestDTO.class);
 
-        if (!isAdmin && !existingAccommodation.get().getHostId().equals(authenticatedUserId)) {
-            throw new SecurityException("Você não tem permissão para atualizar esta acomodação");
-        }
+
+        validations.forEach(e -> e.validate(accommodationDTO));
+
+        Accommodation accommodation = existingAccommodation.get();
+
+        accommodation.setTitle(accommodationDTO.title());
+        accommodation.setAddress(accommodationDTO.address());
+        accommodation.setPrice(accommodationDTO.price());
 
         try {
-            validations.forEach(e -> e.validate(accommodationDTO));
-
-            Accommodation accommodation = existingAccommodation.get();
-            accommodation.setTitle(accommodationDTO.title());
-            accommodation.setAddress(accommodationDTO.address());
-            accommodation.setPrice(accommodationDTO.price());
-
-            accommodationService.save(accommodation);
-
+            accommodationService.save(accommodation, images);
             AccommodationDTO updatedDTO = accommodationMapper.toDTO(accommodation);
             return ResponseEntity.ok(updatedDTO);
 
         } catch (Exception e) {
-            ErrorResponse errorResponse = new ErrorResponse("Erro ao atualizar a acomodação. Verifique os dados fornecidos.", LocalDateTime.now());
+            ErrorResponse errorResponse = new ErrorResponse(ERRO_AO_ATUALIZAR_ACOMODACAO, LocalDateTime.now());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
+    }
+
+    @GetMapping("images/{id}/{filename}")
+    public ResponseEntity<Resource> getImage(@PathVariable String id, @PathVariable String filename) throws MalformedURLException, MalformedURLException {
+        Path path = Paths.get(uploadsDir + id).resolve(filename);
+
+        if (!Files.exists(path)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Resource resource = new UrlResource(path.toUri());
+
+        MediaType contentType = MediaTypeFactory.getMediaType(resource)
+                .orElse(MediaType.APPLICATION_OCTET_STREAM);
+
+        return ResponseEntity.ok()
+                .contentType(contentType)
+                .body(resource);
     }
 
 }
