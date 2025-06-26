@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface AccommodationRepository extends MongoRepository<Accommodation, String> {
 
-    boolean existsByZipCodeAndNumber(String codeAddress, int number);
+    boolean existsByZipCodeAndStreetNumber(String codeAddress, int streetNumber);
 
 
 }

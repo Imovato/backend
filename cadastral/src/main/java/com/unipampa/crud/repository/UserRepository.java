@@ -1,6 +1,7 @@
 package com.unipampa.crud.repository;
 
 import com.unipampa.crud.entities.User;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
@@ -15,4 +16,6 @@ public interface UserRepository extends MongoRepository<User, String> {
 
     boolean existsByCpf(String cpf);
 
+    @EntityGraph(attributePaths = {"roles"}, type = EntityGraph.EntityGraphType.FETCH)
+    Optional<User> findByUserName(String username);
 }

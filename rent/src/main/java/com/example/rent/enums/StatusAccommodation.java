@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 public enum StatusAccommodation {
     RENTED,
+    BOOKING,
     AVAILABLE;
 
     @JsonCreator

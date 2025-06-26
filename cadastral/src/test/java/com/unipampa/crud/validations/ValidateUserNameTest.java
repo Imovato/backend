@@ -36,7 +36,9 @@ class ValidateUserNameTest {
                 "123.456.789-00",
                 "(11) 99999-9999",
                 "123 Main St, Springfield",
-                UserType.ADMINITSTRATOR
+                "123456",
+                "ADMIN",
+                UserType.ROLE_ADMINISTRATOR
         );
     }
 

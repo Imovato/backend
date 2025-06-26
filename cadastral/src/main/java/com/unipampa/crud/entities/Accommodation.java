@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import org.springframework.data.annotation.Id;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Builder
 @Document
@@ -18,20 +19,22 @@ public class Accommodation {
     private String title;
     private String description;
     private BigDecimal price;
-    private String imagesUrl;
-    private int numberRoooms;
-    private int numberBathrooms;
-    private boolean acceptsAnimals;
-    private boolean acceptsChildren;
-    private boolean sharedHosting;
-    private boolean authorizedAnnouncement;
-    private AccommodationType accommodationType;
+    private List<String> imagesUrls;
+    private int roomCount;
+    private int bathroomCount;
+    private boolean allowsPets;
+    private boolean allowsChildren;
+    private boolean isSharedHosting;
+    private boolean isAuthorizedAnnouncement;
+    private AccommodationType type;
     private String city;
     private String neighborhood;
-    private int number;
+    private int streetNumber;
     private String zipCode;
     private String address;
     private String state;
-    private int imageQuantity;
+    private int imageCount;
+    private int maxOccupancy;
+    private String hostId;
 
 }

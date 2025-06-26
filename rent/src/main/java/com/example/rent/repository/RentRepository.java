@@ -10,5 +10,4 @@ import java.util.List;
 @Repository
 public interface RentRepository extends JpaRepository<Rent, Long> {
 
-	List<RentDto> findByUserId(Long userId);
 }

@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -25,8 +25,11 @@ public class Rent implements Serializable {
     @ManyToOne
     private Accommodation accommodation;
 
-    @ManyToOne
-    private User user;
+    @Column
+    private Integer numUsers;
+
+    @OneToOne
+    private Booking reservation;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateRent;
