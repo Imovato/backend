@@ -2,17 +2,15 @@ package com.example.rent.resources;
 
 import com.example.rent.dto.BookingDto;
 import com.example.rent.entities.Booking;
-import com.example.rent.entities.GuestBooking;
-import com.example.rent.entities.User;
 import com.example.rent.enums.StatusReservation;
 import com.example.rent.mapper.BookingMapper;
+import com.example.rent.repository.BookingRepository;
 import com.example.rent.response.RentResponse;
 import com.example.rent.service.BookingService;
 import com.example.rent.service.RentService;
 import com.example.rent.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -38,8 +34,13 @@ public class BookingResource {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private BookingRepository bookingRepository;
+
+
+
     @PostMapping
-    @Operation(summary = "Cria uma reserva existente")
+    @Operation(summary = "Cria uma reserva para uma propriedade existente")
     public ResponseEntity<Booking> createBooking(@RequestBody BookingDto request) {
         Booking response = bookingService.createBooking(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -51,22 +52,14 @@ public class BookingResource {
         return new ResponseEntity<>(rentService.processCheckin(idBooking), HttpStatus.CREATED);
     }
 
-    /* CONSULTAR RESERVA
-     * Retornar detalhes da reserva.
-     */
     @Operation(summary = "Consulta uma reserva existente")
     @GetMapping("/{id}")
     public ResponseEntity<BookingDto> getBookingById(@PathVariable Long id) throws Exception {
         Booking booking = bookingService.getBookingById(id);
 
         return ResponseEntity.ok(BookingMapper.toDto(booking));
-
     }
 
-    /* CANCELAR RESERVA
-     * cancelar os dados de uma reserva,
-     * trocar a coluna status_reservation da tabela boooking para CANCELED
-     */
     @Operation(summary = "Cancela uma reserva existente")
     @PatchMapping("/{id}/cancel")
     public ResponseEntity<BookingDto> cancelBookingById(@PathVariable Long id) throws Exception {
@@ -74,19 +67,27 @@ public class BookingResource {
         return ResponseEntity.ok(BookingMapper.toDto(booking));
     }
 
-
-    /* CRIAR O ENDPOINT DE PAGAMENTO DA RESERVA
-     * - Validar o status_reservation da tabela boooking (se CANCELED ou CONFIRMED lançar exception)
-     * - verificar o usuario que está pagando para alterar essas informações.
-     * - trocar a coluna is_paid para true e popular a coluna payment_date
-        com a data do pagamento.
-     */
-
     @PatchMapping("/{id}/pay/{userId}")
     @Operation(summary = "Realiza o pagamento de uma reserva")
     public ResponseEntity<BookingDto> payBooking(@PathVariable Long id, @PathVariable Long userId) throws Exception {
         BookingDto bookingDto = bookingService.payBooking(id, userId);
         return ResponseEntity.ok(bookingDto);
     }
+
+    @PostMapping("/forcar/cancelamento/{idReserva}")
+    public ResponseEntity<String> forcarCancelamento(@PathVariable Long idReserva) {
+        Optional<Booking> reservaOptional = bookingRepository.findById(idReserva);
+
+        if (reservaOptional.isPresent()) {
+            Booking reserva = reservaOptional.get();
+            reserva.setStatusReservation(StatusReservation.CANCELED);
+            bookingRepository.save(reserva);
+            return ResponseEntity.ok("Reserva " + idReserva + " foi cancelada com sucesso.");
+        } else {
+            return ResponseEntity.status(404).body("Reserva com ID " + idReserva + " não encontrada.");
+        }
+    }
+
+
 
 }

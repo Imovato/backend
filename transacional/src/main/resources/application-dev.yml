@@ -1,13 +1,13 @@
 server:
-  port: ${PORT:0}
+  port: 8689
 
 spring:
   application:
-    name: rentService
+    name: transacional
   datasource:
-    url: jdbc:mysql://localhost:33060/crud-service?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Sao_Paulo
-    username: root
-    password: example
+    url: jdbc:mysql://localhost:33060/transacional?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Sao_Paulo
+    username: un_user
+    password: un_user
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -21,8 +21,8 @@ spring:
   rabbitmq:
     host:  localhost
     port: 5672
-    username: guest
-    password: guest
+    username: un_user
+    password: un_user
 
   sleuth:
     sampler:
@@ -34,14 +34,17 @@ spring:
 
 crud:
   rabbitmq:
+    exchanges:
+      exchangeAccommodations: crud.fanout.register-accommodations
+      exchangeUsers: crud.fanout.register-users
     queues:
       accommodationQueue: crud.register-accommodations.queue
       userQueue: crud.register-users.queue
 
 ead:
   serviceRegistry:
-    username: admin
-    password: '123456'
+    username: un_user
+    password: 'un_user'
 
 eureka:
   client:

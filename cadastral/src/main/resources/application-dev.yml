@@ -1,8 +1,6 @@
 # SONAR LOCAL: mvn clean verify sonar:sonar -Dsonar.projectKey=Imovato -Dsonar.host.url=http://localhost:9000 -Dsonar.login=sqp_8065f01e13e240636a05812095cc3af86e62507c
 server:
-  port: ${PORT:0}
-  servlet:
-    context-path:
+  port: 8585
 
 spring:
   jpa:
@@ -17,22 +15,15 @@ spring:
     mongodb:
       host: localhost
       port: 27017
-      database: crud-service
+      database: cadastral
       auto-index-creation: true
-  mongodb:
-    embedded:
-      version: 4.0.21
-  sql:
-    init:
-      mode: always
-      schema-locations: classpath:db/init-mongo.js
 
 
   rabbitmq:
     host: localhost
     port: 5672
-    username: guest
-    password: guest
+    username: un_user
+    password: un_user
 
 crud:
   rabbitmq:
@@ -45,8 +36,8 @@ crud:
 
 ead:
   serviceRegistry:
-    username: admin
-    password: '123456'
+    username: un_user
+    password: 'un_user'
 
 eureka:
   client:
