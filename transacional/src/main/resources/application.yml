@@ -3,3 +3,9 @@ spring:
     name: transacional
   profiles:
     active: dev
+  config:
+    import: "optional:configserver:" # caso o config-server nao responder, use o profile dev.
+  cloud:
+    config:
+      discovery:
+        service-id: config-server
