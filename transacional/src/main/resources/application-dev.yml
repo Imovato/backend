@@ -69,30 +69,3 @@ info:
   app: Microsserviço de Aluguel
   website: bla
   github: https://github.com/imovato
-
-#resilience4j:
-#  retry:
-#    instances:
-#      default:
-#        max-attempts: 5
-#        wait-duration: 1s
-#        enable-exponential-backoff: true
-#      retrySave:
-#        max-attempts: 10
-#        wait-duration: 1s
-#        enable-exponential-backoff: true
-#  ratelimiter:
-#    instances:
-#      default:
-#        limit-for-period: 2
-#        limit-refresh-period: 10s
-#  bulkhead:
-#    instances:
-#      default:
-#        max-concurrent-calls: 10
-#
-#  circuitbreaker:
-#    instances:
-#      default:
-#        minimum-number-of-calls: 4
-#        sliding-window-size: 8
