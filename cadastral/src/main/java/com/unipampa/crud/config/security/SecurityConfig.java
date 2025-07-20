@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableMethodSecurity
@@ -21,34 +22,29 @@ public class SecurityConfig {
     private static final String HOST = "HOST";
     private static final String ADMIN = "ADMINISTRATOR";
     private static final String GUEST = "GUEST";
+
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+
     private static final String[] PUBLIC_MATCHERS = {
-            "/users/**"
+            "/users/**",
+            "/auth/**"
     };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, PUBLIC_MATCHERS).permitAll()
-                        .requestMatchers("/accommodations/images/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/accommodations/**").hasAnyRole(HOST, ADMIN)
-                        .requestMatchers(HttpMethod.GET, "/accommodations/**").hasAnyRole(HOST, GUEST, ADMIN)
-                        .requestMatchers(HttpMethod.GET, "/accommodations/{id}").hasAnyRole(HOST, GUEST, ADMIN)
-                        .requestMatchers(HttpMethod.PUT, "/accommodations/{id}").hasAnyRole(HOST, ADMIN)
-                        .requestMatchers(HttpMethod.DELETE, "/accommodations/{id}").hasAnyRole(HOST, ADMIN)
-
-                        .requestMatchers(HttpMethod.GET, "/users").hasRole(ADMIN)
-                        .requestMatchers(HttpMethod.GET, "/users/email/**").hasAnyRole(ADMIN, HOST, GUEST)
-                        .requestMatchers(HttpMethod.GET, "/users/{id}").hasAnyRole(ADMIN, HOST, GUEST)
-                        .requestMatchers(HttpMethod.PUT, "/users/{id}").hasAnyRole(ADMIN, HOST, GUEST)
-                        .requestMatchers(HttpMethod.DELETE, "/users/{id}").hasAnyRole(ADMIN, HOST, GUEST)
-
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(PUBLIC_MATCHERS).permitAll()
                         .anyRequest().authenticated()
                 )
-                .httpBasic(Customizer.withDefaults())
-                .csrf(AbstractHttpConfigurer::disable);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .httpBasic(Customizer.withDefaults());
+
         return http.build();
     }
 

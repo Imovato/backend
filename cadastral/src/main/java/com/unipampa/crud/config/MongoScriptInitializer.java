@@ -6,6 +6,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 import org.bson.Document;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
@@ -53,16 +54,22 @@ public class MongoScriptInitializer implements CommandLineRunner {
             if (userCount == 0) {
                 System.out.println("Usuários não encontrados, criando inicialização...");
 
+                Document roleAdmin = roleCollection.find(new Document("roleName", "ROLE_ADMINISTRATOR")).first();
+
+                if (roleAdmin == null) {
+                    throw new IllegalStateException("Role 'ROLE_ADMINISTRATOR' não encontrada no banco!");
+                }
+
                 userCollection.insertMany(List.of(
                         new Document("_id", "admin-1")
                                 .append("userName", dotenv.get("ADMIN1_USERNAME"))
-                                .append("password", passwordEncoder.encode(dotenv.get("ADMIN1_PASSWORD"))) // Senha criptografada
-                                .append("roles", UserType.ROLE_ADMINISTRATOR),
+                                .append("password", passwordEncoder.encode(dotenv.get("ADMIN1_PASSWORD")))
+                                .append("roles", List.of(roleAdmin)),
 
                         new Document("_id", "admin-2")
                                 .append("userName", dotenv.get("ADMIN2_USERNAME"))
-                                .append("password", passwordEncoder.encode(dotenv.get("ADMIN2_PASSWORD"))) // Senha criptografada
-                                .append("roles", UserType.ROLE_ADMINISTRATOR)
+                                .append("password", passwordEncoder.encode(dotenv.get("ADMIN2_PASSWORD")))
+                                .append("roles", List.of(roleAdmin))
                 ));
 
                 System.out.println("Usuários criados com sucesso!");

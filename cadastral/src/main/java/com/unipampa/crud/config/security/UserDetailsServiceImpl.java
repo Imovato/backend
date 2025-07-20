@@ -18,9 +18,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
-            var user = userRepository.findByUserName(username)
-                    .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + username));
-            return UserDatailsImpl.build(user);
+            var user = userRepository.findByUserName(username);
+            var opt = user.orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + username));
+            return UserDatailsImpl.build(opt);
         } catch (Exception e) {
             throw new UsernameNotFoundException("Erro de conectividade ou ao carregar os dados do usuário: " + username, e);
         }
