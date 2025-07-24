@@ -26,10 +26,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = extractToken(request);
         if (token != null && jwtProvider.validateToken(token)) {
-            String username = jwtProvider.getUsernameFromToken(token);
-            logger.info("username extraído do token: " + username);
+            String userId = jwtProvider.getSubjectFromToken(token);
+            logger.info("username extraído do token: " + userId);
 
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            UserDetails userDetails = userDetailsService.loadUserByUserId(userId);
             logger.info("user details encontrado: " + userDetails);
 
             UsernamePasswordAuthenticationToken authentication =
