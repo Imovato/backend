@@ -55,4 +55,4 @@ eureka:
     service-url:
       defaultZone: 'http://${ead.serviceRegistry.username}:${ead.serviceRegistry.password}@localhost:8761/eureka'
 app:
-  uploads-dir: C:/Users/Samuel Modesto/OneDrive/Documentos/Projetos/TCC/imovato/backend/cadastral/uploads/imoveis
+  uploads-dir: C:/Users/Samuel Modesto/OneDrive/Documentos/Projetos/TCC/imovato/backend/cadastral/uploads/

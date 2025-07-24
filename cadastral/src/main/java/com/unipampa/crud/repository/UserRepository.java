@@ -18,4 +18,7 @@ public interface UserRepository extends MongoRepository<User, String> {
 
     @EntityGraph(attributePaths = {"roles"}, type = EntityGraph.EntityGraphType.FETCH)
     Optional<User> findByUserName(String username);
+
+    @EntityGraph(attributePaths = {"roles"}, type = EntityGraph.EntityGraphType.FETCH)
+    Optional<User> findById(String userId);
 }
