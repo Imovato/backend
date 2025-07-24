@@ -21,6 +21,7 @@ public class UserReceiver {
 	@RabbitListener(queues = {"${crud.rabbitmq.queues.userQueue}"})
 	public void receive(@Payload UserDto dto) {
 		User user = new User();
+		user.setId(dto.id());
 		user.setName(dto.name());
 		user.setEmail(dto.email());
 		user.setUserType(dto.type());

@@ -24,6 +24,7 @@ public class AccommodationReceiver {
 	@RabbitListener(queues = {"${crud.rabbitmq.queues.accommodationQueue}"})
 	public void receive(@Payload AccommodationDto dto) {
 		Accommodation accommodation = new Accommodation();
+		accommodation.setId(dto.id());
 		accommodation.setPrice(dto.price());
 		accommodation.setStatus(StatusAccommodation.AVAILABLE);
 		accommodation.setGuestCapacity(dto.maxOccupancy());

@@ -7,8 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
 import java.io.Serializable;
-import java.util.List;
 
 @Entity
 @Data
@@ -17,15 +17,18 @@ import java.util.List;
 @Builder
 public class User implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = -9206949953784522451L;
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private String name;
 
     private String email;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "user_type", length = 30, nullable = false)
     private UserType userType;
 
 }

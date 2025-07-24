@@ -7,6 +7,6 @@ import java.util.UUID;
 
 public interface UserService {
 
-    Optional<User> findById(Long id);
+    Optional<User> findById(String id);
 
 }

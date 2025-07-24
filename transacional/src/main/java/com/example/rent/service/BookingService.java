@@ -12,5 +12,5 @@ public interface BookingService {
 
     Booking updateBooking(Booking request) throws Exception;
 
-    BookingDto payBooking(Long bookingId, Long userId) throws Exception;
+    BookingDto payBooking(Long bookingId, String userId) throws Exception;
 }

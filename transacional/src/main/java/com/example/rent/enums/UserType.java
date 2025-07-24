@@ -4,11 +4,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 public enum UserType {
 
-    HOST,
+    ROLE_HOST,
 
-    GUEST,
+    ROLE_GUEST,
 
-    ADMINISTRATOR;
+    ROLE_ADMINISTRATOR;
 
     @JsonCreator
     public static UserType fromString(String value) {

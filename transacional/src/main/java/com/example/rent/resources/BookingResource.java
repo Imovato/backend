@@ -69,7 +69,7 @@ public class BookingResource {
 
     @PatchMapping("/{id}/pay/{userId}")
     @Operation(summary = "Realiza o pagamento de uma reserva")
-    public ResponseEntity<BookingDto> payBooking(@PathVariable Long id, @PathVariable Long userId) throws Exception {
+    public ResponseEntity<BookingDto> payBooking(@PathVariable Long id, @PathVariable String userId) throws Exception {
         BookingDto bookingDto = bookingService.payBooking(id, userId);
         return ResponseEntity.ok(bookingDto);
     }

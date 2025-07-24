@@ -5,7 +5,7 @@ import com.example.rent.entities.Accommodation;
 import java.util.Optional;
 
 public interface AccommodationService {
-    Optional<Accommodation> findAccommodationById(Long id);
+    Optional<Accommodation> findAccommodationById(String id);
 
     void changeStatusForRented(Accommodation accommodation);
 }

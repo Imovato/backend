@@ -9,6 +9,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface AccommodationRepository extends JpaRepository<Accommodation, Long> {
+public interface AccommodationRepository extends JpaRepository<Accommodation, String> {
 
 }
