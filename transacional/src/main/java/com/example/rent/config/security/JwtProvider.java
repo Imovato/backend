@@ -1,13 +1,9 @@
-package com.unipampa.crud.config.security;
+package com.example.rent.config.security;
 
 import io.jsonwebtoken.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-
-import java.util.Date;
-import java.util.stream.Collectors;
 
 @Log4j2
 @Component
@@ -16,31 +12,16 @@ public class JwtProvider {
     @Value( "${ead.auth.jwtSecret}")
     private String jwtSecret;
 
-    @Value( "${ead.auth.jwtExpirationMs}")
-    private int jwtExpirationMs;
-
-    public String generateJwtToken(Authentication authentication) {
-        UserDatailsImpl userPrincipal = (UserDatailsImpl) authentication.getPrincipal();
-
-        final String roles = userPrincipal.getAuthorities().stream().map(role -> {
-            return role.getAuthority();
-        }).collect(Collectors.joining());
-
-        return Jwts.builder()
-                .setSubject(userPrincipal.getUserId())
-                .claim("roles", roles)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-                .signWith(io.jsonwebtoken.SignatureAlgorithm.HS512, jwtSecret)
-                .compact();
-    }
-
     public String getSubjectFromToken(String token) {
         return Jwts.parser()
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+
+    public String getClaimNameJwt(String token, String claimName) {
+        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().get(claimName, String.class);
     }
 
     public boolean validateToken(String authToken) {

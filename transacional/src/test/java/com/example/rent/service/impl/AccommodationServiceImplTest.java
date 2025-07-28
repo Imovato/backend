@@ -29,7 +29,7 @@ class AccommodationServiceImplTest {
     @BeforeEach
     void setUp() {
         mockAccommodation = new Accommodation();
-        mockAccommodation.setId(1L);
+        mockAccommodation.setId("abc");
         mockAccommodation.setPrice(500.00);
     }
 
