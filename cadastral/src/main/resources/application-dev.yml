@@ -1,13 +1,20 @@
-# SONAR LOCAL: mvn clean verify sonar:sonar -Dsonar.projectKey=Imovato -Dsonar.host.url=http://localhost:9000 -Dsonar.login=sqp_8065f01e13e240636a05812095cc3af86e62507c
+## SONAR LOCAL: mvn clean verify sonar:sonar -Dsonar.projectKey=Imovato -Dsonar.host.url=http://localhost:9000 -Dsonar.login=sqp_8065f01e13e240636a05812095cc3af86e62507c
 server:
-  port: ${PORT:0}
-  servlet:
-    context-path:
+  port: 5757
 
 spring:
+  application:
+    name: cadastral
+  config:
+    import: 'optional:configserver:'
+  cloud:
+    config:
+      discovery:
+        service-id: config-server
+
   jpa:
     generate-ddl: false
-    
+
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
   jmx:
@@ -17,22 +24,15 @@ spring:
     mongodb:
       host: localhost
       port: 27017
-      database: crud-service
+      database: cadastral
       auto-index-creation: true
-  mongodb:
-    embedded:
-      version: 4.0.21
-  sql:
-    init:
-      mode: always
-      schema-locations: classpath:db/init-mongo.js
 
 
   rabbitmq:
     host: localhost
     port: 5672
-    username: guest
-    password: guest
+    username: un_user
+    password: un_user
 
 crud:
   rabbitmq:
@@ -45,8 +45,8 @@ crud:
 
 ead:
   serviceRegistry:
-    username: admin
-    password: '123456'
+    username: un_user
+    password: 'un_user'
 
 eureka:
   client:
@@ -55,4 +55,4 @@ eureka:
     service-url:
       defaultZone: 'http://${ead.serviceRegistry.username}:${ead.serviceRegistry.password}@localhost:8761/eureka'
 app:
-  uploads-dir: C:/Users/Samuel Modesto/OneDrive/Documentos/Projetos/TCC/imovato/backend/cadastral/uploads/imoveis
+  uploads-dir: C:/Users/Samuel Modesto/OneDrive/Documentos/Projetos/TCC/imovato/backend/cadastral/uploads/

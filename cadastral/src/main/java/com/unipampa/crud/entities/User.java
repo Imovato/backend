@@ -27,6 +27,7 @@ public class User implements Serializable {
 
     @Id
     private String id;
+    @Field("userName")
     private String userName;
     private String password;
     private String cpf;
@@ -45,5 +46,6 @@ public class User implements Serializable {
     @Field
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private LocalDateTime lastUpdateDate;
+
 
 }
