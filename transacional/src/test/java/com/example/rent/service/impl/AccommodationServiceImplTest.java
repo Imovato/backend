@@ -29,31 +29,31 @@ class AccommodationServiceImplTest {
     @BeforeEach
     void setUp() {
         mockAccommodation = new Accommodation();
-        mockAccommodation.setId(1L);
+        mockAccommodation.setId("abc");
         mockAccommodation.setPrice(500.00);
     }
 
 
     @Test
     void testFindAccommodationByIdSuccess() {
-        when(accommodationRepository.findById(1L)).thenReturn(Optional.of(mockAccommodation));
+        when(accommodationRepository.findById("abc")).thenReturn(Optional.of(mockAccommodation));
 
-        Optional<Accommodation> result = accommodationService.findAccommodationById(1L);
+        Optional<Accommodation> result = accommodationService.findAccommodationById("abc");
 
         assertTrue(result.isPresent());
         assertEquals(1L, result.get().getId());
         assertEquals(500.00, result.get().getPrice());
-        verify(accommodationRepository, times(1)).findById(1L);
+        verify(accommodationRepository, times(1)).findById("abc");
     }
 
     @Test
     void testFindAccommodationByIdNotFound() {
-        when(accommodationRepository.findById(2L)).thenReturn(Optional.empty());
+        when(accommodationRepository.findById("xyz")).thenReturn(Optional.empty());
 
-        Optional<Accommodation> result = accommodationService.findAccommodationById(2L);
+        Optional<Accommodation> result = accommodationService.findAccommodationById("xyz");
 
         assertFalse(result.isPresent());
-        verify(accommodationRepository, times(1)).findById(2L);
+        verify(accommodationRepository, times(1)).findById("xyz");
     }
 
     @Test

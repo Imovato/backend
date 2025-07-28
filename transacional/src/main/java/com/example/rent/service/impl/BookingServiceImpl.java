@@ -144,7 +144,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingDto payBooking(Long bookingId, Long userId) throws Exception {
+    public BookingDto payBooking(Long bookingId, String userId) throws Exception {
         Booking booking = getBookingById(bookingId);
 
         if (booking.getStatusReservation() == StatusReservation.CANCELED

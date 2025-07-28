@@ -15,7 +15,7 @@ public class AccommodationServiceImpl implements AccommodationService {
     private final AccommodationRepository accommodationRepository;
 
     @Override
-    public Optional<Accommodation> findAccommodationById(Long id) {
+    public Optional<Accommodation> findAccommodationById(String id) {
         return accommodationRepository.findById(id);
     }
 

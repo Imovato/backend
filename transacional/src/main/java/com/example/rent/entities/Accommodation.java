@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
@@ -17,9 +18,11 @@ import java.io.Serializable;
 @Builder
 public class Accommodation implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 6742147475962430968L;
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private Double price;
 

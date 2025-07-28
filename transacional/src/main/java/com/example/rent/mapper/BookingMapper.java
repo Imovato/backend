@@ -24,7 +24,7 @@ public class BookingMapper {
     }
 
     public static BookingDto toDto(Booking booking) {
-        List<Long> guestIds = booking.getGuests().stream()
+        List<String> guestIds = booking.getGuests().stream()
                 .map(guestBooking -> guestBooking.getGuest().getId())
                 .toList();
 

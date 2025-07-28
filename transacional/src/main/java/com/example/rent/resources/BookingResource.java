@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -39,19 +41,22 @@ public class BookingResource {
 
 
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_GUEST')")
     @PostMapping
     @Operation(summary = "Cria uma reserva para uma propriedade existente")
-    public ResponseEntity<Booking> createBooking(@RequestBody BookingDto request) {
+    public ResponseEntity<Booking> createBooking(@RequestBody BookingDto request, Authentication authentication) {
         Booking response = bookingService.createBooking(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_GUEST')")
     @PostMapping("/checkin/{idBooking}")
     @Operation(summary = "Faz checkin em uma reserva existente")
     public ResponseEntity<RentResponse> checkin(@PathVariable @Valid Long idBooking) {
         return new ResponseEntity<>(rentService.processCheckin(idBooking), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_GUEST', 'ROLE_HOST')")
     @Operation(summary = "Consulta uma reserva existente")
     @GetMapping("/{id}")
     public ResponseEntity<BookingDto> getBookingById(@PathVariable Long id) throws Exception {
@@ -60,6 +65,7 @@ public class BookingResource {
         return ResponseEntity.ok(BookingMapper.toDto(booking));
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_GUEST', 'ROLE_HOST')")
     @Operation(summary = "Cancela uma reserva existente")
     @PatchMapping("/{id}/cancel")
     public ResponseEntity<BookingDto> cancelBookingById(@PathVariable Long id) throws Exception {
@@ -67,13 +73,15 @@ public class BookingResource {
         return ResponseEntity.ok(BookingMapper.toDto(booking));
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_GUEST')")
     @PatchMapping("/{id}/pay/{userId}")
     @Operation(summary = "Realiza o pagamento de uma reserva")
-    public ResponseEntity<BookingDto> payBooking(@PathVariable Long id, @PathVariable Long userId) throws Exception {
+    public ResponseEntity<BookingDto> payBooking(@PathVariable Long id, @PathVariable String userId) throws Exception {
         BookingDto bookingDto = bookingService.payBooking(id, userId);
         return ResponseEntity.ok(bookingDto);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMINISTRATOR')")
     @PostMapping("/forcar/cancelamento/{idReserva}")
     public ResponseEntity<String> forcarCancelamento(@PathVariable Long idReserva) {
         Optional<Booking> reservaOptional = bookingRepository.findById(idReserva);
@@ -87,7 +95,4 @@ public class BookingResource {
             return ResponseEntity.status(404).body("Reserva com ID " + idReserva + " não encontrada.");
         }
     }
-
-
-
 }
