@@ -1,5 +1,6 @@
 package com.example.rent.entities;
 
+import com.example.rent.enums.UserStats;
 import com.example.rent.enums.UserType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -30,5 +31,8 @@ public class User implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "user_type", length = 30, nullable = false)
     private UserType userType;
+
+    @Enumerated(EnumType.STRING)
+    private UserStats stats;
 
 }

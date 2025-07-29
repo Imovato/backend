@@ -25,6 +25,7 @@ public class UserReceiver {
 		user.setName(dto.name());
 		user.setEmail(dto.email());
 		user.setUserType(dto.type());
+		user.setStats(dto.stats());
 		userRepository.save(user);
 	}
 	

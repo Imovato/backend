@@ -2,10 +2,12 @@ package com.unipampa.crud.service.impl;
 
 import com.unipampa.crud.config.security.SecurityUtil;
 import com.unipampa.crud.entities.User;
+import com.unipampa.crud.enums.UserStats;
 import com.unipampa.crud.exceptions.ResourceNotFoundException;
 import com.unipampa.crud.repository.UserRepository;
 import com.unipampa.crud.sender.UserSender;
 import com.unipampa.crud.service.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,7 +48,11 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void delete(String id) {
-		userRepository.deleteById(id);
+		User user = userRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
+		user.setStats(UserStats.UNAVAILABLE);
+		userRepository.save(user);
+		userSender.sendMessage(user);
 	}
 
 	@Override

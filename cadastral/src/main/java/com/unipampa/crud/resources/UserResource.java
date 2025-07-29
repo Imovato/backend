@@ -5,6 +5,7 @@ import com.unipampa.crud.config.security.SecurityUtil;
 import com.unipampa.crud.dto.UserDTO;
 import com.unipampa.crud.entities.Role;
 import com.unipampa.crud.entities.User;
+import com.unipampa.crud.enums.UserStats;
 import com.unipampa.crud.mappers.UserMapper;
 import com.unipampa.crud.service.RoleService;
 import com.unipampa.crud.service.UserService;
@@ -73,6 +74,7 @@ public class UserResource {
 		user.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
 		user.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
 		user.getRoles().add(role);
+		user.setStats(UserStats.AVAILABLE);
 		userService.save(user);
 		log.info(USER_SAVED_SUCCESSFULLY_LOG, user.getUserName());
 		return new ResponseEntity<>(HttpStatus.CREATED);
