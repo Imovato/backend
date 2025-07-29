@@ -7,6 +7,7 @@ import com.unipampa.crud.dto.AccommodationDTO;
 import com.unipampa.crud.dto.AccommodationRequestDTO;
 import com.unipampa.crud.dto.ErrorResponse;
 import com.unipampa.crud.entities.Accommodation;
+import com.unipampa.crud.enums.AccommodationStats;
 import com.unipampa.crud.mappers.AccommodationMapper;
 import com.unipampa.crud.service.AccommodationService;
 import com.unipampa.crud.validations.ValidationsRegisterAccommodation;
@@ -84,6 +85,7 @@ public class AccommodationResource {
         accommodation.setId(novoId);
         String authenticatedUserId = SecurityUtil.getAuthenticatedUserId();
         accommodation.setHostId(authenticatedUserId);
+        accommodation.setStats(AccommodationStats.AVAILABLE);
         accommodationService.save(accommodation, images);
 
         URI location = URI.create("/accommodations/" + accommodation.getId());

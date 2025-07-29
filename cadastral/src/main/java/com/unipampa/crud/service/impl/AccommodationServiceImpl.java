@@ -2,9 +2,11 @@ package com.unipampa.crud.service.impl;
 
 import com.unipampa.crud.config.security.SecurityUtil;
 import com.unipampa.crud.entities.Accommodation;
+import com.unipampa.crud.enums.AccommodationStats;
 import com.unipampa.crud.repository.AccommodationRepository;
 import com.unipampa.crud.sender.AccommodationSender;
 import com.unipampa.crud.service.AccommodationService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -59,7 +61,16 @@ public class AccommodationServiceImpl implements AccommodationService {
 
 	@Override
 	public void delete(String id) {
-		propertyRepository.deleteById(id);
+		Accommodation property = propertyRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("Property not found with id: " + id));
+		// Atualiza o status para INATIVO
+		property.setStats(AccommodationStats.UNAVAILABLE);
+
+		// Salva novamente no banco de dados
+		Accommodation updatedProperty = propertyRepository.save(property);
+
+		// Envia a mensagem para o microsserviço transacional
+		accommodationSender.sendMessage(updatedProperty);
 
 	}
 
