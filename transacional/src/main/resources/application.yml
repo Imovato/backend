@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: transacional
+  config:
+    import: "configserver:"
+  cloud:
+    config:
+      discovery:
+        service-id: config-server

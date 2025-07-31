@@ -7,6 +7,7 @@ import com.unipampa.crud.dto.AccommodationDTO;
 import com.unipampa.crud.dto.AccommodationRequestDTO;
 import com.unipampa.crud.dto.ErrorResponse;
 import com.unipampa.crud.entities.Accommodation;
+import com.unipampa.crud.enums.AccommodationStats;
 import com.unipampa.crud.mappers.AccommodationMapper;
 import com.unipampa.crud.service.AccommodationService;
 import com.unipampa.crud.validations.ValidationsRegisterAccommodation;
@@ -24,6 +25,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -58,6 +60,8 @@ public class AccommodationResource {
     @Autowired
     private List<ValidationsRegisterAccommodation> validations;
 
+
+    @PreAuthorize( "hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_HOST')" )
     @PostMapping
     @Operation(summary = "Criar uma nova acomodação",
             description = "Valida e salva uma nova acomodação no sistema.")
@@ -81,6 +85,7 @@ public class AccommodationResource {
         accommodation.setId(novoId);
         String authenticatedUserId = SecurityUtil.getAuthenticatedUserId();
         accommodation.setHostId(authenticatedUserId);
+        accommodation.setStats(AccommodationStats.AVAILABLE);
         accommodationService.save(accommodation, images);
 
         URI location = URI.create("/accommodations/" + accommodation.getId());
@@ -88,43 +93,7 @@ public class AccommodationResource {
         return ResponseEntity.created(location).body(accomodationResponseDTO);
     }
 
-    @GetMapping
-    @Operation(summary = "Listar todas as acomodações",
-            description = "Retorna uma lista contendo todas as acomodações cadastradas.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso",
-                    content = @Content(schema = @Schema(implementation = AccommodationDTO.class)))
-    })
-    public ResponseEntity<List<AccommodationDTO>> findAll() {
-        List<AccommodationDTO> accommodationDtos = accommodationService.findAll()
-                .stream()
-                .map(accommodation -> accommodationMapper.toDTO(accommodation))
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok(accommodationDtos);
-    }
-
-    @GetMapping("{id}")
-    @Operation(summary = "Buscar acomodação por ID",
-            description = "Retorna os dados de uma acomodação específica a partir do seu ID.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Acomodação encontrada",
-                    content = @Content(schema = @Schema(implementation = AccommodationDTO.class))),
-            @ApiResponse(responseCode = "404", description = "Acomodação não encontrada",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
-    public ResponseEntity<Object> getById(@PathVariable("id") String id) {
-        Optional<Accommodation> accommodationOptional = accommodationService.findById(id);
-
-        if (accommodationOptional.isPresent()) {
-            AccommodationDTO dto = accommodationMapper.toDTO(accommodationOptional.get());
-            return ResponseEntity.ok(dto);
-        }
-
-        ErrorResponse errorResponse = new ErrorResponse("Acomodação não encontrada para o ID fornecido.", LocalDateTime.now());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
-    }
-
+    @PreAuthorize( "hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_HOST')" )
     @DeleteMapping("{id}")
     @Operation(summary = "Deletar acomodação por ID",
             description = "Remove uma acomodação existente a partir do seu ID.")
@@ -143,6 +112,7 @@ public class AccommodationResource {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize( "hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_HOST')" )
     @PutMapping("{id}")
     @Operation(summary = "Atualizar acomodação por ID",
             description = "Atualiza os dados de uma acomodação existente.")
@@ -188,6 +158,44 @@ public class AccommodationResource {
         }
     }
 
+    @GetMapping
+    @Operation(summary = "Listar todas as acomodações",
+            description = "Retorna uma lista contendo todas as acomodações cadastradas.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso",
+                    content = @Content(schema = @Schema(implementation = AccommodationDTO.class)))
+    })
+    public ResponseEntity<List<AccommodationDTO>> findAll() {
+        List<AccommodationDTO> accommodationDtos = accommodationService.findAll()
+                .stream()
+                .map(accommodation -> accommodationMapper.toDTO(accommodation))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(accommodationDtos);
+    }
+
+    @GetMapping("{id}")
+    @Operation(summary = "Buscar acomodação por ID",
+            description = "Retorna os dados de uma acomodação específica a partir do seu ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Acomodação encontrada",
+                    content = @Content(schema = @Schema(implementation = AccommodationDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Acomodação não encontrada",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    public ResponseEntity<Object> getById(@PathVariable("id") String id) {
+        Optional<Accommodation> accommodationOptional = accommodationService.findById(id);
+
+        if (accommodationOptional.isPresent()) {
+            AccommodationDTO dto = accommodationMapper.toDTO(accommodationOptional.get());
+            return ResponseEntity.ok(dto);
+        }
+
+        ErrorResponse errorResponse = new ErrorResponse("Acomodação não encontrada para o ID fornecido.", LocalDateTime.now());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+
+
     @GetMapping("images/{id}/{filename}")
     public ResponseEntity<Resource> getImage(@PathVariable String id, @PathVariable String filename) throws MalformedURLException, MalformedURLException {
         Path path = Paths.get(uploadsDir + id).resolve(filename);
@@ -197,7 +205,6 @@ public class AccommodationResource {
         }
 
         Resource resource = new UrlResource(path.toUri());
-
         MediaType contentType = MediaTypeFactory.getMediaType(resource)
                 .orElse(MediaType.APPLICATION_OCTET_STREAM);
 
