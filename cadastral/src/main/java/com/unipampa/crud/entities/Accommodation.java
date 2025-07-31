@@ -1,5 +1,6 @@
 package com.unipampa.crud.entities;
 
+import com.unipampa.crud.enums.AccommodationStats;
 import com.unipampa.crud.enums.AccommodationType;
 import lombok.Builder;
 import lombok.Data;
@@ -36,5 +37,6 @@ public class Accommodation {
     private int imageCount;
     private int maxOccupancy;
     private String hostId;
+    private AccommodationStats stats;
 
 }

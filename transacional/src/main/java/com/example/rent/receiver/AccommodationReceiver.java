@@ -26,7 +26,7 @@ public class AccommodationReceiver {
 		Accommodation accommodation = new Accommodation();
 		accommodation.setId(dto.id());
 		accommodation.setPrice(dto.price());
-		accommodation.setStatus(StatusAccommodation.AVAILABLE);
+		accommodation.setStatus(dto.stats());
 		accommodation.setGuestCapacity(dto.maxOccupancy());
 		accommodationRepository.save(accommodation);
 	}
