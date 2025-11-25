@@ -25,8 +25,9 @@ spring:
     enabled: false
 
   autoconfigure:
-    - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
-    - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
 
   jmx:
     enabled: false
@@ -44,3 +45,11 @@ eureka:
     enabled: false
     register-with-eureka: false
     fetch-registry: false
+
+ead:
+  auth:
+    jwtSecret: a7w!z%C*F-JaNdRgUkXp2s5v8x/A?D(G+KbPeShVmYq3t6w9z$B&E)H@McQfTjWs
+    jwtExpirationMs: 14400000
+
+app:
+  uploads-dir: C:/Users/Samuel Modesto/OneDrive/Documentos/Projetos/TCC/imovato/backend/cadastral/uploads/
