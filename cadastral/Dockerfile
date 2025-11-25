@@ -1,21 +1,31 @@
-#FROM openjdk:17-alpine
-#MAINTAINER com.mateusbalda
-#VOLUME /tmp
-#EXPOSE 8081
-#
-#COPY CrudService/target/*.jar /crud-service.jar
-#
-#ENTRYPOINT ["java","-jar","-Dspring.profiles.active=docker-demo", "/crud-service.jar"]
+# ---------- stage 1: build ----------
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 
-## In this way the file, creates the image along with maven
-FROM maven:3.6-openjdk-17-slim AS MAVEN_BUILD
-COPY CrudService/pom.xml /build/
-COPY CrudService/src /build/src/
-WORKDIR /build/
-RUN mvn package -DskipTests
+WORKDIR /app
 
-FROM openjdk:17-alpine
-MAINTAINER com.mateusbalda
-EXPOSE 8081
-COPY --from=MAVEN_BUILD /build/target/*.jar imobiliaria.jar
-ENTRYPOINT ["java","-jar","-Dspring.profiles.active=docker-demo","/imobiliaria.jar"]
+# Copiar apenas o pom para aproveitar o cache do Maven
+COPY pom.xml .
+RUN mvn -q -DskipTests dependency:go-offline
+
+# Copiar código restante
+COPY . .
+
+# Gerar o JAR (sem testes para agilizar)
+RUN mvn -q clean package -DskipTests
+
+
+# ---------- stage 2: runtime ----------
+FROM eclipse-temurin:21-jre AS runtime
+
+WORKDIR /app
+
+# Copia o JAR final
+COPY --from=build /app/target/*.jar app.jar
+
+# Heroku usa PORT, mas exponho 8080 por consistência
+EXPOSE 8080
+
+# Importante: garantir que a aplicação leia PORT corretamente
+ENV SERVER_PORT=${PORT}
+
+CMD ["sh", "-c", "java -Dserver.port=$PORT -jar app.jar"]

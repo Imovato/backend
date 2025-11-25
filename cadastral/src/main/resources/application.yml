@@ -1,11 +1,8 @@
-
 spring:
   application:
     name: cadastral
-  config:
-    import: "configserver:"
-  cloud:
-    config:
-      discovery:
-        enabled: true
-        service-id: config-server
+
+ead:
+  auth:
+    jwtSecret: a7w!z%C*F-JaNdRgUkXp2s5v8x/A?D(G+KbPeShVmYq3t6w9z$B&E)H@McQfTjWs
+    jwtExpirationMs: 14400000

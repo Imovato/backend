@@ -1,0 +1,46 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  application:
+    name: cadastral
+
+  cloud:
+    config:
+      enabled: false
+      import-check:
+        enabled: false
+
+  config:
+    import: "optional:configserver:"
+
+  data:
+    mongodb:
+      uri: ${MONGODB_URI}
+
+  rabbitmq:
+    uri: ${CLOUDAMQP_URL}
+
+  jpa:
+    enabled: false
+
+  autoconfigure:
+    - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+    - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+
+  jmx:
+    enabled: false
+
+crud:
+  rabbitmq:
+    exchanges:
+      exchangeAccommodations: crud.fanout.register-accommodations
+      exchangeUsers: crud.fanout.register-users
+    queues:
+      accommodationQueue: crud.register-accommodations.queue
+
+eureka:
+  client:
+    enabled: false
+    register-with-eureka: false
+    fetch-registry: false
