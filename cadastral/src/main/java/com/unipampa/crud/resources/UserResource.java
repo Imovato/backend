@@ -81,7 +81,7 @@ public class UserResource {
 	}
 
 
-	@PreAuthorize( "hasRole('ROLE_ADMINISTRATOR')" )
+	@PreAuthorize( "hasRole('ADMINISTRATOR')" )
 	@GetMapping
 	@Operation(summary = "Retorna todos os usuários cadastrados")
 	public ResponseEntity<Page<User>> getAllUsers(
@@ -93,7 +93,7 @@ public class UserResource {
 		return ResponseEntity.status(HttpStatus.OK).body(users);
 	}
 
-	@PreAuthorize( "hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_HOST', 'ROLE_GUEST')" )
+	@PreAuthorize( "hasAnyRole('ADMINISTRATOR', 'HOST', 'GUEST')" )
 	@GetMapping("email/{email}")
 	@Operation(summary = "Retorna um usuario pelo email")
 	public ResponseEntity<Object> getUserByEmail(@PathVariable("email") String email) {
@@ -105,7 +105,7 @@ public class UserResource {
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
-	@PreAuthorize( "hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_HOST', 'ROLE_GUEST')" )
+	@PreAuthorize( "hasAnyRole('ADMINISTRATOR', 'HOST', 'GUEST')" )
 	@GetMapping("{id}")
 	@Operation(summary = "Retorna um usuario pelo id")
 	public ResponseEntity<Object> getUserById(@PathVariable("id") String id) {
@@ -117,7 +117,7 @@ public class UserResource {
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
-	@PreAuthorize( "hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_HOST', 'ROLE_GUEST')" )
+	@PreAuthorize( "hasAnyRole('ADMINISTRATOR', 'HOST', 'GUEST')" )
 	@PutMapping("{id}")
 	@Operation(summary = "Atualiza um usuario pelo id")
 	public ResponseEntity<Object> updateUser(@RequestBody  UserDTO userDTO, @PathVariable("id")String id) {
@@ -132,7 +132,7 @@ public class UserResource {
 		return new ResponseEntity<>(userModel, HttpStatus.OK);
 	}
 
-	@PreAuthorize( "hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_HOST', 'ROLE_GUEST')" )
+	@PreAuthorize( "hasAnyRole('ADMINISTRATOR', 'HOST', 'GUEST')" )
 	@DeleteMapping("{id}")
 	@Operation(summary = "Remove um usuario pelo seu id")
 	public ResponseEntity<Object> deleteUser(@PathVariable("id") String id) {

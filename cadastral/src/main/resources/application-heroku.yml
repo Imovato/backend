@@ -19,7 +19,7 @@ spring:
       uri: ${MONGODB_URI}
 
   rabbitmq:
-    uri: ${CLOUDAMQP_URL}
+    addresses: ${CLOUDAMQP_URL}
 
   jpa:
     enabled: false
@@ -48,7 +48,7 @@ eureka:
 
 ead:
   auth:
-    jwtSecret: a7w!z%C*F-JaNdRgUkXp2s5v8x/A?D(G+KbPeShVmYq3t6w9z$B&E)H@McQfTjWs
+    jwtSecret: ${AUTH_JWTSECRET}
     jwtExpirationMs: 14400000
 
 app:

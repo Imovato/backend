@@ -80,12 +80,15 @@ public class AccommodationResource {
         AccommodationRequestDTO accommodationDTO = mapper.readValue(dadosJson, AccommodationRequestDTO.class);
 
         validations.forEach(e -> e.validate(accommodationDTO));
+
         var accommodation = accommodationMapper.toEntity(accommodationDTO);
         String novoId = new ObjectId().toString();
         accommodation.setId(novoId);
+
         String authenticatedUserId = SecurityUtil.getAuthenticatedUserId();
         accommodation.setHostId(authenticatedUserId);
         accommodation.setStats(AccommodationStats.AVAILABLE);
+
         accommodationService.save(accommodation, images);
 
         URI location = URI.create("/accommodations/" + accommodation.getId());
