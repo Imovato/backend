@@ -17,11 +17,11 @@ class RentServiceImplTest {
     @BeforeEach
     void setUp() {
         accommodation = new Accommodation();
-        accommodation.setId(10L);
+        accommodation.setId("10");
         accommodation.setPrice(100.0);
         accommodation.setStatus(StatusAccommodation.AVAILABLE);
         user = new User();
-        user.setId(1L);
+        user.setId("1");
 
     }
 

@@ -29,33 +29,33 @@ class UserServiceImplTest {
     void setUp() {
 
         mockUser = new User();
-        mockUser.setId(1L);
+        mockUser.setId("1");
         mockUser.setName("Cooper");
         mockUser.setEmail("cooper@email.com");
     }
 
     @Test
     void testFindByIdSuccess() {
-        when(userRepository.findById(1L)).thenReturn(Optional.of(mockUser));
+        when(userRepository.findById("1")).thenReturn(Optional.of(mockUser));
 
-        Optional<User> result = userService.findById(1L);
+        Optional<User> result = userService.findById("1");
 
         assertTrue(result.isPresent());
-        assertEquals(1L, result.get().getId());
+        assertEquals("1", result.get().getId());
         assertEquals("Cooper", result.get().getName());
         assertEquals("cooper@email.com", result.get().getEmail());
-        verify(userRepository, times(1)).findById(1L);
+        verify(userRepository, times(1)).findById("1");
     }
 
 
     @Test
     void testFindByIdNotFound() {
-        when(userRepository.findById(2L)).thenReturn(Optional.empty());
+        when(userRepository.findById("2")).thenReturn(Optional.empty());
 
-        Optional<User> result = userService.findById(2L);
+        Optional<User> result = userService.findById("2");
 
         assertFalse(result.isPresent());
-        verify(userRepository, times(1)).findById(2L);
+        verify(userRepository, times(1)).findById("2");
     }
 
 }

@@ -1,0 +1,63 @@
+spring:
+  application:
+    name: cadastral-test
+  autoconfigure:
+    exclude:
+      - org.springframework.cloud.config.client.ConfigClientAutoConfiguration
+      - org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+  
+  # Configurações do MongoDB (serão sobrescritas pelo Testcontainers)
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/test
+  
+  # Configurações do RabbitMQ (serão sobrescritas pelo Testcontainers)
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  
+  # Desabilita config server
+  cloud:
+    config:
+      enabled: false
+      fail-fast: false
+      import-check:
+        enabled: false
+
+# Desabilita Eureka
+eureka:
+  client:
+    enabled: false
+    register-with-eureka: false
+    fetch-registry: false
+
+# Configurações de upload para testes
+app:
+  uploads-dir: ${java.io.tmpdir}/test-uploads
+
+# Configurações JWT para testes
+ead:
+  auth:
+    jwtSecret: test-secret-key-for-integration-tests-minimum-32-characters-long
+    jwtExpirationMs: 86400000
+
+# Configurações de logging para testes
+logging:
+  level:
+    com.unipampa.crud: DEBUG
+    org.springframework.amqp: DEBUG
+    org.testcontainers: INFO
+
+# Configurações RabbitMQ
+crud:
+  rabbitmq:
+    exchanges:
+      exchangeAccommodations: test.accommodations.exchange
+      exchangeUsers: test.users.exchange
+    queues:
+      accommodationQueue: test.accommodation.queue
+      userQueue: test.user.queue

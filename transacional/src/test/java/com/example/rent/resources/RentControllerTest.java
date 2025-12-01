@@ -26,11 +26,11 @@ class RentControllerTest {
     void setUp() {
 
         Accommodation accommodation = new Accommodation();
-        accommodation.setId(6L);
+        accommodation.setId("6");
         accommodation.setPrice(100.0);
 
         User user = new User();
-        user.setId(2L);
+        user.setId("2");
         user.setName("Cooper");
 
         rentResponse = new RentResponse(

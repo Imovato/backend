@@ -3,7 +3,7 @@ spring:
   application:
     name: cadastral
   config:
-    import: "configserver:"
+    import: "optional:configserver:"
   cloud:
     config:
       discovery:

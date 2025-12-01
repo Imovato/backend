@@ -1,0 +1,74 @@
+spring:
+  application:
+    name: transacional-test
+  autoconfigure:
+    exclude:
+      - org.springframework.cloud.client.serviceregistry.AutoServiceRegistrationAutoConfiguration
+      - org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration
+      - org.springframework.cloud.config.client.ConfigClientAutoConfiguration
+  lifecycle:
+    timeout-per-shutdown-phase: 5s
+  
+  # Configurações do MySQL (serão sobrescritas pelo Testcontainers)
+  datasource:
+    url: jdbc:mysql://localhost:3306/rent_db_test
+    username: test
+    password: test
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+  
+  # Configurações do RabbitMQ (serão sobrescritas pelo Testcontainers)
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    listener:
+      simple:
+        retry:
+          enabled: false
+  
+  # Desabilita config server
+  cloud:
+    config:
+      enabled: false
+
+# Desabilita Eureka
+eureka:
+  client:
+    enabled: false
+    register-with-eureka: false
+    fetch-registry: false
+
+# JWT configuration for tests
+ead:
+  auth:
+    jwtSecret: test-secret-key-for-integration-tests-must-be-long-enough
+    jwtExpirationMs: 86400000
+
+# Configurações de logging para testes
+logging:
+  level:
+    com.example.rent: DEBUG
+    org.springframework.amqp: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.testcontainers: INFO
+
+# Configurações RabbitMQ
+crud:
+  rabbitmq:
+    exchanges:
+      exchangeAccommodations: test.accommodations.exchange
+      exchangeUsers: test.users.exchange
+    queues:
+      accommodationQueue: test.accommodation.queue
+      userQueue: test.user.queue

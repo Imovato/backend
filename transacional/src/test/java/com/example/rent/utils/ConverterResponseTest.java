@@ -28,9 +28,9 @@ class ConverterResponseTest {
         converterResponse = new ConverterResponse();
 
         accommodation = new Accommodation();
-        accommodation.setId(1L);
+        accommodation.setId("1");
 
-        user = new User(2L, "Cooper", "cooper@gmail", UserType.GUEST);
+        user = new User("2", "Cooper", "cooper@gmail", UserType.ROLE_GUEST, null);
 
 
         rentDto = new RentDto(
