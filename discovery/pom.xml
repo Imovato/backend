@@ -58,4 +58,22 @@
 		</dependencies>
 	</dependencyManagement>
 
+	<build>
+		<plugins>
+			<!-- Plugin responsável por gerar o JAR executável do Spring Boot -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>3.4.2</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>
