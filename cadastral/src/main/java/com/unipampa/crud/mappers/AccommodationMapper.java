@@ -40,7 +40,6 @@ public class AccommodationMapper {
         List<String> imageUrls = entity.getImagesUrls();
 
         return new AccommodationDTO(
-                entity.getId(),
                 entity.getTitle(),
                 entity.getNeighborhood(),
                 entity.getZipCode(),
@@ -53,6 +52,10 @@ public class AccommodationMapper {
                 imageUrls != null ? imageUrls.size() : 0,
                 entity.getType(),
                 entity.getMaxOccupancy(),
+                entity.getRoomCount(),
+                entity.getBathroomCount(),
+                entity.isAllowsPets(),
+                entity.isSharedHosting(),
                 imageUrls
         );
     }

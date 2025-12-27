@@ -149,6 +149,18 @@ public class AccommodationResource {
         accommodation.setTitle(accommodationDTO.title());
         accommodation.setAddress(accommodationDTO.address());
         accommodation.setPrice(accommodationDTO.price());
+        accommodation.setDescription(accommodationDTO.description());
+        accommodation.setCity(accommodationDTO.city());
+        accommodation.setNeighborhood(accommodationDTO.neighborhood());
+        accommodation.setState(accommodationDTO.state());
+        accommodation.setZipCode(accommodationDTO.codAddress());
+        accommodation.setStreetNumber(accommodationDTO.streetNumber());
+        accommodation.setType(accommodationDTO.accommodationType());
+        accommodation.setMaxOccupancy(accommodationDTO.maxOccupancy());
+        accommodation.setRoomCount(accommodationDTO.roomCount());
+        accommodation.setBathroomCount(accommodationDTO.bathroomCount());
+        accommodation.setAllowsPets(accommodationDTO.allowsPets());
+        accommodation.setSharedHosting(accommodationDTO.isSharedHosting());
 
         try {
             accommodationService.save(accommodation, images);
