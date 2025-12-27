@@ -8,6 +8,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,6 +41,9 @@ public class AuthResource {
             String jwt = jwtProvider.generateJwtToken(authentication);
             return ResponseEntity.ok(new JwtDTO(jwt));
 
+        } catch (BadCredentialsException e) {
+            log.error("Credenciais inválidas para: {}", loginDTO.email());
+            return ResponseEntity.status(401).body(null);
         } catch (Exception e) {
             System.out.println("🚨 Falha na autenticação: " + e.getClass().getSimpleName() + " - " + e.getMessage());
             return ResponseEntity.status(401).body(null);

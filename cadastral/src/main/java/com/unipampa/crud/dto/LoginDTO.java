@@ -7,9 +7,9 @@ public record LoginDTO(
         String username,
 
         @NotBlank
-        String password,
+        String email,
 
         @NotBlank
-        String email
+        String password
 
 ) {}
