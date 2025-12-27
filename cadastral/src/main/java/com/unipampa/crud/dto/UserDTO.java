@@ -5,13 +5,14 @@ import com.unipampa.crud.enums.UserType;
 import jakarta.validation.constraints.NotBlank;
 
 public record UserDTO(
-		@NotBlank String email,
-		@NotBlank String name,
-		@NotBlank String userName,
-		@NotBlank String cpf,
-		@NotBlank String phone,
-		@NotBlank String address,
-		@NotBlank String password,
-		@NotBlank String role,
-		@NotBlank UserType type
-) {}
+        @NotBlank String email,
+        @NotBlank String name,
+        @NotBlank String userName,
+        @NotBlank String cpf,
+        @NotBlank String password,
+        @NotBlank String role,
+        @NotBlank UserType type,
+        String phone,
+        String address
+) {
+}
