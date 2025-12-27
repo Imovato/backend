@@ -67,25 +67,21 @@ public class MongoScriptInitializer implements CommandLineRunner {
                         new Document("_id", "admin-1")
                                 .append("userName", System.getenv("ADMIN1_USERNAME"))
                                 .append("password", passwordEncoder.encode(System.getenv("ADMIN1_PASSWORD")))
-                                .append("email", System.getenv("ADMIN1_EMAIL"))
                                 .append("roles", List.of(roleAdmin)),
 
                         new Document("_id", "admin-2")
                                 .append("userName", System.getenv("ADMIN2_USERNAME"))
                                 .append("password", passwordEncoder.encode(System.getenv("ADMIN2_PASSWORD")))
-                                .append("email", System.getenv("ADMIN2_EMAIL"))
                                 .append("roles", List.of(roleAdmin)),
 
                         new Document("_id", "admin-3")
                                 .append("userName", System.getenv("ADMIN3_USERNAME"))
                                 .append("password", passwordEncoder.encode(System.getenv("ADMIN3_PASSWORD")))
-                                .append("email", System.getenv("ADMIN3_EMAIL"))
                                 .append("roles", List.of(roleAdmin)),
 
                         new Document("_id", "admin-4")
                                 .append("userName", System.getenv("ADMIN4_USERNAME"))
                                 .append("password", passwordEncoder.encode(System.getenv("ADMIN4_PASSWORD")))
-                                .append("email", System.getenv("ADMIN4_EMAIL"))
                                 .append("roles", List.of(roleAdmin))
                 ));
 
