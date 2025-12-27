@@ -50,7 +50,7 @@ class ValidateUserNameTest {
 
         verify(userService).existsByUserName("Cooper");
     }
-
+ 
 
     @Test
     void testValidateUserNameFailure() {

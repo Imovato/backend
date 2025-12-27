@@ -33,7 +33,7 @@ public class AuthResource {
     public ResponseEntity<JwtDTO> authenticateUser(@Valid @RequestBody LoginDTO loginDTO) {
         try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginDTO.username(), loginDTO.password()));
+                    new UsernamePasswordAuthenticationToken(loginDTO.email(), loginDTO.password()));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
