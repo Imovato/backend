@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unipampa.crud.config.security.SecurityUtil;
 import com.unipampa.crud.dto.AccommodationDTO;
+import com.unipampa.crud.dto.AccommodationFilterDTO;
 import com.unipampa.crud.dto.AccommodationRequestDTO;
 import com.unipampa.crud.dto.ErrorResponse;
 import com.unipampa.crud.entities.Accommodation;
@@ -36,6 +37,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -182,6 +184,55 @@ public class AccommodationResource {
     })
     public ResponseEntity<List<AccommodationDTO>> findAll() {
         List<AccommodationDTO> accommodationDtos = accommodationService.findAll()
+                .stream()
+                .map(accommodation -> accommodationMapper.toDTO(accommodation))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(accommodationDtos);
+    }
+
+    @GetMapping("/search")
+    @Operation(summary = "Buscar acomodações com filtros opcionais",
+            description = "Retorna uma lista de acomodações baseada em filtros opcionais. Todos os parâmetros são opcionais - apenas os filtros fornecidos serão aplicados.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista filtrada retornada com sucesso",
+                    content = @Content(schema = @Schema(implementation = AccommodationDTO.class)))
+    })
+    public ResponseEntity<List<AccommodationDTO>> searchWithFilters(
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) String state,
+            @RequestParam(required = false) String neighborhood,
+            @RequestParam(required = false) java.math.BigDecimal priceMin,
+            @RequestParam(required = false) java.math.BigDecimal priceMax,
+            @RequestParam(required = false) String accommodationType,
+            @RequestParam(required = false) Integer maxOccupancyMin,
+            @RequestParam(required = false) Boolean allowsPets,
+            @RequestParam(required = false) Boolean allowsChildren,
+            @RequestParam(required = false) Boolean isSharedHosting) {
+
+        com.unipampa.crud.enums.AccommodationType type = null;
+        if (accommodationType != null && !accommodationType.isBlank()) {
+            try {
+                type = com.unipampa.crud.enums.AccommodationType.valueOf(accommodationType.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.ok(new ArrayList<>());
+            }
+        }
+
+        AccommodationFilterDTO filterDTO = new AccommodationFilterDTO(
+                city,
+                state,
+                neighborhood,
+                priceMin,
+                priceMax,
+                type,
+                maxOccupancyMin,
+                allowsPets,
+                allowsChildren,
+                isSharedHosting
+        );
+
+        List<AccommodationDTO> accommodationDtos = accommodationService.findByFilters(filterDTO)
                 .stream()
                 .map(accommodation -> accommodationMapper.toDTO(accommodation))
                 .collect(Collectors.toList());
