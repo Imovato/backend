@@ -79,16 +79,31 @@ public class AccommodationResource {
     ) throws IOException {
 
         ObjectMapper mapper = new ObjectMapper();
-        AccommodationRequestDTO accommodationDTO = mapper.readValue(dadosJson, AccommodationRequestDTO.class);
+        mapper.enable(com.fasterxml.jackson.databind.DeserializationFeature.READ_ENUMS_USING_TO_STRING);
 
+        // Limpar e unescape o JSON recebido como string de formulário
+        String jsonString = dadosJson.trim();
+        if (jsonString.startsWith("\"") && jsonString.endsWith("\"")) {
+            jsonString = jsonString.substring(1, jsonString.length() - 1);
+        }
+        jsonString = jsonString.replace("\\\"", "\"")
+                .replace("\\n", "\n")
+                .replace("\\t", "\t")
+                .replace("\\\\", "\\");
+
+        // Desserializar como JsonNode para garantir conversão correta do enum
+        com.fasterxml.jackson.databind.JsonNode node = mapper.readTree(jsonString);
+        if (node.get("accommodationType") != null && !node.get("accommodationType").isNull()) {
+            String accommodationTypeStr = node.get("accommodationType").asText().toUpperCase();
+            ((com.fasterxml.jackson.databind.node.ObjectNode) node).put("accommodationType", accommodationTypeStr);
+        }
+
+        final AccommodationRequestDTO accommodationDTO = mapper.treeToValue(node, AccommodationRequestDTO.class);
         validations.forEach(e -> e.validate(accommodationDTO));
 
         var accommodation = accommodationMapper.toEntity(accommodationDTO);
-        String novoId = new ObjectId().toString();
-        accommodation.setId(novoId);
-
-        String authenticatedUserId = SecurityUtil.getAuthenticatedUserId();
-        accommodation.setHostId(authenticatedUserId);
+        accommodation.setId(new ObjectId().toString());
+        accommodation.setHostId(SecurityUtil.getAuthenticatedUserId());
         accommodation.setStats(AccommodationStats.AVAILABLE);
 
         accommodationService.save(accommodation, images);
@@ -141,13 +156,27 @@ public class AccommodationResource {
         accommodationService.validateAuthorizationUser(existingAccommodation);
 
         ObjectMapper mapper = new ObjectMapper();
-        AccommodationRequestDTO accommodationDTO = mapper.readValue(dadosJson, AccommodationRequestDTO.class);
+        mapper.enable(com.fasterxml.jackson.databind.DeserializationFeature.READ_ENUMS_USING_TO_STRING);
 
+        String jsonString = dadosJson.trim();
+        if (jsonString.startsWith("\"") && jsonString.endsWith("\"")) {
+            jsonString = jsonString.substring(1, jsonString.length() - 1);
+        }
+        jsonString = jsonString.replace("\\\"", "\"")
+                .replace("\\n", "\n")
+                .replace("\\t", "\t")
+                .replace("\\\\", "\\");
 
+        com.fasterxml.jackson.databind.JsonNode node = mapper.readTree(jsonString);
+        if (node.get("accommodationType") != null && !node.get("accommodationType").isNull()) {
+            String accommodationTypeStr = node.get("accommodationType").asText().toUpperCase();
+            ((com.fasterxml.jackson.databind.node.ObjectNode) node).put("accommodationType", accommodationTypeStr);
+        }
+
+        final AccommodationRequestDTO accommodationDTO = mapper.treeToValue(node, AccommodationRequestDTO.class);
         validations.forEach(e -> e.validate(accommodationDTO));
 
         Accommodation accommodation = existingAccommodation.get();
-
         accommodation.setTitle(accommodationDTO.title());
         accommodation.setAddress(accommodationDTO.address());
         accommodation.setPrice(accommodationDTO.price());

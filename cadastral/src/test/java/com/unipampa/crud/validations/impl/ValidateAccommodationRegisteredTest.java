@@ -48,8 +48,7 @@ class ValidateAccommodationRegisteredTest {
                 2,
                 true,
                 false,
-                List.of("https://img.com/1.jpg", "https://img.com/2.jpg"),
-                "12345"
+                List.of("https://img.com/1.jpg", "https://img.com/2.jpg")
         );
     }
 

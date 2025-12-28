@@ -1,5 +1,6 @@
 package com.unipampa.crud.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.unipampa.crud.enums.AccommodationType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -46,6 +47,7 @@ public record AccommodationRequestDTO(
         Integer imageQuantity,
 
         @NotNull
+        @JsonProperty("accommodationType")
         @Schema(example = "APARTMENT")
         AccommodationType accommodationType,
 
@@ -70,8 +72,6 @@ public record AccommodationRequestDTO(
         Boolean isSharedHosting,
 
         @Schema(example = "[]")
-        List<String> imagesUrls,
+        List<String> imagesUrls
 
-        @NotBlank
-        String hostId
 ) {}

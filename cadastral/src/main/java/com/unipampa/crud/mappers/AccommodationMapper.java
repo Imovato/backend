@@ -32,7 +32,24 @@ public class AccommodationMapper {
     }
 
     public Accommodation toEntity(AccommodationRequestDTO requestDTO) {
-        return objectMapper.convertValue(requestDTO, Accommodation.class);
+        return Accommodation.builder()
+                .title(requestDTO.title())
+                .neighborhood(requestDTO.neighborhood())
+                .zipCode(requestDTO.codAddress())
+                .city(requestDTO.city())
+                .description(requestDTO.description())
+                .address(requestDTO.address())
+                .state(requestDTO.state())
+                .price(requestDTO.price())
+                .streetNumber(requestDTO.streetNumber())
+                .type(requestDTO.accommodationType()) // Mapeia accommodationType -> type
+                .maxOccupancy(requestDTO.maxOccupancy())
+                .roomCount(requestDTO.roomCount())
+                .bathroomCount(requestDTO.bathroomCount())
+                .allowsPets(requestDTO.allowsPets())
+                .isSharedHosting(requestDTO.isSharedHosting())
+                .imagesUrls(requestDTO.imagesUrls())
+                .build();
     }
 
     public AccommodationDTO toDTO(Accommodation entity) {
