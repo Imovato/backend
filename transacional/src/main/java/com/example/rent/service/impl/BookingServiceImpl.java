@@ -7,6 +7,7 @@ import com.example.rent.entities.Booking;
 import com.example.rent.entities.User;
 import com.example.rent.enums.StatusAccommodation;
 import com.example.rent.enums.StatusReservation;
+import com.example.rent.exceptions.BusinessException;
 import com.example.rent.mapper.BookingMapper;
 import com.example.rent.repository.AccommodationRepository;
 import com.example.rent.repository.BookingRepository;
@@ -17,8 +18,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,9 +27,10 @@ import java.util.Optional;
 @Service
 public class BookingServiceImpl implements BookingService {
 
-    public static final int MIN_DAYS = 30;
+    public static final int MIN_MONTHS = 1;
+    public static final int MAX_MONTHS  = 12;
     public static final int DAYS_FOR_EXPIRES = 3;
-    public static final String MINIMUM_RENTAL_TIME = "O período mínimo de aluguel é 30 dias";
+    public static final String RENTAL_TIME_ERROR = "Período de locação inválido. Use um valor de 1 a 12 meses.";
     public static final String ACCOMMODATION_NOT_AVAILABLE = "O imóvel não está disponível para reserva.";
     public static final String USER_NOT_FOUND = "Usuário não encontrado";
     public static final String ACCOMMODATION_NOT_FOUND = "Imóvel não encontrado";
@@ -49,7 +51,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public Booking createBooking(BookingDto request) {
-        validateMinimumRentalTime(request);
+        validateRentalTime(request);
         var accommodation = findAccommodation(request);
         validateAccommodationCapacity(request, accommodation);
         verifyAccommodationStats(accommodation);
@@ -61,9 +63,10 @@ public class BookingServiceImpl implements BookingService {
         return bookingRepository.save(booking);
     }
 
-    protected void validateMinimumRentalTime(BookingDto request) {
-        if (ChronoUnit.DAYS.between(request.intialDate(), request.endDate()) < MIN_DAYS) {
-            throw new RuntimeException(MINIMUM_RENTAL_TIME);
+    protected void validateRentalTime(BookingDto request) {
+        Integer months = request.rentalMonths();
+        if (months == null || months < MIN_MONTHS || months > MAX_MONTHS) {
+            throw new BusinessException(RENTAL_TIME_ERROR);
         }
 
     }
@@ -81,13 +84,15 @@ public class BookingServiceImpl implements BookingService {
     }
 
     protected Booking buildBooking(Accommodation accommodation, BookingDto request, List<GuestBooking> guests) {
+        LocalDate initialDate = LocalDate.now().plusDays(6);
+        LocalDate endDate = initialDate.plusMonths(request.rentalMonths());
         Booking booking = new Booking();
         booking.setAccommodation(accommodation);
         booking.setStatusReservation(StatusReservation.WAITING_PAYMENT);
         booking.setCreationDate(LocalDateTime.now());
         booking.setExpiresDate(LocalDateTime.now().plusDays(DAYS_FOR_EXPIRES));
-        booking.setInitialDate(request.intialDate());
-        booking.setEndDate(request.endDate());
+        booking.setInitialDate(initialDate);
+        booking.setEndDate(endDate);
         guests.forEach(e -> e.setReservation(booking));
         booking.setGuests(guests);
         accommodation.setStatus(StatusAccommodation.BOOKING);
