@@ -1,0 +1,74 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  application:
+    name: transacional
+
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration
+
+  cloud:
+    config:
+      enabled: false
+
+  # REMOVIDO: spring.config.import (configserver)
+
+  datasource:
+    url: ${DATABASE_URL}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  rabbitmq:
+    uri: ${CLOUDAMQP_URL}
+
+  jackson:
+    date-format: yyyy-MM-dd
+    time-zone: UTC
+
+crud:
+  rabbitmq:
+    exchanges:
+      exchangeAccommodations: crud.fanout.register-accommodations
+      exchangeUsers: crud.fanout.register-users
+    queues:
+      accommodationQueue: crud.register-accommodations.queue
+      userQueue: crud.register-users.queue
+
+ead:
+  auth:
+    jwtSecret: ${EAD_AUTH_JWTSECRET}
+
+eureka:
+  client:
+    enabled: false
+    registerWithEureka: false
+    fetchRegistry: false
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: INFO
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, health, metrics
+
+info:
+  app: Microsserviço de Aluguel
+  website: bla
+  github: https://github.com/imovato
