@@ -1,5 +1,6 @@
 package com.unipampa.crud.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.unipampa.crud.enums.AccommodationType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -10,7 +11,7 @@ import java.util.List;
 
 public record AccommodationRequestDTO(
         @NotBlank
-        @Schema(example = "Apartamento moderno no centro")
+        @Schema(example = "Apartamento moderno no centro 2")
         String title,
 
         @Schema(example = "Centro Histórico")
@@ -24,7 +25,7 @@ public record AccommodationRequestDTO(
         String city,
 
         @NotBlank
-        @Schema(example = "Apartamento bem iluminado, com 2 quartos e cozinha equipada.")
+        @Schema(example = "Apartamento bem iluminado, com 3 quartos e cozinha equipada.")
         String description,
 
         @Schema(example = "Rua dos Andradas")
@@ -46,6 +47,7 @@ public record AccommodationRequestDTO(
         Integer imageQuantity,
 
         @NotNull
+        @JsonProperty("accommodationType")
         @Schema(example = "APARTMENT")
         AccommodationType accommodationType,
 
@@ -53,9 +55,23 @@ public record AccommodationRequestDTO(
         @Schema(example = "4")
         Integer maxOccupancy,
 
-        @Schema(example = "[\"https://img.com/1.jpg\", \"https://img.com/2.jpg\"]")
-        List<String> imagesUrls,
+        @NotNull
+        @Schema(example = "2")
+        Integer roomCount,
 
-        @NotBlank
-        String hostId
+        @NotNull
+        @Schema(example = "1")
+        Integer bathroomCount,
+
+        @NotNull
+        @Schema(example = "true")
+        Boolean allowsPets,
+
+        @NotNull
+        @Schema(example = "true")
+        Boolean isSharedHosting,
+
+        @Schema(example = "[]")
+        List<String> imagesUrls
+
 ) {}

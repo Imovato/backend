@@ -61,11 +61,11 @@ class UserResourceTest {
                 "Cooper",
                 "johnSnow",
                 "123.456.789-00",
-                "(11) 99999-9999",
-                "123 Main St, Springfield",
                 "123456",
                 "ADMIN",
-                UserType.ROLE_ADMINISTRATOR
+                UserType.ROLE_ADMINISTRATOR,
+                "(11) 99999-9999",
+                "123 Main St, Springfield"
         );
 
         user = User.builder()

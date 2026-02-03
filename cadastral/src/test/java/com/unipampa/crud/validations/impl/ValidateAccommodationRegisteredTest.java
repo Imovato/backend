@@ -44,8 +44,11 @@ class ValidateAccommodationRegisteredTest {
                 5,
                 AccommodationType.HOUSE,
                 5,
-                List.of("https://img.com/1.jpg", "https://img.com/2.jpg"),
-                "12345"
+                3,
+                2,
+                true,
+                false,
+                List.of("https://img.com/1.jpg", "https://img.com/2.jpg")
         );
     }
 

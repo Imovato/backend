@@ -1,6 +1,7 @@
 package com.unipampa.crud.service.impl;
 
 import com.unipampa.crud.config.security.SecurityUtil;
+import com.unipampa.crud.dto.AccommodationFilterDTO;
 import com.unipampa.crud.entities.Accommodation;
 import com.unipampa.crud.enums.AccommodationStats;
 import com.unipampa.crud.repository.AccommodationRepository;
@@ -67,6 +68,12 @@ public class AccommodationServiceImpl implements AccommodationService {
 	@Override
 	public List<Accommodation> findAll() {
 		return propertyRepository.findAll();
+	}
+
+
+	@Override
+	public List<Accommodation> findByFilters(AccommodationFilterDTO filters) {
+		return propertyRepository.findByFilters(filters);
 	}
 
 	@Override

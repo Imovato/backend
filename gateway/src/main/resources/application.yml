@@ -1,3 +1,9 @@
 spring:
   application:
     name: gateway
+  config:
+    import: "configserver:"
+  cloud:
+    config:
+      discovery:
+        service-id: config-server

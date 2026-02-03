@@ -62,8 +62,11 @@ class AccommodationResourceTest {
                 5,
                 AccommodationType.APARTMENT,
                 5,
-                List.of("https://img.com/1.jpg", "https://img.com/2.jpg"),
-                "123345"
+                2,
+                1,
+                true,
+                false,
+                List.of("https://img.com/1.jpg", "https://img.com/2.jpg")
         );
         accommodation = Accommodation.builder().build();
 

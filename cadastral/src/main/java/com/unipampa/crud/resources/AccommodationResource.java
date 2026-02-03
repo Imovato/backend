@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unipampa.crud.config.security.SecurityUtil;
 import com.unipampa.crud.dto.AccommodationDTO;
+import com.unipampa.crud.dto.AccommodationFilterDTO;
 import com.unipampa.crud.dto.AccommodationRequestDTO;
 import com.unipampa.crud.dto.ErrorResponse;
 import com.unipampa.crud.entities.Accommodation;
@@ -36,6 +37,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -77,16 +79,31 @@ public class AccommodationResource {
     ) throws IOException {
 
         ObjectMapper mapper = new ObjectMapper();
-        AccommodationRequestDTO accommodationDTO = mapper.readValue(dadosJson, AccommodationRequestDTO.class);
+        mapper.enable(com.fasterxml.jackson.databind.DeserializationFeature.READ_ENUMS_USING_TO_STRING);
 
+        // Limpar e unescape o JSON recebido como string de formulário
+        String jsonString = dadosJson.trim();
+        if (jsonString.startsWith("\"") && jsonString.endsWith("\"")) {
+            jsonString = jsonString.substring(1, jsonString.length() - 1);
+        }
+        jsonString = jsonString.replace("\\\"", "\"")
+                .replace("\\n", "\n")
+                .replace("\\t", "\t")
+                .replace("\\\\", "\\");
+
+        // Desserializar como JsonNode para garantir conversão correta do enum
+        com.fasterxml.jackson.databind.JsonNode node = mapper.readTree(jsonString);
+        if (node.get("accommodationType") != null && !node.get("accommodationType").isNull()) {
+            String accommodationTypeStr = node.get("accommodationType").asText().toUpperCase();
+            ((com.fasterxml.jackson.databind.node.ObjectNode) node).put("accommodationType", accommodationTypeStr);
+        }
+
+        final AccommodationRequestDTO accommodationDTO = mapper.treeToValue(node, AccommodationRequestDTO.class);
         validations.forEach(e -> e.validate(accommodationDTO));
 
         var accommodation = accommodationMapper.toEntity(accommodationDTO);
-        String novoId = new ObjectId().toString();
-        accommodation.setId(novoId);
-
-        String authenticatedUserId = SecurityUtil.getAuthenticatedUserId();
-        accommodation.setHostId(authenticatedUserId);
+        accommodation.setId(new ObjectId().toString());
+        accommodation.setHostId(SecurityUtil.getAuthenticatedUserId());
         accommodation.setStats(AccommodationStats.AVAILABLE);
 
         accommodationService.save(accommodation, images);
@@ -139,16 +156,42 @@ public class AccommodationResource {
         accommodationService.validateAuthorizationUser(existingAccommodation);
 
         ObjectMapper mapper = new ObjectMapper();
-        AccommodationRequestDTO accommodationDTO = mapper.readValue(dadosJson, AccommodationRequestDTO.class);
+        mapper.enable(com.fasterxml.jackson.databind.DeserializationFeature.READ_ENUMS_USING_TO_STRING);
 
+        String jsonString = dadosJson.trim();
+        if (jsonString.startsWith("\"") && jsonString.endsWith("\"")) {
+            jsonString = jsonString.substring(1, jsonString.length() - 1);
+        }
+        jsonString = jsonString.replace("\\\"", "\"")
+                .replace("\\n", "\n")
+                .replace("\\t", "\t")
+                .replace("\\\\", "\\");
 
+        com.fasterxml.jackson.databind.JsonNode node = mapper.readTree(jsonString);
+        if (node.get("accommodationType") != null && !node.get("accommodationType").isNull()) {
+            String accommodationTypeStr = node.get("accommodationType").asText().toUpperCase();
+            ((com.fasterxml.jackson.databind.node.ObjectNode) node).put("accommodationType", accommodationTypeStr);
+        }
+
+        final AccommodationRequestDTO accommodationDTO = mapper.treeToValue(node, AccommodationRequestDTO.class);
         validations.forEach(e -> e.validate(accommodationDTO));
 
         Accommodation accommodation = existingAccommodation.get();
-
         accommodation.setTitle(accommodationDTO.title());
         accommodation.setAddress(accommodationDTO.address());
         accommodation.setPrice(accommodationDTO.price());
+        accommodation.setDescription(accommodationDTO.description());
+        accommodation.setCity(accommodationDTO.city());
+        accommodation.setNeighborhood(accommodationDTO.neighborhood());
+        accommodation.setState(accommodationDTO.state());
+        accommodation.setZipCode(accommodationDTO.codAddress());
+        accommodation.setStreetNumber(accommodationDTO.streetNumber());
+        accommodation.setType(accommodationDTO.accommodationType());
+        accommodation.setMaxOccupancy(accommodationDTO.maxOccupancy());
+        accommodation.setRoomCount(accommodationDTO.roomCount());
+        accommodation.setBathroomCount(accommodationDTO.bathroomCount());
+        accommodation.setAllowsPets(accommodationDTO.allowsPets());
+        accommodation.setSharedHosting(accommodationDTO.isSharedHosting());
 
         try {
             accommodationService.save(accommodation, images);
@@ -170,6 +213,55 @@ public class AccommodationResource {
     })
     public ResponseEntity<List<AccommodationDTO>> findAll() {
         List<AccommodationDTO> accommodationDtos = accommodationService.findAll()
+                .stream()
+                .map(accommodation -> accommodationMapper.toDTO(accommodation))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(accommodationDtos);
+    }
+
+    @GetMapping("/search")
+    @Operation(summary = "Buscar acomodações com filtros opcionais",
+            description = "Retorna uma lista de acomodações baseada em filtros opcionais. Todos os parâmetros são opcionais - apenas os filtros fornecidos serão aplicados.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista filtrada retornada com sucesso",
+                    content = @Content(schema = @Schema(implementation = AccommodationDTO.class)))
+    })
+    public ResponseEntity<List<AccommodationDTO>> searchWithFilters(
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) String state,
+            @RequestParam(required = false) String neighborhood,
+            @RequestParam(required = false) java.math.BigDecimal priceMin,
+            @RequestParam(required = false) java.math.BigDecimal priceMax,
+            @RequestParam(required = false) String accommodationType,
+            @RequestParam(required = false) Integer maxOccupancyMin,
+            @RequestParam(required = false) Boolean allowsPets,
+            @RequestParam(required = false) Boolean allowsChildren,
+            @RequestParam(required = false) Boolean isSharedHosting) {
+
+        com.unipampa.crud.enums.AccommodationType type = null;
+        if (accommodationType != null && !accommodationType.isBlank()) {
+            try {
+                type = com.unipampa.crud.enums.AccommodationType.valueOf(accommodationType.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.ok(new ArrayList<>());
+            }
+        }
+
+        AccommodationFilterDTO filterDTO = new AccommodationFilterDTO(
+                city,
+                state,
+                neighborhood,
+                priceMin,
+                priceMax,
+                type,
+                maxOccupancyMin,
+                allowsPets,
+                allowsChildren,
+                isSharedHosting
+        );
+
+        List<AccommodationDTO> accommodationDtos = accommodationService.findByFilters(filterDTO)
                 .stream()
                 .map(accommodation -> accommodationMapper.toDTO(accommodation))
                 .collect(Collectors.toList());
