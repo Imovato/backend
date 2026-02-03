@@ -1,5 +1,6 @@
 package com.unipampa.crud.service;
 
+import com.unipampa.crud.dto.AccommodationFilterDTO;
 import com.unipampa.crud.entities.Accommodation;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,6 +15,8 @@ public interface AccommodationService {
 	Optional<Accommodation> findById(String id);
 
 	List<Accommodation> findAll();
+
+	List<Accommodation> findByFilters(AccommodationFilterDTO filters);
 
 	void delete(String id);
 

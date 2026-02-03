@@ -4,6 +4,7 @@ import com.mongodb.client.MongoClients;
 import com.unipampa.crud.enums.UserType;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.bson.Document;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,6 +17,8 @@ public class MongoScriptInitializer implements CommandLineRunner {
 
     private final PasswordEncoder passwordEncoder;
     private final Dotenv dotenv = Dotenv.load();
+    @Value("${spring.data.mongodb.uri}")
+    private String mongoUri;
 
     public MongoScriptInitializer(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
@@ -26,8 +29,8 @@ public class MongoScriptInitializer implements CommandLineRunner {
     public void run(String... args) throws Exception {
         System.out.println("Verificando se os dados já existem no banco...");
 
-        try (var client = MongoClients.create("mongodb://localhost:27017")) {
-            var database = client.getDatabase("cadastral");
+        try (var client = MongoClients.create(mongoUri)) {
+            var database = client.getDatabase("imovato");
             var roleCollection = database.getCollection("role");
             var userCollection = database.getCollection("user");
 
@@ -62,25 +65,30 @@ public class MongoScriptInitializer implements CommandLineRunner {
 
                 userCollection.insertMany(List.of(
                         new Document("_id", "admin-1")
-                                .append("userName", dotenv.get("ADMIN1_USERNAME"))
-                                .append("password", passwordEncoder.encode(dotenv.get("ADMIN1_PASSWORD")))
+                                .append("userName", System.getenv("ADMIN1_USERNAME"))
+                                .append("password", passwordEncoder.encode(System.getenv("ADMIN1_PASSWORD")))
+                                .append("email", System.getenv("ADMIN1_EMAIL"))
                                 .append("roles", List.of(roleAdmin)),
 
                         new Document("_id", "admin-2")
-                                .append("userName", dotenv.get("ADMIN2_USERNAME"))
-                                .append("password", passwordEncoder.encode(dotenv.get("ADMIN2_PASSWORD")))
+                                .append("userName", System.getenv("ADMIN2_USERNAME"))
+                                .append("password", passwordEncoder.encode(System.getenv("ADMIN2_PASSWORD")))
+                                .append("email", System.getenv("ADMIN2_EMAIL"))
                                 .append("roles", List.of(roleAdmin)),
 
                         new Document("_id", "admin-3")
-                                .append("userName", dotenv.get("ADMIN3_USERNAME"))
-                                .append("password", passwordEncoder.encode(dotenv.get("ADMIN3_PASSWORD")))
+                                .append("userName", System.getenv("ADMIN3_USERNAME"))
+                                .append("password", passwordEncoder.encode(System.getenv("ADMIN3_PASSWORD")))
+                                .append("email", System.getenv("ADMIN3_EMAIL"))
                                 .append("roles", List.of(roleAdmin)),
 
                         new Document("_id", "admin-4")
-                                .append("userName", dotenv.get("ADMIN4_USERNAME"))
-                                .append("password", passwordEncoder.encode(dotenv.get("ADMIN4_PASSWORD")))
+                                .append("userName", System.getenv("ADMIN4_USERNAME"))
+                                .append("password", passwordEncoder.encode(System.getenv("ADMIN4_PASSWORD")))
+                                .append("email", System.getenv("ADMIN4_EMAIL"))
                                 .append("roles", List.of(roleAdmin))
                 ));
+
 
                 System.out.println("Usuários criados com sucesso!");
             } else {

@@ -1,11 +1,13 @@
 package com.unipampa.crud.service.impl;
 
 import com.unipampa.crud.config.security.SecurityUtil;
+import com.unipampa.crud.dto.AccommodationFilterDTO;
 import com.unipampa.crud.entities.Accommodation;
 import com.unipampa.crud.enums.AccommodationStats;
 import com.unipampa.crud.repository.AccommodationRepository;
 import com.unipampa.crud.sender.AccommodationSender;
 import com.unipampa.crud.service.AccommodationService;
+import com.unipampa.crud.service.ImageService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,10 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class AccommodationServiceImpl implements AccommodationService {
@@ -35,28 +34,46 @@ public class AccommodationServiceImpl implements AccommodationService {
 	public static final String TAMANHO_MAXIMO_DA_IMAGEM = "Imagem excede o tamanho máximo permitido de 5MB.";
 	private AccommodationRepository propertyRepository;
 	private AccommodationSender accommodationSender;
+	private ImageService imageService;
 
 	@Value("${app.uploads-dir}")
 	private String uploadsDir;
 
 	@Autowired
-	public AccommodationServiceImpl(AccommodationRepository repository, AccommodationSender sendMessage) {
+	public AccommodationServiceImpl(AccommodationRepository repository, AccommodationSender sendMessage, ImageService imageService) {
 		this.propertyRepository = repository;
 		this.accommodationSender = sendMessage;
+		this.imageService = imageService;
 	}
 
 	@Override
 	@Transactional
-	public void save(Accommodation hosting, MultipartFile[] images) throws IOException {
-		List<String> caminhos = buildPathForImages(hosting.getId(), images);
-		hosting.setImagesUrls(caminhos);
-		Accommodation savedWithImages = propertyRepository.save(hosting);
+	public void save(Accommodation accommodation, MultipartFile[] images) throws IOException {
+
+		List<String> urls = new ArrayList<>();
+
+		if (images != null && images.length > 0) {
+			List<MultipartFile> files = Arrays.asList(images);
+			List<String> uploadedUrls = imageService.uploadImages(files);
+			urls.addAll(uploadedUrls);
+
+		}
+
+		accommodation.setImagesUrls(urls);
+
+		Accommodation savedWithImages = propertyRepository.save(accommodation);
 		accommodationSender.sendMessage(savedWithImages);
 	}
 
 	@Override
 	public List<Accommodation> findAll() {
 		return propertyRepository.findAll();
+	}
+
+
+	@Override
+	public List<Accommodation> findByFilters(AccommodationFilterDTO filters) {
+		return propertyRepository.findByFilters(filters);
 	}
 
 	@Override

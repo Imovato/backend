@@ -32,22 +32,31 @@ public class AccommodationMapper {
     }
 
     public Accommodation toEntity(AccommodationRequestDTO requestDTO) {
-        return objectMapper.convertValue(requestDTO, Accommodation.class);
+        return Accommodation.builder()
+                .title(requestDTO.title())
+                .neighborhood(requestDTO.neighborhood())
+                .zipCode(requestDTO.codAddress())
+                .city(requestDTO.city())
+                .description(requestDTO.description())
+                .address(requestDTO.address())
+                .state(requestDTO.state())
+                .price(requestDTO.price())
+                .streetNumber(requestDTO.streetNumber())
+                .type(requestDTO.accommodationType()) // Mapeia accommodationType -> type
+                .maxOccupancy(requestDTO.maxOccupancy())
+                .roomCount(requestDTO.roomCount())
+                .bathroomCount(requestDTO.bathroomCount())
+                .allowsPets(requestDTO.allowsPets())
+                .isSharedHosting(requestDTO.isSharedHosting())
+                .imagesUrls(requestDTO.imagesUrls())
+                .build();
     }
 
     public AccommodationDTO toDTO(Accommodation entity) {
-        String urlBase = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
-        List<String> imageUrls = entity.getImagesUrls().stream()
-                .map(path -> {
-                    Path p = Paths.get(path);
-                    String id = p.getParent().getFileName().toString(); // exemplo: "6804eaef24e9aa24141421a1"
-                    String filename = p.getFileName().toString();
-                    return urlBase + "/accommodations/images/" + id + "/" + filename;
-                })
-                .collect(Collectors.toList());
+
+        List<String> imageUrls = entity.getImagesUrls();
 
         return new AccommodationDTO(
-                entity.getId(),
                 entity.getTitle(),
                 entity.getNeighborhood(),
                 entity.getZipCode(),
@@ -57,12 +66,15 @@ public class AccommodationMapper {
                 entity.getState(),
                 entity.getPrice(),
                 entity.getStreetNumber(),
-                entity.getImagesUrls() != null ? entity.getImagesUrls().size() : 0,
+                imageUrls != null ? imageUrls.size() : 0,
                 entity.getType(),
                 entity.getMaxOccupancy(),
+                entity.getRoomCount(),
+                entity.getBathroomCount(),
+                entity.isAllowsPets(),
+                entity.isSharedHosting(),
                 imageUrls
         );
-
-
     }
+
 }

@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface UserRepository extends MongoRepository<User, String> {
 
+    @EntityGraph(attributePaths = {"roles"}, type = EntityGraph.EntityGraphType.FETCH)
     Optional<User> findUserByEmail(String email);
 
     boolean existsByUserName(String username);

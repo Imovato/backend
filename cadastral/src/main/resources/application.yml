@@ -1,11 +1,5 @@
-
 spring:
   application:
     name: cadastral
-  config:
-    import: "configserver:"
-  cloud:
-    config:
-      discovery:
-        enabled: true
-        service-id: config-server
+
+

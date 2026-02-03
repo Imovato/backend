@@ -41,7 +41,7 @@ public class BookingResource {
 
 
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_GUEST')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'GUEST')")
     @PostMapping
     @Operation(summary = "Cria uma reserva para uma propriedade existente")
     public ResponseEntity<Booking> createBooking(@RequestBody BookingDto request, Authentication authentication) {
@@ -49,14 +49,14 @@ public class BookingResource {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_GUEST')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'GUEST')")
     @PostMapping("/checkin/{idBooking}")
     @Operation(summary = "Faz checkin em uma reserva existente")
     public ResponseEntity<RentResponse> checkin(@PathVariable @Valid Long idBooking) {
         return new ResponseEntity<>(rentService.processCheckin(idBooking), HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_GUEST', 'ROLE_HOST')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'GUEST', 'ROLE_HOST')")
     @Operation(summary = "Consulta uma reserva existente")
     @GetMapping("/{id}")
     public ResponseEntity<BookingDto> getBookingById(@PathVariable Long id) throws Exception {
@@ -65,7 +65,7 @@ public class BookingResource {
         return ResponseEntity.ok(BookingMapper.toDto(booking));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_GUEST', 'ROLE_HOST')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'GUEST', 'ROLE_HOST')")
     @Operation(summary = "Cancela uma reserva existente")
     @PatchMapping("/{id}/cancel")
     public ResponseEntity<BookingDto> cancelBookingById(@PathVariable Long id) throws Exception {
@@ -73,7 +73,7 @@ public class BookingResource {
         return ResponseEntity.ok(BookingMapper.toDto(booking));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_GUEST')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'GUEST')")
     @PatchMapping("/{id}/pay/{userId}")
     @Operation(summary = "Realiza o pagamento de uma reserva")
     public ResponseEntity<BookingDto> payBooking(@PathVariable Long id, @PathVariable String userId) throws Exception {
