@@ -1,11 +1,22 @@
-FROM maven:3.6-openjdk-17-slim AS MAVEN_BUILD
-COPY rent/pom.xml /build/
-COPY rent/src /build/src/
-WORKDIR /build/
-RUN mvn package -DskipTests
+# ---- build ----
+FROM maven:3.9-eclipse-temurin-21 AS build
+WORKDIR /build
 
-FROM openjdk:17-alpine
-MAINTAINER com.mateusbalda
-EXPOSE 8085
-COPY --from=MAVEN_BUILD /build/target/*.jar rent.jar
-ENTRYPOINT ["java","-jar","-Dspring.profiles.active=docker-demo","/rent.jar"]
+COPY pom.xml .
+RUN mvn -q -Dmaven.test.skip=true dependency:go-offline
+
+COPY src ./src
+RUN mvn -q -Dmaven.test.skip=true package
+
+# ---- runtime ----
+FROM eclipse-temurin:21-jre-alpine
+WORKDIR /app
+
+COPY --from=build /build/target/*.jar /app/app.jar
+
+# opcional: ajuda em dyno pequeno (o Java lê automaticamente)
+ENV JAVA_TOOL_OPTIONS="-XX:MaxRAMPercentage=75"
+
+EXPOSE 8080
+
+ENTRYPOINT ["java","-jar","/app/app.jar"]
