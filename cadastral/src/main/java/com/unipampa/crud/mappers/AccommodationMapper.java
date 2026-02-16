@@ -57,6 +57,7 @@ public class AccommodationMapper {
         List<String> imageUrls = entity.getImagesUrls();
 
         return new AccommodationDTO(
+                entity.getId(),
                 entity.getTitle(),
                 entity.getNeighborhood(),
                 entity.getZipCode(),
