@@ -9,6 +9,9 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public record AccommodationDTO(
+
+		String id,
+
 		@NotBlank
 		@Schema(example = "Apartamento moderno no centro 2")
 		String title,
