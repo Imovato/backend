@@ -1,3 +1,7 @@
 spring:
   application:
     name: transacional
+
+external:
+  accommodation:
+    base-url: https://cadastral-imovato-35ca7e6548df.herokuapp.com

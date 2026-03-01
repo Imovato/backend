@@ -1,6 +1,7 @@
 package com.example.rent.resources;
 
 import com.example.rent.dto.BookingDto;
+import com.example.rent.dto.ReservedPropertyDto;
 import com.example.rent.entities.Booking;
 import com.example.rent.enums.StatusReservation;
 import com.example.rent.mapper.BookingMapper;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -54,6 +56,14 @@ public class BookingResource {
     @Operation(summary = "Faz checkin em uma reserva existente")
     public ResponseEntity<RentResponse> checkin(@PathVariable @Valid Long idBooking) {
         return new ResponseEntity<>(rentService.processCheckin(idBooking), HttpStatus.CREATED);
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'GUEST')")
+    @GetMapping("/user/{userId}")
+    @Operation(summary = "Lista propriedades reservadas por um usuário")
+    public ResponseEntity<List<ReservedPropertyDto>> getReservedPropertiesByUser(@PathVariable String userId) throws Exception {
+        List<ReservedPropertyDto> reservedProperties = bookingService.getReservedPropertiesByUser(userId);
+        return ResponseEntity.ok(reservedProperties);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'GUEST', 'ROLE_HOST')")

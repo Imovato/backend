@@ -1,6 +1,9 @@
 package com.example.rent.service.impl;
 
+import com.example.rent.client.AccommodationClient;
+import com.example.rent.config.security.SecurityUtil;
 import com.example.rent.dto.BookingDto;
+import com.example.rent.dto.ReservedPropertyDto;
 import com.example.rent.entities.Accommodation;
 import com.example.rent.entities.GuestBooking;
 import com.example.rent.entities.Booking;
@@ -48,6 +51,9 @@ public class BookingServiceImpl implements BookingService {
 
     @Autowired
     private final UserService userService;
+
+    @Autowired
+    AccommodationClient accommodationClient;
 
     @Override
     public Booking createBooking(BookingDto request) {
@@ -184,6 +190,26 @@ public class BookingServiceImpl implements BookingService {
         Booking updatedBooking = updateBooking(booking);
 
         return BookingMapper.toDto(updatedBooking);
+    }
+
+    @Override
+    public List<ReservedPropertyDto> getReservedPropertiesByUser(String userId) throws Exception {
+        if (!SecurityUtil.isOwnerOrAdmin(userId)) {
+            throw new Exception("Acesso negado para consultar reservas de outro usuário.");
+        }
+
+        if (userService.findById(userId).isEmpty()) {
+            throw new Exception(USER_NOT_FOUND);
+        }
+
+        return bookingRepository
+                .findDistinctByGuests_Guest_IdAndStatusReservationNot(userId, StatusReservation.CANCELED)
+                .stream()
+                .map(booking -> BookingMapper.toReservedPropertyDto(
+                        booking,
+                        accommodationClient.getAccommodationById(booking.getAccommodation().getId())
+                ))
+                .toList();
     }
 
 }

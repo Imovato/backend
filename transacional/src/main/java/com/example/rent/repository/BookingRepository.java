@@ -11,4 +11,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     List<Booking> findByStatusReservationAndExpiresDateBefore(StatusReservation statusReservation, LocalDateTime now);
 
+    List<Booking> findDistinctByGuests_Guest_IdAndStatusReservationNot(String userId, StatusReservation statusReservation);
+
 }

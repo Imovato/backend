@@ -1,6 +1,7 @@
 package com.unipampa.crud.resources;
 
 import com.unipampa.crud.config.security.JwtProvider;
+import com.unipampa.crud.config.security.UserDatailsImpl;
 import com.unipampa.crud.dto.JwtDTO;
 import com.unipampa.crud.dto.LoginDTO;
 import jakarta.validation.Valid;
@@ -39,7 +40,12 @@ public class AuthResource {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             String jwt = jwtProvider.generateJwtToken(authentication);
-            return ResponseEntity.ok(new JwtDTO(jwt));
+
+            // Extrair o ID do usuário autenticado
+            UserDatailsImpl userDetails = (UserDatailsImpl) authentication.getPrincipal();
+            String userId = userDetails.getUserId();
+
+            return ResponseEntity.ok(new JwtDTO(jwt, userId));
 
         } catch (BadCredentialsException e) {
             log.error("Credenciais inválidas para: {}", loginDTO.email());

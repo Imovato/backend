@@ -1,7 +1,10 @@
 package com.example.rent.service;
 
 import com.example.rent.dto.BookingDto;
+import com.example.rent.dto.ReservedPropertyDto;
 import com.example.rent.entities.Booking;
+
+import java.util.List;
 
 
 public interface BookingService {
@@ -13,4 +16,6 @@ public interface BookingService {
     Booking updateBooking(Booking request) throws Exception;
 
     BookingDto payBooking(Long bookingId, String userId) throws Exception;
+
+    List<ReservedPropertyDto> getReservedPropertiesByUser(String userId) throws Exception;
 }

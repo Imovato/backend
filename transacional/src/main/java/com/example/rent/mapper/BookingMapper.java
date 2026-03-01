@@ -1,6 +1,8 @@
 package com.example.rent.mapper;
 
+import com.example.rent.dto.AccommodationDetailsDto;
 import com.example.rent.dto.BookingDto;
+import com.example.rent.dto.ReservedPropertyDto;
 import com.example.rent.entities.Accommodation;
 import com.example.rent.entities.Booking;
 import com.example.rent.entities.GuestBooking;
@@ -38,6 +40,17 @@ public class BookingMapper {
                 booking.getAccommodation().getId(),
                 guestIds,
                 rentalMonths
+        );
+    }
+
+    public static ReservedPropertyDto toReservedPropertyDto(Booking booking, AccommodationDetailsDto accommodationDetails) {
+        return new ReservedPropertyDto(
+                booking.getId(),
+                booking.getAccommodation().getId(),
+                booking.getStatusReservation(),
+                booking.getInitialDate(),
+                booking.getEndDate(),
+                accommodationDetails
         );
     }
 }
