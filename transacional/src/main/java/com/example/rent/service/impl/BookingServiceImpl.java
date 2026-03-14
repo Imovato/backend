@@ -4,25 +4,37 @@ import com.example.rent.client.AccommodationClient;
 import com.example.rent.config.security.SecurityUtil;
 import com.example.rent.dto.BookingDto;
 import com.example.rent.dto.ReservedPropertyDto;
+import com.example.rent.dto.BookingInviteRequestDto;
+import com.example.rent.dto.BookingInviteResponseDto;
+import com.example.rent.dto.AccommodationDetailsDto;
 import com.example.rent.entities.Accommodation;
 import com.example.rent.entities.GuestBooking;
 import com.example.rent.entities.Booking;
 import com.example.rent.entities.User;
+import com.example.rent.entities.BookingInvite;
 import com.example.rent.enums.StatusAccommodation;
 import com.example.rent.enums.StatusReservation;
+import com.example.rent.enums.InviteStatus;
 import com.example.rent.exceptions.BusinessException;
+import com.example.rent.exceptions.InviteBadRequestException;
+import com.example.rent.exceptions.InviteNotFoundException;
 import com.example.rent.mapper.BookingMapper;
 import com.example.rent.repository.AccommodationRepository;
 import com.example.rent.repository.BookingRepository;
 import com.example.rent.repository.UserRepository;
+import com.example.rent.repository.BookingInviteRepository;
 import com.example.rent.service.BookingService;
 import com.example.rent.service.UserService;
+import com.example.rent.sender.AccommodationStatusSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,6 +67,12 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     AccommodationClient accommodationClient;
 
+    @Autowired
+    AccommodationStatusSender accommodationStatusSender;
+
+    @Autowired
+    BookingInviteRepository bookingInviteRepository;
+
     @Override
     public Booking createBooking(BookingDto request) {
         validateRentalTime(request);
@@ -66,7 +84,13 @@ public class BookingServiceImpl implements BookingService {
         var guestsBooking = buildGuestsForBooking(guests);
         var booking = buildBooking(accommodation, request, guestsBooking);
 
-        return bookingRepository.save(booking);
+        Booking savedBooking = bookingRepository.save(booking);
+        accommodationStatusSender.sendStatusUpdate(
+                savedBooking.getAccommodation().getId(),
+                StatusAccommodation.UNAVAILABLE
+        );
+
+        return savedBooking;
     }
 
     protected void validateRentalTime(BookingDto request) {
@@ -78,8 +102,18 @@ public class BookingServiceImpl implements BookingService {
     }
 
     protected Accommodation findAccommodation(BookingDto request) {
-        return accommodationRepository.findById(request.accommodationId())
+        Accommodation accommodation = accommodationRepository.findById(request.accommodationId())
                 .orElseThrow(() -> new RuntimeException(ACCOMMODATION_NOT_FOUND));
+
+        if (accommodation.getGuestCapacity() <= 0) {
+            var details = accommodationClient.getAccommodationById(accommodation.getId());
+            if (details != null && details.maxOccupancy() != null && details.maxOccupancy() > 0) {
+                accommodation.setGuestCapacity(details.maxOccupancy());
+                accommodationRepository.save(accommodation);
+            }
+        }
+
+        return accommodation;
     }
 
     protected void verifyAccommodationStats(Accommodation accommodation) {
@@ -136,7 +170,12 @@ public class BookingServiceImpl implements BookingService {
     public Booking cancelBooking(Long id) throws Exception {
         Booking booking = getBookingById(id);
         booking.setStatusReservation(StatusReservation.CANCELED);
-        return bookingRepository.save(booking);
+        Booking savedBooking = bookingRepository.save(booking);
+        accommodationStatusSender.sendStatusUpdate(
+                savedBooking.getAccommodation().getId(),
+                StatusAccommodation.AVAILABLE
+        );
+        return savedBooking;
     }
 
     @Override
@@ -187,6 +226,11 @@ public class BookingServiceImpl implements BookingService {
         guestBooking.setPaid(true);
         guestBooking.setPaymentDate(LocalDateTime.now());
 
+        boolean allGuestsPaid = booking.getGuests().stream().allMatch(GuestBooking::isPaid);
+        if (booking.getGuests().size() == 1 || allGuestsPaid) {
+            booking.setStatusReservation(StatusReservation.CONFIRMED);
+        }
+
         Booking updatedBooking = updateBooking(booking);
 
         return BookingMapper.toDto(updatedBooking);
@@ -212,4 +256,91 @@ public class BookingServiceImpl implements BookingService {
                 .toList();
     }
 
+    @Override
+    public BookingInviteResponseDto createBookingInvite(Long bookingId, BookingInviteRequestDto request) throws Exception {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new InviteNotFoundException("Reserva não encontrada"));
+
+        AccommodationDetailsDto details = accommodationClient.getAccommodationById(booking.getAccommodation().getId());
+        if (!isColiving(details)) {
+            throw new InviteBadRequestException("Reservas compartilhadas só são permitidas em imóveis do tipo coliving");
+        }
+
+        int capacity = resolveCapacity(booking.getAccommodation(), details);
+        int currentGuests = booking.getGuests() == null ? 0 : booking.getGuests().size();
+        boolean alreadyInBooking = booking.getGuests() != null
+                && booking.getGuests().stream().anyMatch(guest -> guest.getGuest().getId().equals(request.guestId()));
+
+        if (capacity > 0 && currentGuests + (alreadyInBooking ? 0 : 1) > capacity) {
+            throw new InviteBadRequestException("Número máximo de participantes atingido para este imóvel");
+        }
+
+        User guest = userRepository.findById(request.guestId())
+                .orElseThrow(() -> new InviteBadRequestException(USER_NOT_FOUND));
+
+        if (!alreadyInBooking) {
+            GuestBooking guestBooking = new GuestBooking();
+            guestBooking.setGuest(guest);
+            guestBooking.setPaid(false);
+            guestBooking.setReservation(booking);
+
+            List<GuestBooking> updatedGuests = booking.getGuests() == null
+                    ? new ArrayList<>()
+                    : new ArrayList<>(booking.getGuests());
+            updatedGuests.add(guestBooking);
+            booking.setGuests(updatedGuests);
+            bookingRepository.save(booking);
+        }
+
+        int totalGuests = booking.getGuests() == null ? 0 : booking.getGuests().size();
+        BigDecimal shareAmount = calculateShareAmount(booking.getAccommodation(), totalGuests);
+
+        BookingInvite invite = new BookingInvite();
+        invite.setBooking(booking);
+        invite.setGuest(guest);
+        invite.setStatus(InviteStatus.PENDING);
+        invite.setShareAmount(shareAmount);
+        invite.setDeadline(LocalDateTime.now().plusDays(DAYS_FOR_EXPIRES));
+        invite.setCreatedAt(LocalDateTime.now());
+
+        BookingInvite savedInvite = bookingInviteRepository.save(invite);
+
+        return new BookingInviteResponseDto(
+                String.valueOf(savedInvite.getId()),
+                String.valueOf(booking.getId()),
+                guest.getId(),
+                savedInvite.getStatus(),
+                savedInvite.getShareAmount(),
+                savedInvite.getDeadline()
+        );
+    }
+
+    private boolean isColiving(AccommodationDetailsDto details) {
+        if (details == null) {
+            return false;
+        }
+        if (Boolean.TRUE.equals(details.isSharedHosting())) {
+            return true;
+        }
+        return details.accommodationType() != null
+                && details.accommodationType().equalsIgnoreCase("COLIVING");
+    }
+
+    private int resolveCapacity(Accommodation accommodation, AccommodationDetailsDto details) {
+        if (details != null && details.maxOccupancy() != null && details.maxOccupancy() > 0) {
+            return details.maxOccupancy();
+        }
+        if (accommodation != null && accommodation.getGuestCapacity() > 0) {
+            return accommodation.getGuestCapacity();
+        }
+        return 0;
+    }
+
+    private BigDecimal calculateShareAmount(Accommodation accommodation, int totalGuests) {
+        if (accommodation == null || accommodation.getPrice() == null || totalGuests <= 0) {
+            return BigDecimal.ZERO;
+        }
+        return BigDecimal.valueOf(accommodation.getPrice())
+                .divide(BigDecimal.valueOf(totalGuests), 2, RoundingMode.HALF_UP);
+    }
 }

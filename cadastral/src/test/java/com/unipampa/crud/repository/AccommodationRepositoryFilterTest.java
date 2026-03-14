@@ -27,6 +27,7 @@ class AccommodationRepositoryFilterTest {
 	private Accommodation accommodation1;
 	private Accommodation accommodation2;
 	private Accommodation accommodation3;
+	private Accommodation accommodation4;
 
 	@BeforeEach
 	void setUp() {
@@ -89,9 +90,29 @@ class AccommodationRepositoryFilterTest {
 				.hostId("host3")
 				.build();
 
+		// Acomodação 4: Indisponível
+		accommodation4 = Accommodation.builder()
+				.title("Casa Indisponivel")
+				.description("Em reforma")
+				.city("Porto Alegre")
+				.state("RS")
+				.neighborhood("Centro")
+				.price(new BigDecimal("1200.00"))
+				.type(AccommodationType.HOUSE)
+				.maxOccupancy(3)
+				.roomCount(2)
+				.bathroomCount(1)
+				.allowsPets(false)
+				.allowsChildren(true)
+				.isSharedHosting(false)
+				.stats(AccommodationStats.UNAVAILABLE)
+				.hostId("host4")
+				.build();
+
 		repository.save(accommodation1);
 		repository.save(accommodation2);
 		repository.save(accommodation3);
+		repository.save(accommodation4);
 	}
 
 	@Test
@@ -101,6 +122,7 @@ class AccommodationRepositoryFilterTest {
 		List<Accommodation> result = repository.findByFilters(filters);
 
 		assertEquals(3, result.size());
+		assertTrue(result.stream().allMatch(a -> a.getStats() == AccommodationStats.AVAILABLE));
 	}
 
 	@Test

@@ -42,6 +42,7 @@ crud:
     queues:
       accommodationQueue: crud.register-accommodations.queue
       userQueue: crud.register-users.queue
+      accommodationStatusQueue: crud.update-accommodations.queue
 
 ead:
   serviceRegistry:

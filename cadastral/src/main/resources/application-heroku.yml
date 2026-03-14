@@ -39,6 +39,7 @@ crud:
       exchangeUsers: crud.fanout.register-users
     queues:
       accommodationQueue: crud.register-accommodations.queue
+      accommodationStatusQueue: crud.update-accommodations.queue
 
 eureka:
   client:

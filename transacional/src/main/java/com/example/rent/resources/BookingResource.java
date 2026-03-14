@@ -1,6 +1,8 @@
 package com.example.rent.resources;
 
 import com.example.rent.dto.BookingDto;
+import com.example.rent.dto.BookingInviteRequestDto;
+import com.example.rent.dto.BookingInviteResponseDto;
 import com.example.rent.dto.ReservedPropertyDto;
 import com.example.rent.entities.Booking;
 import com.example.rent.enums.StatusReservation;
@@ -93,16 +95,18 @@ public class BookingResource {
 
     @PreAuthorize("hasRole('ROLE_ADMINISTRATOR')")
     @PostMapping("/forcar/cancelamento/{idReserva}")
-    public ResponseEntity<String> forcarCancelamento(@PathVariable Long idReserva) {
-        Optional<Booking> reservaOptional = bookingRepository.findById(idReserva);
+    public ResponseEntity<String> forcarCancelamento(@PathVariable Long idReserva) throws Exception {
+        Booking reserva = bookingService.cancelBooking(idReserva);
+        return ResponseEntity.ok("Reserva " + reserva.getId() + " foi cancelada com sucesso.");
+    }
 
-        if (reservaOptional.isPresent()) {
-            Booking reserva = reservaOptional.get();
-            reserva.setStatusReservation(StatusReservation.CANCELED);
-            bookingRepository.save(reserva);
-            return ResponseEntity.ok("Reserva " + idReserva + " foi cancelada com sucesso.");
-        } else {
-            return ResponseEntity.status(404).body("Reserva com ID " + idReserva + " não encontrada.");
-        }
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'GUEST')")
+    @PostMapping("/{bookingId}/invites")
+    @Operation(summary = "Cria um convite para uma reserva existente")
+    public ResponseEntity<BookingInviteResponseDto> createInvite(
+            @PathVariable Long bookingId,
+            @RequestBody @Valid BookingInviteRequestDto request) throws Exception {
+        BookingInviteResponseDto response = bookingService.createBookingInvite(bookingId, request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

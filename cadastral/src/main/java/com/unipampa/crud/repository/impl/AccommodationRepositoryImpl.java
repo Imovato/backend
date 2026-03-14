@@ -2,6 +2,7 @@ package com.unipampa.crud.repository.impl;
 
 import com.unipampa.crud.dto.AccommodationFilterDTO;
 import com.unipampa.crud.entities.Accommodation;
+import com.unipampa.crud.enums.AccommodationStats;
 import com.unipampa.crud.repository.AccommodationRepositoryCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -25,6 +26,8 @@ public class AccommodationRepositoryImpl implements AccommodationRepositoryCusto
 	@Override
 	public List<Accommodation> findByFilters(AccommodationFilterDTO filters) {
 		List<Criteria> criteriaList = new ArrayList<>();
+
+		criteriaList.add(Criteria.where("stats").is(AccommodationStats.AVAILABLE));
 
 		if (filters.city() != null && !filters.city().isBlank()) {
 			criteriaList.add(Criteria.where("city").is(filters.city()));
@@ -80,4 +83,3 @@ public class AccommodationRepositoryImpl implements AccommodationRepositoryCusto
 	}
 
 }
-

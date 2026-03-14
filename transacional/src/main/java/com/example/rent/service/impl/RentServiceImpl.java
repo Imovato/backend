@@ -5,6 +5,7 @@ import com.example.rent.entities.GuestBooking;
 import com.example.rent.entities.Rent;
 import com.example.rent.entities.Booking;
 import com.example.rent.enums.StatusAccommodation;
+import com.example.rent.enums.StatusReservation;
 import com.example.rent.repository.AccommodationRepository;
 import com.example.rent.repository.RentRepository;
 import com.example.rent.repository.BookingRepository;
@@ -42,7 +43,9 @@ public class RentServiceImpl implements RentService {
 
         var accommodation = findAccommodationInBooking(booking);
         var rent = buildRent(accommodation, booking);
+        booking.setStatusReservation(StatusReservation.RENTED);
         rentRepository.save(rent);
+        bookingRepository.save(booking);
 
         return converterResponse.convertToRentResponse(rent);
     }

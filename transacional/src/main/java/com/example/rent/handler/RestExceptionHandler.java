@@ -3,6 +3,8 @@ package com.example.rent.handler;
 import com.example.rent.exceptions.BadRequestException;
 import com.example.rent.exceptions.BadRequestExceptionDetails;
 import com.example.rent.exceptions.ValidationExceptionDetails;
+import com.example.rent.exceptions.InviteBadRequestException;
+import com.example.rent.exceptions.InviteNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
@@ -45,5 +48,15 @@ public class RestExceptionHandler {
                         .fields(fields)
                         .fieldsMessage(fieldsMessage)
                         .build(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InviteBadRequestException.class)
+    public ResponseEntity<Map<String, String>> handleInviteBadRequestException(InviteBadRequestException exception) {
+        return new ResponseEntity<>(Map.of("message", exception.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InviteNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleInviteNotFoundException(InviteNotFoundException exception) {
+        return new ResponseEntity<>(Map.of("message", exception.getMessage()), HttpStatus.NOT_FOUND);
     }
 }
