@@ -5,6 +5,7 @@ import com.example.rent.exceptions.BadRequestExceptionDetails;
 import com.example.rent.exceptions.ValidationExceptionDetails;
 import com.example.rent.exceptions.InviteBadRequestException;
 import com.example.rent.exceptions.InviteNotFoundException;
+import com.example.rent.exceptions.InviteConflictException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -58,5 +59,10 @@ public class RestExceptionHandler {
     @ExceptionHandler(InviteNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleInviteNotFoundException(InviteNotFoundException exception) {
         return new ResponseEntity<>(Map.of("message", exception.getMessage()), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(InviteConflictException.class)
+    public ResponseEntity<Map<String, String>> handleInviteConflictException(InviteConflictException exception) {
+        return new ResponseEntity<>(Map.of("message", exception.getMessage()), HttpStatus.CONFLICT);
     }
 }

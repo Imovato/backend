@@ -12,6 +12,10 @@ import com.example.rent.response.RentResponse;
 import com.example.rent.service.BookingService;
 import com.example.rent.service.RentService;
 import com.example.rent.service.UserService;
+import com.example.rent.dto.InviteRespondRequestDto;
+import com.example.rent.dto.InviteRespondResponseDto;
+import com.example.rent.service.InviteService;
+import com.example.rent.dto.InvitePendingResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,5 +112,30 @@ public class BookingResource {
             @RequestBody @Valid BookingInviteRequestDto request) throws Exception {
         BookingInviteResponseDto response = bookingService.createBookingInvite(bookingId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+}
+
+@RestController
+@RequestMapping("/invites")
+@RequiredArgsConstructor
+class InviteResource {
+
+    private final InviteService inviteService;
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'GUEST')")
+    @PatchMapping("/{inviteId}/respond")
+    @Operation(summary = "Responde a um convite de reserva")
+    public ResponseEntity<InviteRespondResponseDto> respondToInvite(
+            @PathVariable Long inviteId,
+            @RequestBody @Valid InviteRespondRequestDto request) {
+        InviteRespondResponseDto response = inviteService.respondToInvite(inviteId, request);
+        return ResponseEntity.ok(response);
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'GUEST')")
+    @GetMapping("/pending")
+    @Operation(summary = "Lista convites pendentes do usuário logado")
+    public ResponseEntity<List<InvitePendingResponseDto>> listPendingInvites() {
+        return ResponseEntity.ok(inviteService.listPendingInvites());
     }
 }

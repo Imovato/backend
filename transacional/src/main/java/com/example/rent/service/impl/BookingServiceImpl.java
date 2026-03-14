@@ -7,6 +7,9 @@ import com.example.rent.dto.ReservedPropertyDto;
 import com.example.rent.dto.BookingInviteRequestDto;
 import com.example.rent.dto.BookingInviteResponseDto;
 import com.example.rent.dto.AccommodationDetailsDto;
+import com.example.rent.dto.InvitePendingResponseDto;
+import com.example.rent.dto.InviteRespondRequestDto;
+import com.example.rent.dto.InviteRespondResponseDto;
 import com.example.rent.entities.Accommodation;
 import com.example.rent.entities.GuestBooking;
 import com.example.rent.entities.Booking;
@@ -18,6 +21,7 @@ import com.example.rent.enums.InviteStatus;
 import com.example.rent.exceptions.BusinessException;
 import com.example.rent.exceptions.InviteBadRequestException;
 import com.example.rent.exceptions.InviteNotFoundException;
+import com.example.rent.exceptions.InviteConflictException;
 import com.example.rent.mapper.BookingMapper;
 import com.example.rent.repository.AccommodationRepository;
 import com.example.rent.repository.BookingRepository;
@@ -25,6 +29,7 @@ import com.example.rent.repository.UserRepository;
 import com.example.rent.repository.BookingInviteRepository;
 import com.example.rent.service.BookingService;
 import com.example.rent.service.UserService;
+import com.example.rent.service.InviteService;
 import com.example.rent.sender.AccommodationStatusSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +40,7 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -342,5 +348,110 @@ public class BookingServiceImpl implements BookingService {
         }
         return BigDecimal.valueOf(accommodation.getPrice())
                 .divide(BigDecimal.valueOf(totalGuests), 2, RoundingMode.HALF_UP);
+    }
+}
+
+@Service
+class InviteServiceImpl implements InviteService {
+
+    private static final String DEFAULT_HOST_NAME = "Host não informado";
+
+    private final BookingInviteRepository bookingInviteRepository;
+    private final AccommodationClient accommodationClient;
+
+    InviteServiceImpl(BookingInviteRepository bookingInviteRepository, AccommodationClient accommodationClient) {
+        this.bookingInviteRepository = bookingInviteRepository;
+        this.accommodationClient = accommodationClient;
+    }
+
+    @Override
+    public InviteRespondResponseDto respondToInvite(Long inviteId, InviteRespondRequestDto request) {
+        BookingInvite invite = bookingInviteRepository.findById(inviteId)
+                .orElseThrow(() -> new InviteNotFoundException("Convite não encontrado"));
+
+        if (invite.getStatus() != null && invite.getStatus() != InviteStatus.PENDING) {
+            throw new InviteConflictException("Este convite já foi respondido");
+        }
+
+        InviteStatus action = request.action();
+        if (action == null || action == InviteStatus.PENDING) {
+            throw new InviteBadRequestException("Ação inválida para resposta do convite");
+        }
+
+        invite.setStatus(action);
+        BookingInvite savedInvite = bookingInviteRepository.save(invite);
+
+        return new InviteRespondResponseDto(String.valueOf(savedInvite.getId()), savedInvite.getStatus());
+    }
+
+    @Override
+    public List<InvitePendingResponseDto> listPendingInvites() {
+        String guestId = SecurityUtil.getAuthenticatedUserId();
+        List<BookingInvite> invites = bookingInviteRepository.findByGuest_IdAndStatus(guestId, InviteStatus.PENDING);
+        if (invites == null || invites.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return invites.stream().map(this::toPendingResponse).toList();
+    }
+
+    private InvitePendingResponseDto toPendingResponse(BookingInvite invite) {
+        Booking booking = invite.getBooking();
+        AccommodationDetailsDto details = accommodationClient.getAccommodationById(booking.getAccommodation().getId());
+
+        String propertyTitle = details != null && details.title() != null ? details.title() : "";
+        String propertyAddress = formatAddress(details);
+        String hostName = DEFAULT_HOST_NAME;
+        BigDecimal totalAmount = resolveTotalAmount(booking, details);
+        Integer totalParticipants = booking.getGuests() == null ? 0 : booking.getGuests().size();
+        LocalDateTime checkIn = booking.getInitialDate() != null ? booking.getInitialDate().atStartOfDay() : null;
+        LocalDateTime checkOut = booking.getEndDate() != null ? booking.getEndDate().atStartOfDay() : null;
+
+        return new InvitePendingResponseDto(
+                String.valueOf(invite.getId()),
+                String.valueOf(booking.getId()),
+                propertyTitle,
+                propertyAddress,
+                hostName,
+                invite.getShareAmount(),
+                totalAmount,
+                totalParticipants,
+                checkIn,
+                checkOut,
+                invite.getDeadline(),
+                invite.getStatus()
+        );
+    }
+
+    private String formatAddress(AccommodationDetailsDto details) {
+        if (details == null) {
+            return "";
+        }
+        StringBuilder builder = new StringBuilder();
+        if (details.address() != null) {
+            builder.append(details.address());
+        }
+        if (details.streetNumber() != null) {
+            if (!builder.isEmpty()) {
+                builder.append(", ");
+            }
+            builder.append(details.streetNumber());
+        }
+        if (details.city() != null) {
+            builder.append(" - ").append(details.city());
+        }
+        if (details.state() != null) {
+            builder.append(" - ").append(details.state());
+        }
+        return builder.toString();
+    }
+
+    private BigDecimal resolveTotalAmount(Booking booking, AccommodationDetailsDto details) {
+        if (details != null && details.price() != null) {
+            return details.price();
+        }
+        if (booking != null && booking.getAccommodation() != null && booking.getAccommodation().getPrice() != null) {
+            return BigDecimal.valueOf(booking.getAccommodation().getPrice());
+        }
+        return BigDecimal.ZERO;
     }
 }
