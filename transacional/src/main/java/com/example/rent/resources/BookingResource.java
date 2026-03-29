@@ -16,6 +16,7 @@ import com.example.rent.dto.InviteRespondRequestDto;
 import com.example.rent.dto.InviteRespondResponseDto;
 import com.example.rent.service.InviteService;
 import com.example.rent.dto.InvitePendingResponseDto;
+import com.example.rent.dto.GuestCountResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,6 +114,14 @@ public class BookingResource {
         BookingInviteResponseDto response = bookingService.createBookingInvite(bookingId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'GUEST', 'ROLE_HOST')")
+    @GetMapping("/{id}/guests/count")
+    @Operation(summary = "Retorna a quantidade de convidados de uma reserva")
+    public ResponseEntity<GuestCountResponseDto> getGuestCount(@PathVariable Long id) throws Exception {
+        long count = bookingService.getGuestCountByReservationId(id);
+        return ResponseEntity.ok(new GuestCountResponseDto(String.valueOf(id), count));
+    }
 }
 
 @RestController
@@ -122,7 +131,7 @@ class InviteResource {
 
     private final InviteService inviteService;
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'GUEST')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'GUEST', 'HOST')")
     @PatchMapping("/{inviteId}/respond")
     @Operation(summary = "Responde a um convite de reserva")
     public ResponseEntity<InviteRespondResponseDto> respondToInvite(
@@ -132,10 +141,11 @@ class InviteResource {
         return ResponseEntity.ok(response);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'GUEST')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'GUEST', 'HOST')")
     @GetMapping("/pending")
     @Operation(summary = "Lista convites pendentes do usuário logado")
     public ResponseEntity<List<InvitePendingResponseDto>> listPendingInvites() {
         return ResponseEntity.ok(inviteService.listPendingInvites());
     }
+
 }

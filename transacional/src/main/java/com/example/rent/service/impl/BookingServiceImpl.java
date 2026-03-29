@@ -27,6 +27,7 @@ import com.example.rent.repository.AccommodationRepository;
 import com.example.rent.repository.BookingRepository;
 import com.example.rent.repository.UserRepository;
 import com.example.rent.repository.BookingInviteRepository;
+import com.example.rent.repository.GuestBookingRepository;
 import com.example.rent.service.BookingService;
 import com.example.rent.service.UserService;
 import com.example.rent.service.InviteService;
@@ -34,6 +35,7 @@ import com.example.rent.sender.AccommodationStatusSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -78,6 +80,9 @@ public class BookingServiceImpl implements BookingService {
 
     @Autowired
     BookingInviteRepository bookingInviteRepository;
+
+    @Autowired
+    GuestBookingRepository guestBookingRepository;
 
     @Override
     public Booking createBooking(BookingDto request) {
@@ -193,13 +198,21 @@ public class BookingServiceImpl implements BookingService {
         Booking existingBooking = bookingRepository.findById(request.getId())
                 .orElseThrow(() -> new Exception("Reserva não encontrada com o id: " + request.getId()));
 
-        existingBooking.setGuests(request.getGuests());
+        if (request.getGuests() != null) {
+            List<GuestBooking> existingGuests = getOrCreateGuests(existingBooking);
+            existingGuests.clear();
+            for (GuestBooking guestBooking : request.getGuests()) {
+                guestBooking.setReservation(existingBooking);
+                existingGuests.add(guestBooking);
+            }
+        }
         existingBooking.setStatusReservation(request.getStatusReservation());
 
         return bookingRepository.save(existingBooking);
     }
 
     @Override
+    @Transactional
     public BookingDto payBooking(Long bookingId, String userId) throws Exception {
         Booking booking = getBookingById(bookingId);
 
@@ -237,9 +250,9 @@ public class BookingServiceImpl implements BookingService {
             booking.setStatusReservation(StatusReservation.CONFIRMED);
         }
 
-        Booking updatedBooking = updateBooking(booking);
+        Booking savedBooking = bookingRepository.save(booking);
 
-        return BookingMapper.toDto(updatedBooking);
+        return BookingMapper.toDto(savedBooking);
     }
 
     @Override
@@ -290,11 +303,8 @@ public class BookingServiceImpl implements BookingService {
             guestBooking.setPaid(false);
             guestBooking.setReservation(booking);
 
-            List<GuestBooking> updatedGuests = booking.getGuests() == null
-                    ? new ArrayList<>()
-                    : new ArrayList<>(booking.getGuests());
-            updatedGuests.add(guestBooking);
-            booking.setGuests(updatedGuests);
+            List<GuestBooking> guests = getOrCreateGuests(booking);
+            guests.add(guestBooking);
             bookingRepository.save(booking);
         }
 
@@ -348,6 +358,19 @@ public class BookingServiceImpl implements BookingService {
         }
         return BigDecimal.valueOf(accommodation.getPrice())
                 .divide(BigDecimal.valueOf(totalGuests), 2, RoundingMode.HALF_UP);
+    }
+
+    private List<GuestBooking> getOrCreateGuests(Booking booking) {
+        if (booking.getGuests() == null) {
+            booking.setGuests(new ArrayList<>());
+        }
+        return booking.getGuests();
+    }
+
+    @Override
+    public long getGuestCountByReservationId(Long reservationId) throws Exception {
+        getBookingById(reservationId);
+        return guestBookingRepository.countByReservation_Id(reservationId);
     }
 }
 

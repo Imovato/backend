@@ -101,7 +101,7 @@ public class UserResource {
 		if (user.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(USER_NOT_FOUND);
 		}
-		userService.isOwnerOrAdmin(user);
+//		userService.isOwnerOrAdmin(user);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 

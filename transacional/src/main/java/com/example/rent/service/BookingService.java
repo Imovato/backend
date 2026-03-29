@@ -22,4 +22,6 @@ public interface BookingService {
     List<ReservedPropertyDto> getReservedPropertiesByUser(String userId) throws Exception;
 
     BookingInviteResponseDto createBookingInvite(Long bookingId, BookingInviteRequestDto request) throws Exception;
+
+    long getGuestCountByReservationId(Long reservationId) throws Exception;
 }
