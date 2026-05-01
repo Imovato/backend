@@ -46,11 +46,11 @@ public class AccommodationRepositoryImpl implements AccommodationRepositoryCusto
 		}
 
 		if (filters.priceMin() != null) {
-			criteriaList.add(Criteria.where("price").gte(filters.priceMin()));
+			criteriaList.add(Criteria.where("priceMin").gte(filters.priceMin()));
 		}
 
 		if (filters.priceMax() != null) {
-			criteriaList.add(Criteria.where("price").lte(filters.priceMax()));
+			criteriaList.add(Criteria.where("priceMax").lte(filters.priceMax()));
 		}
 
 		if (filters.maxOccupancyMin() != null) {
