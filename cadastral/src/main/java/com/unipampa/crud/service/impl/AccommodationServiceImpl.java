@@ -73,7 +73,39 @@ public class AccommodationServiceImpl implements AccommodationService {
 
 	@Override
 	public List<Accommodation> findByFilters(AccommodationFilterDTO filters) {
-		return propertyRepository.findByFilters(filters);
+		boolean hasPriceFilters = filters.priceMin() != null || filters.priceMax() != null;
+		AccommodationFilterDTO effectiveFilters = hasPriceFilters
+				? new AccommodationFilterDTO(
+						filters.city(),
+						filters.state(),
+						filters.neighborhood(),
+						null,
+						null,
+						filters.accommodationType(),
+						filters.maxOccupancyMin(),
+						filters.allowsPets(),
+						filters.allowsChildren(),
+						filters.isSharedHosting()
+				)
+				: filters;
+
+		List<Accommodation> results = propertyRepository.findByFilters(effectiveFilters);
+		if (!hasPriceFilters) {
+			return results;
+		}
+
+		return results.stream()
+				.filter(accommodation -> accommodation.getPrice() != null)
+				.filter(accommodation -> {
+					int minCompare = filters.priceMin() == null
+							? 0
+							: accommodation.getPrice().compareTo(filters.priceMin());
+					int maxCompare = filters.priceMax() == null
+							? 0
+							: accommodation.getPrice().compareTo(filters.priceMax());
+					return minCompare >= 0 && maxCompare <= 0;
+				})
+				.toList();
 	}
 
 	@Override

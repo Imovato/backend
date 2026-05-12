@@ -12,9 +12,14 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Repository
+
 public class AccommodationRepositoryImpl implements AccommodationRepositoryCustom {
+
+	private static final Logger logger = LoggerFactory.getLogger(AccommodationRepositoryImpl.class);
 
 	private MongoTemplate mongoTemplate;
 
@@ -27,7 +32,8 @@ public class AccommodationRepositoryImpl implements AccommodationRepositoryCusto
 	public List<Accommodation> findByFilters(AccommodationFilterDTO filters) {
 		List<Criteria> criteriaList = new ArrayList<>();
 
-		criteriaList.add(Criteria.where("stats").is(AccommodationStats.AVAILABLE));
+		// store enum as string to ensure the generated query uses BSON string values
+		criteriaList.add(Criteria.where("stats").is(AccommodationStats.AVAILABLE.name()));
 
 		if (filters.city() != null && !filters.city().isBlank()) {
 			criteriaList.add(Criteria.where("city").is(filters.city()));
@@ -42,15 +48,19 @@ public class AccommodationRepositoryImpl implements AccommodationRepositoryCusto
 		}
 
 		if (filters.accommodationType() != null) {
-			criteriaList.add(Criteria.where("type").is(filters.accommodationType()));
+			// compare with the enum name (stored as String in the DB)
+			criteriaList.add(Criteria.where("type").is(filters.accommodationType().name()));
 		}
 
-		if (filters.priceMin() != null) {
-			criteriaList.add(Criteria.where("priceMin").gte(filters.priceMin()));
-		}
-
-		if (filters.priceMax() != null) {
-			criteriaList.add(Criteria.where("priceMax").lte(filters.priceMax()));
+		if (filters.priceMin() != null || filters.priceMax() != null) {
+			Criteria priceCriteria = Criteria.where("price");
+			if (filters.priceMin() != null) {
+				priceCriteria = priceCriteria.gte(filters.priceMin());
+			}
+			if (filters.priceMax() != null) {
+				priceCriteria = priceCriteria.lte(filters.priceMax());
+			}
+			criteriaList.add(priceCriteria);
 		}
 
 		if (filters.maxOccupancyMin() != null) {
@@ -77,6 +87,14 @@ public class AccommodationRepositoryImpl implements AccommodationRepositoryCusto
 				criteriaList.toArray(new Criteria[0])
 			);
 			query = new Query(combinedCriteria);
+		}
+
+		if (logger.isDebugEnabled()) {
+			try {
+				logger.debug("Mongo Query: {}", query == null ? "{}" : query.getQueryObject().toJson());
+			} catch (Exception e) {
+				logger.debug("Mongo Query (toJson) failed, Query: {}", query);
+			}
 		}
 
 		return mongoTemplate.find(query, Accommodation.class);
