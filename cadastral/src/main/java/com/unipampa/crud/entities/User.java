@@ -1,6 +1,7 @@
 package com.unipampa.crud.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unipampa.crud.enums.UserStats;
 import com.unipampa.crud.enums.UserType;
 import lombok.AllArgsConstructor;
@@ -36,6 +37,10 @@ public class User implements Serializable {
     private String name;
     private UserType type;
     private UserStats stats;
+    @JsonIgnore
+    private String passwordResetToken;
+    @JsonIgnore
+    private LocalDateTime passwordResetTokenExpiresAt;
 
     @DBRef
     private Set<Role> roles = new HashSet<>();
