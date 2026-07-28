@@ -1,14 +1,15 @@
 package com.unipampa.crud.resources;
 
 import com.unipampa.crud.config.security.JwtProvider;
-import com.unipampa.crud.config.security.UserDatailsImpl;
 import com.unipampa.crud.dto.ForgotPasswordDTO;
 import com.unipampa.crud.dto.JwtDTO;
 import com.unipampa.crud.dto.LoginDTO;
 import com.unipampa.crud.dto.PasswordResetResponseDTO;
 import com.unipampa.crud.dto.ResetPasswordDTO;
 import com.unipampa.crud.entities.User;
+import com.unipampa.crud.service.PasswordResetEmailService;
 import com.unipampa.crud.service.UserService;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,9 @@ public class AuthResource {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private PasswordResetEmailService passwordResetEmailService;
+
     private static final int RESET_TOKEN_EXPIRATION_MINUTES = 30;
 
     @PostMapping()
@@ -57,12 +61,7 @@ public class AuthResource {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             String jwt = jwtProvider.generateJwtToken(authentication);
-
-            // Extrair o ID do usuário autenticado
-            UserDatailsImpl userDetails = (UserDatailsImpl) authentication.getPrincipal();
-            String userId = userDetails.getUserId();
-
-            return ResponseEntity.ok(new JwtDTO(jwt, userId));
+            return ResponseEntity.ok(new JwtDTO(jwt));
 
         } catch (BadCredentialsException e) {
             log.error("Credenciais inválidas para: {}", loginDTO.email());
@@ -94,7 +93,12 @@ public class AuthResource {
         user.setPasswordResetTokenExpiresAt(expiresAt);
         userService.save(user);
 
-        log.info("Token de reset gerado para {} com expiração em {}", forgotPasswordDTO.email(), expiresAt);
+        try {
+            passwordResetEmailService.sendResetToken(forgotPasswordDTO.email(), resetToken, expiresAt);
+            log.info("Token de reset enviado para {} com expiração em {}", forgotPasswordDTO.email(), expiresAt);
+        } catch (MessagingException e) {
+            log.warn("Falha ao enviar e-mail de recuperação para {}: {}", forgotPasswordDTO.email(), e.getMessage());
+        }
 
         return ResponseEntity.ok(new PasswordResetResponseDTO(
                 "Token de recuperação gerado com sucesso.",

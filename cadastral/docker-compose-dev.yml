@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  mongo:
+    image: mongo:7
+    container_name: cadastral-mongo
+    ports:
+      - "27017:27017"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: cadastral-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: un_user
+      RABBITMQ_DEFAULT_PASS: un_user
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: cadastral-mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"

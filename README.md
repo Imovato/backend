@@ -92,6 +92,12 @@ Cada microsserviço pode ser desenvolvido, testado e implementado de forma indep
        - (padrão é usuário "admin" e senha "admin"), definido no arquivo [rabbitmq.config](https://github.com/Imovato/backend/blob/master/rabbitmq.config)
    - OBS: As Exchanges e Queues são criadas automáticas pelo arquivo de definições [RabbitMQ Definitions](https://github.com/Imovato/backend/blob/master/rabbit_definitions.json) 
 
+#### 5. Recuperação de senha local com MailHog
+   - Para testar o fluxo de "esqueci minha senha" localmente, suba o `MailHog` junto com o MongoDB e o RabbitMQ usando o arquivo [`backend/cadastral/docker-compose-dev.yml`](./cadastral/docker-compose-dev.yml).
+   - Interface web do MailHog: `http://localhost:8025`
+   - SMTP local para o backend: `localhost:1025`
+   - No perfil `dev`, o serviço `cadastral` envia o token de recuperação por e-mail para o MailHog e também registra o token no retorno da API para facilitar testes manuais.
+
 # <img src="https://user-images.githubusercontent.com/94808306/218842555-9f2cfa9b-66db-4129-9d03-ee7a112cff73.png" width="5%" style="display: inline-block;"> Dockerfile
 O Dockerfile é um arquivo de configuração que permite que você crie uma imagem personalizada do Docker para sua aplicação.
 - O [Dockerfile](https://github.com/Imovato/backend/blob/master/CrudService/Dockerfile) fornecido tem duas etapas (FROM) para criar uma imagem:
