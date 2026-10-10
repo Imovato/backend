@@ -22,7 +22,7 @@ WORKDIR /app
 # Copia o JAR final
 COPY --from=build /app/target/*.jar app.jar
 
-# Heroku usa PORT, mas exponho 8080 por consistência
+# ECS supplies PORT at runtime; 8080 remains the generic container default.
 EXPOSE 8080
 
 # Importante: garantir que a aplicação leia PORT corretamente

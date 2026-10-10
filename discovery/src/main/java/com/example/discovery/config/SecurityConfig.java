@@ -1,6 +1,7 @@
 package com.example.discovery.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -31,10 +32,13 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder encoder) {
+    public UserDetailsService userDetailsService(
+            PasswordEncoder encoder,
+            @Value("${eureka.security.username:un_user}") String username,
+            @Value("${eureka.security.password:un_user}") String password) {
         UserDetails user = User.builder()
-                .username("un_user")
-                .password(encoder.encode("un_user"))
+                .username(username)
+                .password(encoder.encode(password))
                 .roles("ADMIN")
                 .build();
 

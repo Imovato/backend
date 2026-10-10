@@ -2,4 +2,4 @@ spring:
   application:
     name: discovery
   profiles:
-    active: dev
+    active: ${SPRING_PROFILES_ACTIVE:dev}

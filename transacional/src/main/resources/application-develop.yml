@@ -1,27 +1,19 @@
 server:
-  port: ${PORT:8080}
+  port: ${PORT:5858}
 
 spring:
   application:
     name: transacional
-
-  autoconfigure:
-    exclude:
-      - org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration
-      - org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration
-
   cloud:
     config:
       enabled: false
-
-  # REMOVIDO: spring.config.import (configserver)
-
   datasource:
-    url: ${DATABASE_URL}
+    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT:5432}/${POSTGRES_DATABASE:transacional}
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
     hikari:
-      maximum-pool-size: 10
-
+      maximum-pool-size: ${DB_POOL_SIZE:5}
   jpa:
     hibernate:
       ddl-auto: update
@@ -29,10 +21,13 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-
   rabbitmq:
-    addresses: ${CLOUDAMQP_URL}
-
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT:5671}
+    username: ${RABBITMQ_USERNAME}
+    password: ${RABBITMQ_PASSWORD}
+    ssl:
+      enabled: true
   jackson:
     date-format: yyyy-MM-dd
     time-zone: UTC
@@ -48,27 +43,21 @@ crud:
 
 ead:
   auth:
-    jwtSecret: ${EAD_AUTH_JWTSECRET}
+    jwtSecret: ${JWT_SECRET}
 
 eureka:
   client:
-    enabled: false
-    registerWithEureka: false
-    fetchRegistry: false
+    registerWithEureka: true
+    fetchRegistry: true
+    service-url:
+      defaultZone: ${EUREKA_URL}
 
-logging:
-  level:
-    org:
-      hibernate:
-        SQL: INFO
+external:
+  accommodation:
+    base-url: ${CADASTRAL_BASE_URL}
 
 management:
   endpoints:
     web:
       exposure:
-        include: info, health, metrics
-
-info:
-  app: Microsserviço de Aluguel
-  website: bla
-  github: https://github.com/imovato
+        include: health,info,metrics

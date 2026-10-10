@@ -4,4 +4,4 @@ spring:
 
 external:
   accommodation:
-    base-url: https://cadastral-imovato-35ca7e6548df.herokuapp.com
+    base-url: ${CADASTRAL_BASE_URL:http://localhost:5757}

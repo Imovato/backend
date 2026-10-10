@@ -1,0 +1,20 @@
+{
+  "name": "imovato-develop-infrastructure",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "synth": "cdk synth --strict",
+    "diff": "cdk diff"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "aws-cdk": "^2.189.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.189.0",
+    "constructs": "^10.4.2"
+  }
+}

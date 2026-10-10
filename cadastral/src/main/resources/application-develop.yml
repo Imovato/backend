@@ -1,0 +1,56 @@
+server:
+  port: ${PORT:5757}
+
+spring:
+  application:
+    name: cadastral
+  cloud:
+    config:
+      enabled: false
+      import-check:
+        enabled: false
+  data:
+    mongodb:
+      host: ${MONGO_HOST}
+      port: ${MONGO_PORT:27017}
+      database: ${MONGO_DATABASE:cadastral}
+      username: ${MONGO_USERNAME}
+      password: ${MONGO_PASSWORD}
+      authentication-database: admin
+      auto-index-creation: true
+      ssl:
+        enabled: true
+  rabbitmq:
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT:5671}
+    username: ${RABBITMQ_USERNAME}
+    password: ${RABBITMQ_PASSWORD}
+    ssl:
+      enabled: true
+
+ead:
+  auth:
+    jwtSecret: ${JWT_SECRET}
+    jwtExpirationMs: ${JWT_EXPIRATION_MS:14400000}
+
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    service-url:
+      defaultZone: ${EUREKA_URL}
+
+app:
+  uploads-dir: ${UPLOADS_DIR:/tmp/uploads/}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+aws:
+  region: ${AWS_REGION:us-east-1}
+  s3:
+    images-bucket: ${IMOVATO_IMAGES_BUCKET}
+    public-base-url: ${IMOVATO_IMAGES_PUBLIC_BASE_URL}

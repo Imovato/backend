@@ -2,4 +2,9 @@ spring:
   application:
     name: cadastral
 
+aws:
+  region: ${AWS_REGION:us-east-1}
+  s3:
+    images-bucket: ${IMOVATO_IMAGES_BUCKET:}
+    public-base-url: ${IMOVATO_IMAGES_PUBLIC_BASE_URL:}
 

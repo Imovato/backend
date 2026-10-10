@@ -1,0 +1,10 @@
+{
+  "app": "npx tsx app/imovato-develop.ts",
+  "context": {
+    "environment": "develop",
+    "region": "us-east-1",
+    "imageTag": "develop",
+    "desiredCount": 1,
+    "budgetUsd": 100
+  }
+}
